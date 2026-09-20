@@ -721,7 +721,7 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             className="hero-badge"
           >
-            {'> Welcome to my professional portfolio_'}
+            {"> Welcome to my professional portfolio_"}
           </motion.span>
           
           <motion.h1 
@@ -778,7 +778,7 @@ export default function App() {
       <section id="about" className="bg-darker">
         <div className="bg-darker-inner">
           <div className="section-header">
-            <span className="section-tag">// Background</span>
+            <span className="section-tag">{"// Background"}</span>
             <h2 className="section-heading">About Me</h2>
             <div className="section-divider"></div>
           </div>
@@ -786,7 +786,7 @@ export default function App() {
           <div className="about-grid">
             <div className="about-card">
               <p className="about-bio">{cvData.about.bio}</p>
-              <h3 className="about-subtitle">{'> Fun Facts & Ambitions'}</h3>
+              <h3 className="about-subtitle">{"> Fun Facts & Ambitions"}</h3>
               <ul className="fun-facts-list">
                 {cvData.about.funFacts.map((fact, i) => (
                   <li key={i} className="fun-fact-item">{fact}</li>
@@ -809,7 +809,7 @@ export default function App() {
       {/* Skills Section */}
       <section id="skills" className="section">
         <div className="section-header">
-          <span className="section-tag">// Capabilities</span>
+          <span className="section-tag">{"// Capabilities"}</span>
           <h2 className="section-heading">Skills & Tools</h2>
           <div className="section-divider"></div>
         </div>
@@ -854,7 +854,7 @@ export default function App() {
       <section id="experience" className="bg-darker">
         <div className="bg-darker-inner">
           <div className="section-header">
-            <span className="section-tag">// History</span>
+            <span className="section-tag">{"// History"}</span>
             <h2 className="section-heading">Professional Experience</h2>
             <div className="section-divider"></div>
           </div>
@@ -884,7 +884,7 @@ export default function App() {
       {/* Projects / Initiatives Section */}
       <section id="projects" className="section">
         <div className="section-header">
-          <span className="section-tag">// Portfolio</span>
+          <span className="section-tag">{"// Portfolio"}</span>
           <h2 className="section-heading">Key Initiatives</h2>
           <div className="section-divider"></div>
         </div>
@@ -949,7 +949,7 @@ export default function App() {
       <section id="contact" className="bg-darker">
         <div className="bg-darker-inner">
           <div className="section-header">
-            <span className="section-tag">// Connect</span>
+            <span className="section-tag">{"// Connect"}</span>
             <h2 className="section-heading">Get In Touch</h2>
             <div className="section-divider"></div>
           </div>
