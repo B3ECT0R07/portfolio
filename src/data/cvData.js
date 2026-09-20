@@ -1,0 +1,120 @@
+export const cvData = {
+  name: "Your Name",
+  title: "Creative Developer & Designer",
+  tagline: "I build things that live on the internet",
+  email: "hello@yourname.com",
+  phone: "+1 234 567 890",
+  location: "San Francisco, CA",
+  social: {
+    github: "https://github.com",
+    linkedin: "https://linkedin.com",
+    twitter: "https://twitter.com",
+    dribbble: "https://dribbble.com",
+  },
+  about: {
+    bio: "I'm a passionate creator building exceptional digital experiences. I specialize in crafting beautiful, modern, and accessible applications that leave an impression.",
+    funFacts: [
+      "☕ Powered by coffee daily",
+      "🎮 Passionate problem solver",
+      "🌍 Love collaborating with global teams",
+      "🎵 Code better with good tunes",
+      "🚀 Always exploring new technology",
+    ],
+    stats: [
+      { label: "Years Experience", value: 5, suffix: "+" },
+      { label: "Projects Completed", value: 30, suffix: "+" },
+      { label: "Happy Clients", value: 20, suffix: "+" },
+      { label: "Cups of Coffee", value: 999, suffix: "" },
+    ],
+  },
+  skills: [
+    { name: "React", level: 95, category: "frontend", icon: "⚛️" },
+    { name: "JavaScript", level: 90, category: "frontend", icon: "🟨" },
+    { name: "TypeScript", level: 85, category: "frontend", icon: "🔷" },
+    { name: "HTML & CSS", level: 95, category: "frontend", icon: "🎨" },
+    { name: "Node.js", level: 80, category: "backend", icon: "🟢" },
+    { name: "Python", level: 75, category: "backend", icon: "🐍" },
+    { name: "PostgreSQL", level: 80, category: "backend", icon: "🐘" },
+    { name: "Git & GitHub", level: 88, category: "devops", icon: "🔀" },
+    { name: "UI/UX Design", level: 85, category: "design", icon: "🖌️" },
+    { name: "Figma", level: 90, category: "design", icon: "🎯" },
+  ],
+  experience: [
+    {
+      id: 1,
+      role: "Lead Creative Developer",
+      company: "Tech Innovations",
+      location: "Remote",
+      period: "2022 - Present",
+      description:
+        "Building interactive user interfaces, streamlining web performance, and collaborating across design and engineering teams.",
+      tech: ["React", "TypeScript", "Tailwind", "REST APIs"],
+      color: "#00f5a0",
+    },
+    {
+      id: 2,
+      role: "Frontend Developer",
+      company: "Digital Studio",
+      location: "New York, NY",
+      period: "2020 - 2022",
+      description:
+        "Developed responsive web applications, animated micro-interactions, and integrated state-of-the-art web technology.",
+      tech: ["JavaScript", "React", "CSS3", "Node.js"],
+      color: "#00d9f5",
+    },
+    {
+      id: 3,
+      role: "Junior Web Designer",
+      company: "Creative Co.",
+      location: "San Francisco, CA",
+      period: "2018 - 2020",
+      description:
+        "Designed wireframes, UI kits, and landing pages for startup clients across multiple sectors.",
+      tech: ["Figma", "HTML/CSS", "UI/UX", "JavaScript"],
+      color: "#f5a000",
+    },
+  ],
+  education: [
+    {
+      degree: "B.S. in Computer Science / Design",
+      school: "University of Technology",
+      year: "2018",
+      gpa: "3.8/4.0",
+    },
+  ],
+  projects: [
+    {
+      id: 1,
+      title: "Interactive Web Platform",
+      description:
+        "Modern dashboard application featuring dynamic animations, real-time analytics, and clean typography.",
+      image: "https://picsum.photos/600/400?random=1",
+      tech: ["React", "Framer Motion", "CSS3"],
+      github: "https://github.com",
+      live: "https://google.com",
+      color: "#00f5a0",
+    },
+    {
+      id: 2,
+      title: "E-Commerce Experience",
+      description:
+        "Modern storefront with shopping cart logic, instant search, and fluid transitions.",
+      image: "https://picsum.photos/600/400?random=2",
+      tech: ["JavaScript", "React", "Stripe API"],
+      github: "https://github.com",
+      live: "https://google.com",
+      color: "#00d9f5",
+    },
+    {
+      id: 3,
+      title: "Creative Portfolio Showcase",
+      description:
+        "High-performance website with custom cursor physics, smooth scrolling, and dark mode.",
+      image: "https://picsum.photos/600/400?random=3",
+      tech: ["React", "Animations", "UI/UX"],
+      github: "https://github.com",
+      live: "https://google.com",
+      color: "#f5a000",
+    },
+  ],
+};
