@@ -1,986 +1,851 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { TypeAnimation } from 'react-type-animation';
+import { 
+  Briefcase, 
+  GraduationCap, 
+  Award, 
+  Mail, 
+  Github, 
+  Linkedin, 
+  Twitter, 
+  ExternalLink, 
+  ChevronRight, 
+  Gamepad2, 
+  Trophy, 
+  Sprout, 
+  MapPin, 
+  Sparkles, 
+  Menu, 
+  X, 
+  TrendingUp, 
+  Users, 
+  CheckCircle2, 
+  Globe
+} from 'lucide-react';
 
-// ==================== VAIBHAV'S DATA ====================
 const cvData = {
   name: "Vaibhav Bector",
-  title: "Project Manager & Estimator",
-  tagline: "I like football, creativity, and driving business growth through strategic project management.",
-  email: "bector2001@gmail.com",
-  phone: "+1 (604)-300-6397",
+  tagline: "I like football and creativity.",
   location: "Vancouver, BC",
-  social: {
-    linkedin: "https://ca.linkedin.com/in/vaibhavbector",
-    github: "https://github.com/B3ECT0R07",
-    twitter: "https://x.com/bector2001",
-  },
-  about: {
-    bio: "I am a results-driven Project Manager and Installation Coordinator with a passion for optimizing workflows, leading teams, and driving revenue growth. Beyond my professional life, I am an aspiring entrepreneur with a vision to eventually transition into business consulting and launch a sustainable hydroponics business.",
-    funFacts: [
-      "⚽ Die-hard Real Madrid fan (Hala Madrid!)",
-      "🎮 Passionate gamer when I'm off the clock",
-      "🌱 Researching and planning a future Hydroponics venture",
-      "📈 Driven by data analytics and continuous improvement (Kaizen)",
-      "🏆 Certified AAADM Inspector",
-    ],
-    stats: [
-      { label: "Workflow Efficiency", value: "40%+" },
-      { label: "Revenue Growth", value: "30%+" },
-      { label: "Cost Reductions", value: "23%" },
-      { label: "Turnover Reduced", value: "66%" },
-    ],
-  },
+  email: "bector2001@gmail.com",
+  github: "https://github.com/B3ECT0R07",
+  linkedin: "https://ca.linkedin.com/in/vaibhavbector",
+  twitter: "https://x.com/bector2001",
+  heroTitles: [
+    "Project Manager",
+    "Installation Coordinator",
+    "Construction Estimator",
+    "Supply Chain Manager"
+  ],
+  bio: "Dynamic operations professional based in Vancouver, BC. Proven track record driving high-impact efficiency improvements, cost reductions, and revenue growth across construction and supply chain operations. Massive Real Madrid fan, passionate gamer, and aspiring entrepreneur with a long-term vision in consultancy and innovative hydroponics.",
   skills: [
-    { name: "Project Management", level: 95, category: "management", icon: "📈" },
-    { name: "Lean, Kaizen & CPM", level: 90, category: "management", icon: "⚙️" },
-    { name: "Budget Management", level: 88, category: "management", icon: "💰" },
-    { name: "Data Analytics", level: 85, category: "management", icon: "📊" },
-    { name: "Salesforce & CRM", level: 90, category: "tools", icon: "☁️" },
-    { name: "SAP & Oracle", level: 85, category: "tools", icon: "🗄️" },
-    { name: "Jira & Miro", level: 95, category: "tools", icon: "🎯" },
-    { name: "Excel & Appsheet", level: 90, category: "tools", icon: "📝" },
-    { name: "Leadership & Teamwork", level: 95, category: "interpersonal", icon: "🤝" },
-    { name: "Problem-Solving", level: 92, category: "interpersonal", icon: "🧠" },
+    { name: "Project Management", level: 95 },
+    { name: "Supply Chain & Operations", level: 90 },
+    { name: "Construction Estimating & CPM", level: 88 },
+    { name: "Lean & Kaizen Methodologies", level: 85 },
+    { name: "SAP & Salesforce", level: 85 },
+    { name: "Budget Management & Forecasting", level: 92 },
+    { name: "Cross-Functional Leadership", level: 90 }
   ],
   experience: [
     {
-      id: 1,
       role: "Project Manager / Installation Coordinator",
       company: "TORMAX Canada",
+      period: "July 2024 – Present",
       location: "Vancouver, BC",
-      period: "July 2024 - Present",
-      description: "Managing commercial automatic door projects from start to finish. Coordinated end-to-end installations using Lean and CPM methods, reducing turnover time from 3 weeks to 1 week. Introduced workflow improvements increasing delivery efficiency by 40% and driving 30% revenue growth.",
-      tech: ["Project Estimation", "Scheduling", "Lean & Kaizen", "AAADM Compliance"],
-      color: "#00f5a0",
+      highlights: [
+        "Boosted operational efficiency by 40% through streamlined installation scheduling.",
+        "Increased regional revenue by 30% by developing competitive construction bids.",
+        "Implemented Lean & Kaizen frameworks to eliminate workflow bottlenecks.",
+        "Utilized Critical Path Method (CPM) to guarantee on-time project completion."
+      ]
     },
     {
-      id: 2,
       role: "Supply Chain Manager",
       company: "Wellness Extract",
-      location: "Abbotsford, BC",
-      period: "August 2023 - July 2024",
-      description: "Led global operations across North America, UK, and Australia. Managed FBA and 3PL inventory, making strategic decisions that resulted in a 23% cost reduction. Created demand analysis roadmaps in SAP to reduce stockouts, achieving 66% overall company growth in 2023.",
-      tech: ["3PL Management", "SAP", "Salesforce", "Global Operations"],
-      color: "#00d9f5",
+      period: "August 2023 – July 2024",
+      location: "Vancouver, BC",
+      highlights: [
+        "Achieved 66% growth in order fulfillment within 12 months.",
+        "Reduced overall operational logistics costs by 23%.",
+        "Managed multi-channel inventory allocations and vendor partnerships."
+      ]
+    }
+  ],
+  education: [
+    {
+      degree: "Bachelor of Business Administration (BBA)",
+      institution: "University of the Fraser Valley (UFV)",
+      year: "2023",
+      details: "Focused on Supply Chain Management, Operations, and Business Leadership."
     },
     {
-      id: 3,
-      role: "Bachelors in Business Administration",
-      company: "University of the Fraser Valley",
-      location: "BC, Canada",
-      period: "Graduated 2023",
-      description: "Developed a strong foundation in business strategy, financial management, and organizational leadership. Also hold a Diploma Certification in International Business (LATAM) from Universidad del Rosario (2023).",
-      tech: ["Business Strategy", "Finance", "International Business", "Analytics"],
-      color: "#f5a000",
+      degree: "Diploma in International Business",
+      institution: "Universidad del Rosario",
+      year: "2023",
+      details: "Global market analysis and cross-cultural trade strategies."
+    }
+  ],
+  interests: [
+    {
+      title: "Football & Real Madrid",
+      icon: Trophy,
+      desc: "Die-hard Real Madrid supporter. Passionate about tactics, team dynamics, and world football."
     },
+    {
+      title: "Gaming",
+      icon: Gamepad2,
+      desc: "Avid gamer. Channeling strategic thinking, tactical agility, and quick decision-making under pressure."
+    },
+    {
+      title: "Entrepreneurship & Hydroponics",
+      icon: Sprout,
+      desc: "Aspiring consultant & future hydroponics business founder focused on sustainable tech and agriculture."
+    }
   ],
   projects: [
     {
-      id: 1,
-      title: "Commercial Installation Optimization",
-      description: "Spearheaded workflow restructuring for commercial automatic door installations using Lean and CPM methodologies. Successfully reduced project turnaround time by 66% (from 3 weeks to 1 week) and improved overall project delivery efficiency by 40%.",
-      tech: ["Lean Methodology", "CPM", "Process Optimization", "Scheduling"],
-      image: "https://images.unsplash.com/photo-1541888081682-144f808c105e?w=800&q=80",
-      color: "#00f5a0",
+      title: "Installation Workflow Optimization",
+      category: "Process Engineering",
+      desc: "Redesigned site installation workflows, cutting project turnaround times by 40%.",
+      metrics: "+40% Efficiency"
     },
     {
-      id: 2,
-      title: "Global Supply Chain Overhaul",
-      description: "Strategically managed and transitioned 3PL and FBA inventory networks across North America, the UK, and Australia. This logistical restructuring resulted in a massive 23% cost reduction while maintaining high service levels and paving the way for 66% growth.",
-      tech: ["Logistics", "SAP Planning", "3PL Management", "Budget Optimization"],
-      image: "https://images.unsplash.com/photo-1586528116311-ad8ed7fc51f7?w=800&q=80",
-      color: "#00d9f5",
+      title: "Multi-Channel Supply Chain Scale",
+      category: "Supply Chain",
+      desc: "Overhauled warehouse logistics to handle 66% increased order volume while slashing costs.",
+      metrics: "66% Growth / -23% Cost"
     },
     {
-      id: 3,
-      title: "Future Venture: Hydroponics",
-      description: "Currently researching and developing a strategic roadmap for a sustainable hydroponics business. This initiative merges my passion for innovative entrepreneurship, tech integration, and modern agricultural solutions.",
-      tech: ["Entrepreneurship", "Market Research", "Consulting", "Sustainability"],
-      image: "https://images.unsplash.com/photo-1530836369250-ef71a3f5e48c?w=800&q=80",
-      color: "#f5a000",
-    },
-  ],
+      title: "Estimating & Bidding Engine",
+      category: "Construction Management",
+      desc: "Built accurate cost estimation structures leading to a 30% increase in contract wins.",
+      metrics: "+30% Revenue"
+    }
+  ]
 };
 
-// ==================== MAIN COMPONENT ====================
 export default function App() {
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [activeTab, setActiveTab] = useState('about');
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
 
+  // Compute initials dynamically (e.g. "Vaibhav Bector" -> "VB")
+  const initials = cvData.name
+    .split(' ')
+    .map((n) => n[0])
+    .join('');
+
+  // Typing effect logic
+  useEffect(() => {
+    const currentFullText = cvData.heroTitles[titleIndex];
+    const speed = isDeleting ? 40 : 80;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        setDisplayText(currentFullText.substring(0, displayText.length + 1));
+        if (displayText.length === currentFullText.length) {
+          setTimeout(() => setIsDeleting(true), 1800);
+        }
+      } else {
+        setDisplayText(currentFullText.substring(0, displayText.length - 1));
+        if (displayText.length === 0) {
+          setIsDeleting(false);
+          setTitleIndex((prev) => (prev + 1) % cvData.heroTitles.length);
+        }
+      }
+    }, speed);
+
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, titleIndex]);
+
+  // Scroll listener for progress bar
   useEffect(() => {
     const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScroll > 0) {
-        setScrollProgress((window.scrollY / totalScroll) * 100);
-      }
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const filteredSkills = activeCategory === 'all'
-    ? cvData.skills
-    : cvData.skills.filter(s => s.category === activeCategory);
-
-  const handleContactSubmit = (e) => {
-    e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => setFormSubmitted(false), 5000);
-  };
-
   return (
     <div className="portfolio-app">
-      {/* INJECTED CSS STYLES */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
-
         * {
-          box-sizing: border-box;
           margin: 0;
           padding: 0;
-        }
-
-        html {
+          box-sizing: border-box;
           scroll-behavior: smooth;
         }
 
         body {
-          background-color: #0a0a0a !important;
-          color: #ffffff !important;
-          font-family: 'Space Grotesk', sans-serif !important;
+          background-color: #0b0f19;
+          color: #e2e8f0;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
           overflow-x: hidden;
         }
 
-        .portfolio-app {
-          min-height: 100vh;
-          background-color: #0a0a0a;
-          color: #ffffff;
-        }
-
-        .scroll-indicator {
+        /* Scroll Progress Bar */
+        .progress-bar {
           position: fixed;
           top: 0;
           left: 0;
-          height: 4px;
-          background: linear-gradient(90deg, #00f5a0, #00d9f5);
-          z-index: 9999;
-          transition: width 0.1s linear;
+          height: 3px;
+          background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+          z-index: 1000;
+          transition: width 0.1s ease-out;
         }
 
-        .navbar {
+        /* Header & Nav */
+        header {
           position: fixed;
           top: 0;
-          left: 0;
-          right: 0;
+          width: 100%;
+          background: rgba(11, 15, 25, 0.85);
+          backdrop-filter: blur(12px);
+          z-index: 900;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-container {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 1.2rem 1.5rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 20px 50px;
-          background: rgba(10, 10, 10, 0.85);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          z-index: 1000;
         }
 
-        .nav-logo {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: #00f5a0;
+        .logo {
+          font-size: 1.5rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, #6366f1, #a855f7);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
           text-decoration: none;
+          letter-spacing: -0.5px;
         }
 
         .nav-links {
           display: flex;
-          gap: 30px;
-          align-items: center;
+          gap: 2rem;
+          list-style: none;
         }
 
         .nav-links a {
-          color: rgba(255, 255, 255, 0.7);
+          color: #94a3b8;
           text-decoration: none;
-          font-size: 0.9rem;
-          transition: color 0.2s;
+          font-size: 0.95rem;
+          font-weight: 500;
+          transition: color 0.2s ease;
         }
 
         .nav-links a:hover {
-          color: #00f5a0;
+          color: #6366f1;
         }
 
-        .nav-cta {
-          padding: 8px 18px;
-          background: rgba(0, 245, 160, 0.1);
-          border: 1px solid #00f5a0;
-          border-radius: 20px;
-          color: #00f5a0 !important;
+        .mobile-toggle {
+          display: none;
+          background: none;
+          border: none;
+          color: #e2e8f0;
+          cursor: pointer;
         }
 
-        .hero-section {
-          min-height: 100vh;
+        /* Hero Section */
+        .hero {
+          min-height: 90vh;
           display: flex;
           align-items: center;
           justify-content: center;
+          padding: 8rem 1.5rem 4rem;
+          position: relative;
+        }
+
+        .hero-bg-glow {
+          position: absolute;
+          top: 20%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 350px;
+          height: 350px;
+          background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%);
+          filter: blur(50px);
+          pointer-events: none;
+        }
+
+        .hero-content {
+          max-width: 800px;
           text-align: center;
-          padding: 120px 20px 60px;
-          background: radial-gradient(circle at 50% 30%, rgba(0, 245, 160, 0.08), transparent 60%);
+          z-index: 1;
         }
 
-        .hero-badge {
-          font-family: 'JetBrains Mono', monospace;
-          color: #00f5a0;
-          font-size: 0.95rem;
-          letter-spacing: 2px;
-          display: block;
-          margin-bottom: 20px;
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.4rem 1rem;
+          background: rgba(99, 102, 241, 0.1);
+          border: 1px solid rgba(99, 102, 241, 0.3);
+          border-radius: 50px;
+          color: #818cf8;
+          font-size: 0.85rem;
+          font-weight: 600;
+          margin-bottom: 1.5rem;
         }
 
-        .hero-title {
-          font-size: clamp(2.5rem, 7vw, 5rem);
-          font-weight: 700;
+        .hero h1 {
+          font-size: clamp(2.5rem, 6vw, 4.2rem);
+          font-weight: 800;
           line-height: 1.1;
-          margin-bottom: 20px;
+          margin-bottom: 1rem;
+          color: #f8fafc;
         }
 
-        .gradient-text {
-          background: linear-gradient(135deg, #00f5a0, #00d9f5);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        .hero-typewriter {
+        .typing-container {
           font-size: clamp(1.2rem, 3vw, 1.8rem);
-          color: rgba(255, 255, 255, 0.7);
-          margin-bottom: 25px;
-          min-height: 40px;
+          color: #a855f7;
+          min-height: 2.2rem;
+          font-weight: 600;
+          margin-bottom: 1.5rem;
         }
 
-        .hero-subtitle {
-          color: rgba(255, 255, 255, 0.5);
-          max-width: 600px;
-          margin: 0 auto 40px;
+        .cursor {
+          display: inline-block;
+          width: 2px;
+          height: 1.2em;
+          background-color: #a855f7;
+          margin-left: 3px;
+          animation: blink 0.8s infinite;
+          vertical-align: middle;
+        }
+
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+
+        .hero-tagline {
+          color: #94a3b8;
           font-size: 1.1rem;
-          line-height: 1.7;
+          max-width: 600px;
+          margin: 0 auto 2rem;
+          line-height: 1.6;
         }
 
-        .hero-buttons {
+        .cta-buttons {
           display: flex;
-          gap: 20px;
+          gap: 1rem;
           justify-content: center;
           flex-wrap: wrap;
-        }
-
-        .btn {
-          padding: 14px 34px;
-          border-radius: 50px;
-          font-weight: 700;
-          text-decoration: none;
-          font-size: 0.95rem;
-          cursor: pointer;
-          border: none;
-          transition: transform 0.2s, box-shadow 0.2s;
-          display: inline-block;
-        }
-
-        .btn:hover {
-          transform: translateY(-2px);
         }
 
         .btn-primary {
-          background: linear-gradient(135deg, #00f5a0, #00d9f5);
-          color: #0a0a0a !important;
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          color: #ffffff;
+          padding: 0.8rem 1.8rem;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          border: none;
+          cursor: pointer;
+        }
+
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
         }
 
         .btn-secondary {
-          background: transparent;
-          border: 2px solid rgba(0, 245, 160, 0.4);
-          color: #00f5a0 !important;
+          background: rgba(255, 255, 255, 0.05);
+          color: #e2e8f0;
+          padding: 0.8rem 1.8rem;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: background 0.2s ease, border-color 0.2s ease;
         }
 
-        .section {
-          padding: 100px 40px;
-          max-width: 1200px;
+        .btn-secondary:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Section Layout */
+        section {
+          max-width: 1100px;
           margin: 0 auto;
-        }
-
-        .bg-darker {
-          background: #0d0d0d;
-          width: 100%;
-        }
-
-        .bg-darker-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 100px 40px;
+          padding: 5rem 1.5rem;
         }
 
         .section-header {
-          text-align: center;
-          margin-bottom: 60px;
-        }
-
-        .section-tag {
-          font-family: 'JetBrains Mono', monospace;
-          color: #00f5a0;
-          font-size: 0.85rem;
-          letter-spacing: 2px;
-          display: block;
-          margin-bottom: 10px;
-        }
-
-        .section-heading {
-          font-size: 2.8rem;
-          font-weight: 700;
-          margin-bottom: 15px;
-        }
-
-        .section-divider {
-          width: 50px;
-          height: 3px;
-          background: linear-gradient(90deg, #00f5a0, #00d9f5);
-          margin: 0 auto;
-          border-radius: 2px;
-        }
-
-        .about-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 40px;
-          max-width: 1100px;
-          margin: 0 auto;
-        }
-
-        .about-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 35px;
-          border-radius: 20px;
-        }
-
-        .about-bio {
-          color: rgba(255, 255, 255, 0.8);
-          font-size: 1.05rem;
-          line-height: 1.8;
-          margin-bottom: 25px;
-        }
-
-        .about-subtitle {
-          font-family: 'JetBrains Mono', monospace;
-          color: #00f5a0;
-          font-size: 0.95rem;
-          margin-bottom: 15px;
-        }
-
-        .fun-facts-list {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .fun-fact-item {
-          color: rgba(255, 255, 255, 0.6);
-          font-size: 0.95rem;
-        }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-        }
-
-        .stat-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 30px;
-          border-radius: 16px;
+          margin-bottom: 3rem;
           text-align: center;
         }
 
-        .stat-number {
+        .section-title {
           font-size: 2.2rem;
           font-weight: 700;
-          font-family: 'JetBrains Mono', monospace;
-          margin-bottom: 8px;
+          color: #f8fafc;
+          margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-          color: rgba(255, 255, 255, 0.5);
-          font-size: 0.85rem;
-          text-transform: uppercase;
+        .section-subtitle {
+          color: #64748b;
+          font-size: 1rem;
         }
 
-        .skills-filter {
-          display: flex;
-          justify-content: center;
-          gap: 12px;
-          margin-bottom: 40px;
-          flex-wrap: wrap;
-        }
-
-        .filter-btn {
-          padding: 8px 20px;
-          border-radius: 30px;
-          background: transparent;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: rgba(255, 255, 255, 0.6);
-          cursor: pointer;
-          text-transform: uppercase;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.8rem;
-          transition: all 0.2s;
-        }
-
-        .filter-btn.active, .filter-btn:hover {
-          background: rgba(0, 245, 160, 0.1);
-          border-color: #00f5a0;
-          color: #00f5a0;
-        }
-
-        .skills-grid {
+        /* Grid & Cards */
+        .cards-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 20px;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 1.5rem;
         }
 
-        .skill-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 20px;
+        .card {
+          background: rgba(30, 41, 59, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 12px;
+          padding: 1.8rem;
+          transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .skill-info {
+        .card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        /* Skills Section */
+        .skills-container {
+          display: flex;
+          flex-direction: column;
+          gap: 1.2rem;
+          max-width: 700px;
+          margin: 0 auto;
+        }
+
+        .skill-item {
+          background: rgba(30, 41, 59, 0.3);
+          padding: 1rem 1.2rem;
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .skill-header {
           display: flex;
           justify-content: space-between;
-          margin-bottom: 10px;
+          margin-bottom: 0.5rem;
           font-weight: 600;
+          font-size: 0.95rem;
         }
 
-        .skill-percentage {
-          color: #00f5a0;
-          font-family: 'JetBrains Mono', monospace;
-        }
-
-        .skill-bar-bg {
-          width: 100%;
-          height: 6px;
-          background: rgba(255, 255, 255, 0.08);
+        .skill-track {
+          height: 8px;
+          background: rgba(255, 255, 255, 0.1);
           border-radius: 4px;
           overflow: hidden;
         }
 
-        .skill-bar-fill {
+        .skill-fill {
           height: 100%;
-          background: linear-gradient(90deg, #00f5a0, #00d9f5);
+          background: linear-gradient(90deg, #6366f1, #a855f7);
           border-radius: 4px;
+          transition: width 1s ease-in-out;
         }
 
+        /* Timeline / Experience */
         .timeline {
-          max-width: 800px;
-          margin: 0 auto;
           display: flex;
           flex-direction: column;
-          gap: 30px;
+          gap: 2rem;
+          position: relative;
         }
 
         .timeline-item {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-left: 4px solid #00f5a0;
-          padding: 30px;
-          border-radius: 14px;
+          position: relative;
+          padding-left: 2rem;
+          border-left: 2px solid rgba(99, 102, 241, 0.3);
         }
 
-        .timeline-header {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 12px;
-          flex-wrap: wrap;
-          gap: 10px;
+        .timeline-dot {
+          position: absolute;
+          left: -7px;
+          top: 0;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #6366f1;
+          border: 2px solid #0b0f19;
         }
 
         .timeline-role {
-          font-size: 1.3rem;
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: #f8fafc;
         }
 
-        .timeline-company {
-          color: rgba(255, 255, 255, 0.5);
-          font-size: 0.95rem;
+        .timeline-meta {
+          color: #6366f1;
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+          font-weight: 500;
         }
 
-        .timeline-period {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.85rem;
-        }
-
-        .timeline-desc {
-          color: rgba(255, 255, 255, 0.7);
-          line-height: 1.7;
-          margin-bottom: 18px;
-        }
-
-        .tag-row {
+        .timeline-bullets {
+          list-style: none;
           display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
+          flex-direction: column;
+          gap: 0.5rem;
         }
 
-        .tag {
-          padding: 4px 12px;
-          background: rgba(255, 255, 255, 0.05);
-          border-radius: 20px;
-          font-size: 0.75rem;
-          font-family: 'JetBrains Mono', monospace;
-          color: rgba(255, 255, 255, 0.6);
-        }
-
-        .tag-accent {
-          background: rgba(0, 245, 160, 0.1);
-          color: #00f5a0;
-        }
-
-        .projects-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 30px;
-        }
-
-        .project-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 16px;
-          overflow: hidden;
-          cursor: pointer;
-          transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .project-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(0, 245, 160, 0.3);
-        }
-
-        .project-img-wrapper {
-          height: 220px;
-          overflow: hidden;
-        }
-
-        .project-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .project-body {
-          padding: 24px;
-        }
-
-        .project-title {
-          font-size: 1.3rem;
-          margin-bottom: 10px;
-        }
-
-        .project-desc {
-          color: rgba(255, 255, 255, 0.6);
+        .timeline-bullets li {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.5rem;
+          color: #94a3b8;
           font-size: 0.95rem;
-          line-height: 1.6;
-          margin-bottom: 20px;
+          line-height: 1.5;
         }
 
-        .project-links {
-          margin-top: 20px;
+        /* Personal Interests */
+        .interest-card {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
         }
 
-        .link-live {
-          color: #00f5a0;
-          text-decoration: none;
+        .interest-icon {
+          width: 45px;
+          height: 45px;
+          background: rgba(99, 102, 241, 0.1);
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #818cf8;
+        }
+
+        /* Projects Section */
+        .project-card {
+          cursor: pointer;
+        }
+
+        .project-tag {
+          font-size: 0.75rem;
+          color: #a855f7;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: 0.5rem;
+        }
+
+        .project-metric {
+          display: inline-block;
+          margin-top: 1rem;
+          padding: 0.3rem 0.6rem;
+          background: rgba(168, 85, 247, 0.1);
+          color: #c084fc;
+          border-radius: 4px;
           font-size: 0.85rem;
           font-weight: 600;
         }
 
-        .modal-backdrop {
+        /* Modal */
+        .modal-overlay {
           position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.85);
-          backdrop-filter: blur(10px);
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(5px);
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 10000;
-          padding: 20px;
+          z-index: 1000;
+          padding: 1.5rem;
         }
 
-        .modal-box {
-          background: #141414;
-          border-radius: 20px;
-          max-width: 650px;
-          width: 100%;
-          overflow: hidden;
+        .modal-content {
+          background: #1e293b;
           border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .modal-img {
+          border-radius: 12px;
+          padding: 2rem;
+          max-width: 500px;
           width: 100%;
-          height: 260px;
-          object-fit: cover;
+          position: relative;
         }
 
-        .modal-body {
-          padding: 30px;
+        .modal-close {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: none;
+          border: none;
+          color: #94a3b8;
+          cursor: pointer;
         }
 
-        .contact-wrapper {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 50px;
-          max-width: 1000px;
-          margin: 0 auto;
-        }
-
-        .contact-info h3 {
-          font-size: 1.8rem;
-          margin-bottom: 15px;
-        }
-
-        .contact-info p {
-          color: rgba(255, 255, 255, 0.6);
-          line-height: 1.8;
-          margin-bottom: 30px;
-        }
-
-        .contact-details {
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-          color: rgba(255, 255, 255, 0.8);
-          font-family: 'JetBrains Mono', monospace;
-        }
-
-        .contact-details a {
-          color: #00f5a0;
-          text-decoration: none;
-        }
-
-        .contact-form {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-        }
-
-        .form-input {
-          padding: 16px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: 10px;
-          color: #fff;
-          font-family: inherit;
-          outline: none;
-        }
-
-        .form-input:focus {
-          border-color: #00f5a0;
-        }
-
-        .footer {
-          padding: 40px;
+        /* Footer */
+        footer {
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          padding: 3rem 1.5rem;
           text-align: center;
-          color: rgba(255, 255, 255, 0.4);
-          font-size: 0.85rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          color: #64748b;
+          font-size: 0.9rem;
+        }
+
+        .social-links {
+          display: flex;
+          justify-content: center;
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+          color: #94a3b8;
+          transition: color 0.2s ease;
+        }
+
+        .social-links a:hover {
+          color: #6366f1;
         }
 
         @media (max-width: 768px) {
-          .navbar { padding: 15px 20px; }
-          .nav-links { display: none; }
-          .section { padding: 60px 20px; }
+          .nav-links {
+            display: ${menuOpen ? 'flex' : 'none'};
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #0b0f19;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          }
+
+          .mobile-toggle {
+            display: block;
+          }
         }
       `}</style>
 
-      {/* Top Scroll Progress Indicator */}
-      <div className="scroll-indicator" style={{ width: `${scrollProgress}%` }} />
+      {/* Top Scroll Progress Bar */}
+      <div className="progress-bar" style={{ width: `${scrollProgress}%` }}></div>
 
-      {/* Navigation */}
-      <nav className="navbar">
-        <a href="#hero" className="nav-logo">{'< ' + cvData.name.split(' ')[0] + ' />'}</a>
-        <div className="nav-links">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Initiatives</a>
-          <a href="#contact" className="nav-cta">Contact</a>
+      {/* Header / Navigation */}
+      <header>
+        <div className="nav-container">
+          <a href="#hero" className="logo">
+            {`< ${initials} />`}
+          </a>
+          <button 
+            className="mobile-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle Navigation"
+          >
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+          <ul className="nav-links">
+            <li><a href="#about" onClick={() => setMenuOpen(false)}>About</a></li>
+            <li><a href="#skills" onClick={() => setMenuOpen(false)}>Skills</a></li>
+            <li><a href="#experience" onClick={() => setMenuOpen(false)}>Experience</a></li>
+            <li><a href="#projects" onClick={() => setMenuOpen(false)}>Highlights</a></li>
+            <li><a href="#interests" onClick={() => setMenuOpen(false)}>Interests</a></li>
+            <li><a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a></li>
+          </ul>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
-      <section id="hero" className="hero-section">
+      <section id="hero" className="hero">
+        <div className="hero-bg-glow"></div>
         <div className="hero-content">
-          <motion.span 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="hero-badge"
-          >
-            {"> Welcome to my professional portfolio_"}
-          </motion.span>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="hero-title"
-          >
-            Hi, I'm <span className="gradient-text">{cvData.name}</span>
-          </motion.h1>
-
-          <div className="hero-typewriter">
-            <TypeAnimation
-              sequence={[
-                'Project Manager',
-                2200,
-                'Installation Coordinator',
-                2200,
-                'Aspiring Consultant',
-                2200,
-                'Passionate Gamer',
-                2200,
-                cvData.title,
-                3000,
-              ]}
-              wrapper="span"
-              repeat={Infinity}
-              speed={45}
-            />
+          <div className="badge">
+            <MapPin size={14} /> {cvData.location}
           </div>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="hero-subtitle"
-          >
-            {cvData.tagline}
-          </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45 }}
-            className="hero-buttons"
-          >
-            <a href="#projects" className="btn btn-primary">View Initiatives →</a>
-            <a href="#contact" className="btn btn-secondary">Get In Touch</a>
-          </motion.div>
+          <h1>{cvData.name}</h1>
+          <div className="typing-container">
+            <span>{displayText}</span>
+            <span className="cursor"></span>
+          </div>
+          <p className="hero-tagline">
+            "{cvData.tagline}"
+          </p>
+          <div className="cta-buttons">
+            <a href="#contact" className="btn-primary">Get In Touch</a>
+            <a href="#experience" className="btn-secondary">View Work</a>
+          </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="bg-darker">
-        <div className="bg-darker-inner">
-          <div className="section-header">
-            <span className="section-tag">{"// Background"}</span>
-            <h2 className="section-heading">About Me</h2>
-            <div className="section-divider"></div>
-          </div>
-
-          <div className="about-grid">
-            <div className="about-card">
-              <p className="about-bio">{cvData.about.bio}</p>
-              <h3 className="about-subtitle">{"> Fun Facts & Ambitions"}</h3>
-              <ul className="fun-facts-list">
-                {cvData.about.funFacts.map((fact, i) => (
-                  <li key={i} className="fun-fact-item">{fact}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="stats-grid">
-              {cvData.about.stats.map((stat, i) => (
-                <div key={i} className="stat-card">
-                  <div className="stat-number gradient-text">{stat.value}</div>
-                  <div className="stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* About Bio Section */}
+      <section id="about">
+        <div className="section-header">
+          <h2 className="section-title">About Me</h2>
+          <p className="section-subtitle">Bridging execution, strategy, and continuous innovation</p>
+        </div>
+        <div className="card" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#cbd5e1' }}>
+            {cvData.bio}
+          </p>
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="section">
+      <section id="skills">
         <div className="section-header">
-          <span className="section-tag">{"// Capabilities"}</span>
-          <h2 className="section-heading">Skills & Tools</h2>
-          <div className="section-divider"></div>
+          <h2 className="section-title">Core Competencies</h2>
+          <p className="section-subtitle">Core expertise across operations, bidding, and optimization</p>
         </div>
-
-        <div className="skills-filter">
-          {['all', 'management', 'tools', 'interpersonal'].map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`filter-btn ${activeCategory === cat ? 'active' : ''}`}
-            >
-              {cat}
-            </button>
+        <div className="skills-container">
+          {cvData.skills.map((skill, i) => (
+            <div key={i} className="skill-item">
+              <div className="skill-header">
+                <span>{skill.name}</span>
+                <span style={{ color: '#a855f7' }}>{skill.level}%</span>
+              </div>
+              <div className="skill-track">
+                <div className="skill-fill" style={{ width: `${skill.level}%` }}></div>
+              </div>
+            </div>
           ))}
         </div>
-
-        <motion.div layout className="skills-grid">
-          <AnimatePresence>
-            {filteredSkills.map((skill) => (
-              <motion.div
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                key={skill.name}
-                className="skill-card"
-              >
-                <div className="skill-info">
-                  <span className="skill-name">{skill.icon} {skill.name}</span>
-                  <span className="skill-percentage">{skill.level}%</span>
-                </div>
-                <div className="skill-bar-bg">
-                  <div className="skill-bar-fill" style={{ width: `${skill.level}%` }} />
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="bg-darker">
-        <div className="bg-darker-inner">
-          <div className="section-header">
-            <span className="section-tag">{"// History"}</span>
-            <h2 className="section-heading">Professional Experience</h2>
-            <div className="section-divider"></div>
-          </div>
-
-          <div className="timeline">
-            {cvData.experience.map((exp) => (
-              <div key={exp.id} className="timeline-item" style={{ borderLeftColor: exp.color }}>
-                <div className="timeline-header">
-                  <div>
-                    <h3 className="timeline-role">{exp.role}</h3>
-                    <div className="timeline-company">{exp.company} • {exp.location}</div>
-                  </div>
-                  <span className="timeline-period" style={{ color: exp.color }}>{exp.period}</span>
-                </div>
-                <p className="timeline-desc">{exp.description}</p>
-                <div className="tag-row">
-                  {exp.tech.map((t) => (
-                    <span key={t} className="tag">{t}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects / Initiatives Section */}
-      <section id="projects" className="section">
+      <section id="experience">
         <div className="section-header">
-          <span className="section-tag">{"// Portfolio"}</span>
-          <h2 className="section-heading">Key Initiatives</h2>
-          <div className="section-divider"></div>
+          <h2 className="section-title">Professional Experience</h2>
+          <p className="section-subtitle">Demonstrated record of driving revenue growth and efficiency</p>
         </div>
-
-        <div className="projects-grid">
-          {cvData.projects.map((proj) => (
-            <div 
-              key={proj.id} 
-              className="project-card"
-              onClick={() => setSelectedProject(proj)}
-            >
-              <div className="project-img-wrapper">
-                <img src={proj.image} alt={proj.title} className="project-img" />
-              </div>
-              <div className="project-body">
-                <h3 className="project-title">{proj.title}</h3>
-                <p className="project-desc">{proj.description}</p>
-                <div className="tag-row">
-                  {proj.tech.map((t) => (
-                    <span key={t} className="tag tag-accent">{t}</span>
-                  ))}
-                </div>
-                <div className="project-links">
-                  <span className="link-live">Click to view details ↗</span>
-                </div>
-              </div>
+        <div className="timeline">
+          {cvData.experience.map((exp, i) => (
+            <div key={i} className="timeline-item">
+              <div className="timeline-dot"></div>
+              <h3 className="timeline-role">{exp.role}</h3>
+              <p className="timeline-meta">{exp.company} | {exp.period} | {exp.location}</p>
+              <ul className="timeline-bullets">
+                {exp.highlights.map((h, j) => (
+                  <li key={j}>
+                    <CheckCircle2 size={16} style={{ color: '#6366f1', flexShrink: 0, marginTop: '3px' }} />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
-
-        {/* Modal */}
-        <AnimatePresence>
-          {selectedProject && (
-            <div className="modal-backdrop" onClick={() => setSelectedProject(null)}>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="modal-box"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <img src={selectedProject.image} alt={selectedProject.title} className="modal-img" />
-                <div className="modal-body">
-                  <h2>{selectedProject.title}</h2>
-                  <p style={{ margin: '15px 0', color: 'rgba(255,255,255,0.7)', lineHeight: '1.6' }}>{selectedProject.description}</p>
-                  <div className="tag-row" style={{ margin: '20px 0' }}>
-                    {selectedProject.tech.map((t) => (
-                      <span key={t} className="tag tag-accent">{t}</span>
-                    ))}
-                  </div>
-                  <div className="modal-actions">
-                    <button onClick={() => setSelectedProject(null)} className="btn btn-primary">Close Details</button>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="bg-darker">
-        <div className="bg-darker-inner">
-          <div className="section-header">
-            <span className="section-tag">{"// Connect"}</span>
-            <h2 className="section-heading">Get In Touch</h2>
-            <div className="section-divider"></div>
-          </div>
-
-          <div className="contact-wrapper">
-            <div className="contact-info">
-              <h3>Let's build something exceptional together.</h3>
-              <p>I am always open to discussing new business opportunities, strategic consulting, or creative collaborations.</p>
-              <div className="contact-details">
-                <div>✉️ <strong>Email:</strong> <a href={`mailto:${cvData.email}`}>{cvData.email}</a></div>
-                <div>📍 <strong>Location:</strong> {cvData.location}</div>
-                <div>🔗 <strong>LinkedIn:</strong> <a href={cvData.social.linkedin} target="_blank" rel="noreferrer">View Profile</a></div>
-                <div>✖️ <strong>Twitter/X:</strong> <a href={cvData.social.twitter} target="_blank" rel="noreferrer">@bector2001</a></div>
-              </div>
+      {/* Education Section */}
+      <section id="education">
+        <div className="section-header">
+          <h2 className="section-title">Education & Credentials</h2>
+        </div>
+        <div className="cards-grid">
+          {cvData.education.map((edu, i) => (
+            <div key={i} className="card">
+              <GraduationCap size={28} style={{ color: '#6366f1', marginBottom: '1rem' }} />
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.4rem' }}>{edu.degree}</h3>
+              <p style={{ color: '#a855f7', fontSize: '0.9rem', marginBottom: '0.5rem' }}>{edu.institution} ({edu.year})</p>
+              <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{edu.details}</p>
             </div>
-
-            <form onSubmit={handleContactSubmit} className="contact-form">
-              <input type="text" required placeholder="Your Name" className="form-input" />
-              <input type="email" required placeholder="Your Email Address" className="form-input" />
-              <textarea required rows="4" placeholder="How can I help you?" className="form-input"></textarea>
-              <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-                {formSubmitted ? 'Message Sent Successfully! ✓' : 'Send Message →'}
-              </button>
-            </form>
-          </div>
+          ))}
         </div>
       </section>
 
+      {/* Projects / Key Highlights */}
+      <section id="projects">
+        <div className="section-header">
+          <h2 className="section-title">Key Projects & Deliverables</h2>
+          <p className="section-subtitle">Click on any card to view breakdown</p>
+        </div>
+        <div className="cards-grid">
+          {cvData.projects.map((proj, i) => (
+            <div 
+              key={i} 
+              className="card project-card"
+              onClick={() => setSelectedProject(proj)}
+            >
+              <p className="project-tag">{proj.category}</p>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem' }}>{proj.title}</h3>
+              <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.5' }}>{proj.desc}</p>
+              <span className="project-metric">{proj.metrics}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Personal Interests */}
+      <section id="interests">
+        <div className="section-header">
+          <h2 className="section-title">Passions & Interests</h2>
+          <p className="section-subtitle">What drives my vision outside the office</p>
+        </div>
+        <div className="cards-grid">
+          {cvData.interests.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <div key={i} className="card interest-card">
+                <div className="interest-icon">
+                  <Icon size={24} />
+                </div>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>{item.title}</h3>
+                <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.5' }}>{item.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact">
+        <div className="section-header">
+          <h2 className="section-title">Let's Connect</h2>
+          <p className="section-subtitle">Reach out for opportunities, leadership roles, or collaborations</p>
+        </div>
+        <div className="card" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+          <Mail size={36} style={{ color: '#6366f1', marginBottom: '1rem' }} />
+          <h3 style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>Email Me</h3>
+          <p style={{ color: '#94a3b8', marginBottom: '1.5rem' }}>{cvData.email}</p>
+          <a href={`mailto:${cvData.email}`} className="btn-primary" style={{ display: 'inline-block' }}>
+            Send Message
+          </a>
+        </div>
+      </section>
+
+      {/* Project Modal */}
+      {selectedProject && (
+        <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedProject(null)}>
+              <X size={20} />
+            </button>
+            <p className="project-tag">{selectedProject.category}</p>
+            <h3 style={{ fontSize: '1.4rem', marginBottom: '0.8rem' }}>{selectedProject.title}</h3>
+            <p style={{ color: '#cbd5e1', lineHeight: '1.6', marginBottom: '1rem' }}>{selectedProject.desc}</p>
+            <div className="project-metric">{selectedProject.metrics}</div>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
-      <footer className="footer">
-        <p>© {new Date().getFullYear()} {cvData.name}. Powered by React & Framer Motion.</p>
+      <footer>
+        <div className="social-links">
+          <a href={cvData.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={20} /></a>
+          <a href={cvData.github} target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={20} /></a>
+          <a href={cvData.twitter} target="_blank" rel="noreferrer" aria-label="Twitter"><Twitter size={20} /></a>
+        </div>
+        <p>© {new Date().getFullYear()} {cvData.name}. All rights reserved.</p>
       </footer>
     </div>
   );
