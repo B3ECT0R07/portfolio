@@ -8,10 +8,11 @@ import {
   MapPin, 
   Menu, 
   X, 
-  CheckCircle2
+  CheckCircle2,
+  ChevronDown
 } from 'lucide-react';
 
-// Custom Social Media Icons
+// Custom Social Media Icons (built-in)
 const LinkedinIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
@@ -35,34 +36,34 @@ const TwitterIcon = ({ size = 20 }) => (
 
 const cvData = {
   name: "Vaibhav Bector",
-  tagline: "I like football and creativity.",
+  tagline: "I LIKE FOOTBALL AND CREATIVITY.",
   location: "Vancouver, BC",
   email: "bector2001@gmail.com",
   github: "https://github.com/B3ECT0R07",
   linkedin: "https://ca.linkedin.com/in/vaibhavbector",
   twitter: "https://x.com/bector2001",
   heroTitles: [
-    "Project Manager",
-    "Installation Coordinator",
-    "Construction Estimator",
-    "Supply Chain Manager"
+    "PROJECT MANAGER",
+    "INSTALLATION COORDINATOR",
+    "CONSTRUCTION ESTIMATOR",
+    "SUPPLY CHAIN MANAGER"
   ],
   bio: "Dynamic operations professional based in Vancouver, BC. Proven track record driving high-impact efficiency improvements, cost reductions, and revenue growth across construction and supply chain operations. Massive Real Madrid fan, passionate gamer, and aspiring entrepreneur with a long-term vision in consultancy and innovative hydroponics.",
   skills: [
-    { name: "Project Management", level: 95 },
-    { name: "Supply Chain & Operations", level: 90 },
-    { name: "Construction Estimating & CPM", level: 88 },
-    { name: "Lean & Kaizen Methodologies", level: 85 },
-    { name: "SAP & Salesforce", level: 85 },
-    { name: "Budget Management & Forecasting", level: 92 },
-    { name: "Cross-Functional Leadership", level: 90 }
+    { name: "PROJECT MANAGEMENT", level: 95 },
+    { name: "SUPPLY CHAIN & OPERATIONS", level: 90 },
+    { name: "CONSTRUCTION ESTIMATING", level: 88 },
+    { name: "LEAN & KAIZEN METHODOLOGIES", level: 85 },
+    { name: "SAP & SALESFORCE", level: 85 },
+    { name: "BUDGET MANAGEMENT", level: 92 },
+    { name: "CROSS-FUNCTIONAL LEADERSHIP", level: 90 }
   ],
   experience: [
     {
-      role: "Project Manager / Installation Coordinator",
-      company: "TORMAX Canada",
-      period: "July 2024 – Present",
-      location: "Vancouver, BC",
+      role: "PROJECT MANAGER / INSTALLATION COORDINATOR",
+      company: "TORMAX CANADA",
+      period: "JULY 2024 – PRESENT",
+      location: "VANCOUVER, BC",
       highlights: [
         "Boosted operational efficiency by 40% through streamlined installation scheduling.",
         "Increased regional revenue by 30% by developing competitive construction bids.",
@@ -71,10 +72,10 @@ const cvData = {
       ]
     },
     {
-      role: "Supply Chain Manager",
-      company: "Wellness Extract",
-      period: "August 2023 – July 2024",
-      location: "Vancouver, BC",
+      role: "SUPPLY CHAIN MANAGER",
+      company: "WELLNESS EXTRACT",
+      period: "AUGUST 2023 – JULY 2024",
+      location: "VANCOUVER, BC",
       highlights: [
         "Achieved 66% growth in order fulfillment within 12 months.",
         "Reduced overall operational logistics costs by 23%.",
@@ -84,53 +85,53 @@ const cvData = {
   ],
   education: [
     {
-      degree: "Bachelor of Business Administration (BBA)",
-      institution: "University of the Fraser Valley (UFV)",
+      degree: "BACHELOR OF BUSINESS ADMINISTRATION",
+      institution: "UNIVERSITY OF THE FRASER VALLEY",
       year: "2023",
       details: "Focused on Supply Chain Management, Operations, and Business Leadership."
     },
     {
-      degree: "Diploma in International Business",
-      institution: "Universidad del Rosario",
+      degree: "DIPLOMA IN INTERNATIONAL BUSINESS",
+      institution: "UNIVERSIDAD DEL ROSARIO",
       year: "2023",
       details: "Global market analysis and cross-cultural trade strategies."
     }
   ],
   interests: [
     {
-      title: "Football & Real Madrid",
+      title: "FOOTBALL & REAL MADRID",
       icon: Trophy,
       desc: "Die-hard Real Madrid supporter. Passionate about tactics, team dynamics, and world football."
     },
     {
-      title: "Gaming",
+      title: "GAMING",
       icon: Gamepad2,
       desc: "Avid gamer. Channeling strategic thinking, tactical agility, and quick decision-making under pressure."
     },
     {
-      title: "Entrepreneurship & Hydroponics",
+      title: "HYDROPONICS & TECH",
       icon: Sprout,
-      desc: "Aspiring consultant & future hydroponics business founder focused on sustainable tech and agriculture."
+      desc: "Aspiring consultant & future hydroponics business founder focused on sustainable agriculture."
     }
   ],
   projects: [
     {
-      title: "Installation Workflow Optimization",
-      category: "Process Engineering",
+      title: "WORKFLOW OPTIMIZATION",
+      category: "PROCESS ENGINEERING",
       desc: "Redesigned site installation workflows, cutting project turnaround times by 40%.",
-      metrics: "+40% Efficiency"
+      metrics: "+40% EFFICIENCY"
     },
     {
-      title: "Multi-Channel Supply Chain Scale",
-      category: "Supply Chain",
+      title: "SUPPLY CHAIN SCALE",
+      category: "LOGISTICS",
       desc: "Overhauled warehouse logistics to handle 66% increased order volume while slashing costs.",
-      metrics: "66% Growth / -23% Cost"
+      metrics: "66% GROWTH"
     },
     {
-      title: "Estimating & Bidding Engine",
-      category: "Construction Management",
+      title: "BIDDING ENGINE",
+      category: "CONSTRUCTION",
       desc: "Built accurate cost estimation structures leading to a 30% increase in contract wins.",
-      metrics: "+30% Revenue"
+      metrics: "+30% REVENUE"
     }
   ]
 };
@@ -140,25 +141,36 @@ export default function App() {
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // Compute initials dynamically ("Vaibhav Bector" -> "VB")
-  const initials = cvData.name
-    .split(' ')
-    .map((n) => n[0])
-    .join('');
+  const initials = cvData.name.split(' ').map((n) => n[0]).join('');
+
+  // Cinematic scroll reveal effect (The Rockstar vibe)
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 }); // Triggers when 15% of the section is visible
+
+    const hiddenElements = document.querySelectorAll('.reveal');
+    hiddenElements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   // Typing effect logic
   useEffect(() => {
     const currentFullText = cvData.heroTitles[titleIndex];
-    const speed = isDeleting ? 40 : 80;
+    const speed = isDeleting ? 30 : 70;
 
     const timer = setTimeout(() => {
       if (!isDeleting) {
         setDisplayText(currentFullText.substring(0, displayText.length + 1));
         if (displayText.length === currentFullText.length) {
-          setTimeout(() => setIsDeleting(true), 1800);
+          setTimeout(() => setIsDeleting(true), 2000);
         }
       } else {
         setDisplayText(currentFullText.substring(0, displayText.length - 1));
@@ -172,18 +184,6 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [displayText, isDeleting, titleIndex]);
 
-  // Scroll listener for progress bar
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <div className="portfolio-app">
       <style>{`
@@ -195,21 +195,32 @@ export default function App() {
         }
 
         body {
-          background-color: #0b0f19;
-          color: #e2e8f0;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+          background-color: #050505; /* Deep cinematic black */
+          color: #ffffff;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
           overflow-x: hidden;
         }
 
-        /* Scroll Progress Bar */
-        .progress-bar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          height: 3px;
-          background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
-          z-index: 1000;
-          transition: width 0.1s ease-out;
+        /* Cinematic Scroll Reveal Classes */
+        .reveal {
+          opacity: 0;
+          transform: translateY(60px);
+          transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                      transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* Typography - GTA Vibe */
+        .gta-font {
+          font-family: 'Arial Black', Impact, sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 2px;
         }
 
         /* Header & Nav */
@@ -217,121 +228,118 @@ export default function App() {
           position: fixed;
           top: 0;
           width: 100%;
-          background: rgba(11, 15, 25, 0.85);
-          backdrop-filter: blur(12px);
+          background: rgba(5, 5, 5, 0.6);
+          backdrop-filter: blur(15px);
           z-index: 900;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .nav-container {
-          max-width: 1100px;
+          max-width: 1200px;
           margin: 0 auto;
-          padding: 1.2rem 1.5rem;
+          padding: 1.5rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
 
         .logo {
-          font-size: 1.5rem;
-          font-weight: 800;
-          background: linear-gradient(135deg, #6366f1, #a855f7);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          font-size: 1.8rem;
+          color: #fff;
           text-decoration: none;
-          letter-spacing: -0.5px;
+          text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
         }
 
         .nav-links {
           display: flex;
-          gap: 2rem;
+          gap: 2.5rem;
           list-style: none;
         }
 
         .nav-links a {
-          color: #94a3b8;
+          color: #a0a0a0;
           text-decoration: none;
-          font-size: 0.95rem;
-          font-weight: 500;
-          transition: color 0.2s ease;
+          font-size: 0.85rem;
+          letter-spacing: 1.5px;
+          transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-          color: #6366f1;
+          color: #ff007f; /* Vice City Pink */
+          text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
         }
 
         .mobile-toggle {
           display: none;
           background: none;
           border: none;
-          color: #e2e8f0;
+          color: #fff;
           cursor: pointer;
         }
 
-        /* Hero Section */
+        /* Hero Section - Vice City Vibe */
         .hero {
-          min-height: 90vh;
+          height: 100vh;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 8rem 1.5rem 4rem;
           position: relative;
+          background: radial-gradient(circle at center, rgba(255,0,127,0.15) 0%, rgba(5,5,5,1) 70%);
         }
 
-        .hero-bg-glow {
+        .hero::before {
+          content: '';
           position: absolute;
-          top: 20%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 350px;
-          height: 350px;
-          background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%);
-          filter: blur(50px);
+          top: 0; left: 0; width: 100%; height: 100%;
+          background: url('https://www.transparenttextures.com/patterns/stardust.png');
+          opacity: 0.3;
           pointer-events: none;
         }
 
         .hero-content {
-          max-width: 800px;
           text-align: center;
-          z-index: 1;
+          z-index: 2;
+          padding: 0 1.5rem;
         }
 
         .badge {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          padding: 0.4rem 1rem;
-          background: rgba(99, 102, 241, 0.1);
-          border: 1px solid rgba(99, 102, 241, 0.3);
+          padding: 0.5rem 1.2rem;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 50px;
-          color: #818cf8;
-          font-size: 0.85rem;
-          font-weight: 600;
-          margin-bottom: 1.5rem;
+          color: #00f3ff; /* Vice City Cyan */
+          font-size: 0.8rem;
+          letter-spacing: 2px;
+          margin-bottom: 2rem;
+          backdrop-filter: blur(5px);
         }
 
         .hero h1 {
-          font-size: clamp(2.5rem, 6vw, 4.2rem);
-          font-weight: 800;
-          line-height: 1.1;
+          font-size: clamp(3rem, 8vw, 6rem);
+          line-height: 1;
           margin-bottom: 1rem;
-          color: #f8fafc;
+          color: #ffffff;
+          text-shadow: 2px 2px 20px rgba(255, 0, 127, 0.4);
         }
 
         .typing-container {
-          font-size: clamp(1.2rem, 3vw, 1.8rem);
-          color: #a855f7;
-          min-height: 2.2rem;
-          font-weight: 600;
-          margin-bottom: 1.5rem;
+          font-size: clamp(1rem, 3vw, 1.5rem);
+          color: #ff7a00; /* Sunset Orange */
+          min-height: 2rem;
+          margin-bottom: 2rem;
+          letter-spacing: 3px;
         }
 
         .cursor {
           display: inline-block;
-          width: 2px;
-          height: 1.2em;
-          background-color: #a855f7;
-          margin-left: 3px;
+          width: 3px;
+          height: 1em;
+          background-color: #ff7a00;
+          margin-left: 5px;
           animation: blink 0.8s infinite;
           vertical-align: middle;
         }
@@ -342,291 +350,226 @@ export default function App() {
         }
 
         .hero-tagline {
-          color: #94a3b8;
-          font-size: 1.1rem;
-          max-width: 600px;
-          margin: 0 auto 2rem;
-          line-height: 1.6;
+          color: #888;
+          font-size: 1.2rem;
+          letter-spacing: 4px;
+          margin-bottom: 3rem;
         }
 
-        .cta-buttons {
-          display: flex;
-          gap: 1rem;
-          justify-content: center;
-          flex-wrap: wrap;
+        .scroll-indicator {
+          position: absolute;
+          bottom: 40px;
+          color: #fff;
+          animation: bounce 2s infinite;
+          opacity: 0.5;
         }
 
-        .btn-primary {
-          background: linear-gradient(135deg, #6366f1, #8b5cf6);
-          color: #ffffff;
-          padding: 0.8rem 1.8rem;
-          border-radius: 8px;
-          text-decoration: none;
-          font-weight: 600;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-          border: none;
-          cursor: pointer;
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+          40% { transform: translateY(-20px); }
+          60% { transform: translateY(-10px); }
         }
 
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-secondary {
-          background: rgba(255, 255, 255, 0.05);
-          color: #e2e8f0;
-          padding: 0.8rem 1.8rem;
-          border-radius: 8px;
-          text-decoration: none;
-          font-weight: 600;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          transition: background 0.2s ease, border-color 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Section Layout */
+        /* Layout & Sections */
         section {
-          max-width: 1100px;
+          max-width: 1200px;
           margin: 0 auto;
-          padding: 5rem 1.5rem;
+          padding: 8rem 1.5rem;
         }
 
         .section-header {
-          margin-bottom: 3rem;
-          text-align: center;
+          margin-bottom: 4rem;
         }
 
         .section-title {
-          font-size: 2.2rem;
-          font-weight: 700;
-          color: #f8fafc;
+          font-size: 3rem;
+          color: #fff;
           margin-bottom: 0.5rem;
+          display: inline-block;
+          border-bottom: 4px solid #ff007f;
+          padding-bottom: 10px;
         }
 
-        .section-subtitle {
-          color: #64748b;
-          font-size: 1rem;
-        }
-
-        /* Grid & Cards */
-        .cards-grid {
+        /* Glassmorphism Cards */
+        .grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 1.5rem;
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 2rem;
         }
 
         .card {
-          background: rgba(30, 41, 59, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 12px;
-          padding: 1.8rem;
-          transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(99, 102, 241, 0.4);
-        }
-
-        /* Skills Section */
-        .skills-container {
-          display: flex;
-          flex-direction: column;
-          gap: 1.2rem;
-          max-width: 700px;
-          margin: 0 auto;
-        }
-
-        .skill-item {
-          background: rgba(30, 41, 59, 0.3);
-          padding: 1rem 1.2rem;
-          border-radius: 8px;
-          border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .skill-header {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 0.5rem;
-          font-weight: 600;
-          font-size: 0.95rem;
-        }
-
-        .skill-track {
-          height: 8px;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 4px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          padding: 2.5rem;
+          border-radius: 4px; /* Sharp corners for cinematic feel */
+          transition: all 0.4s ease;
+          position: relative;
           overflow: hidden;
         }
 
-        .skill-fill {
-          height: 100%;
-          background: linear-gradient(90deg, #6366f1, #a855f7);
-          border-radius: 4px;
-          transition: width 1s ease-in-out;
+        .card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: -100%;
+          width: 100%; height: 3px;
+          background: linear-gradient(90deg, transparent, #ff007f, transparent);
+          transition: left 0.5s ease;
         }
 
-        /* Timeline / Experience */
-        .timeline {
+        .card:hover {
+          transform: translateY(-10px);
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 0, 127, 0.3);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .card:hover::before {
+          left: 100%;
+        }
+
+        /* Skills Bars */
+        .skills-wrapper {
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 1.5rem;
+          max-width: 800px;
+        }
+
+        .skill-box {
           position: relative;
         }
 
-        .timeline-item {
+        .skill-name {
+          font-size: 0.9rem;
+          letter-spacing: 2px;
+          margin-bottom: 0.5rem;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .skill-bar-bg {
+          height: 4px;
+          background: rgba(255, 255, 255, 0.1);
+          width: 100%;
+        }
+
+        .skill-bar-fill {
+          height: 100%;
+          background: #00f3ff;
+          box-shadow: 0 0 10px #00f3ff;
           position: relative;
+        }
+
+        /* Experience Timeline */
+        .job-card {
+          border-left: 2px solid #333;
           padding-left: 2rem;
-          border-left: 2px solid rgba(99, 102, 241, 0.3);
+          position: relative;
+          margin-bottom: 3rem;
         }
 
-        .timeline-dot {
+        .job-card::after {
+          content: '';
           position: absolute;
           left: -7px;
           top: 0;
           width: 12px;
           height: 12px;
+          background: #ff7a00;
           border-radius: 50%;
-          background: #6366f1;
-          border: 2px solid #0b0f19;
+          box-shadow: 0 0 10px #ff7a00;
         }
 
-        .timeline-role {
-          font-size: 1.2rem;
-          font-weight: 700;
-          color: #f8fafc;
+        .job-title {
+          font-size: 1.5rem;
+          color: #fff;
+          margin-bottom: 0.5rem;
         }
 
-        .timeline-meta {
-          color: #6366f1;
-          font-size: 0.9rem;
-          margin-bottom: 1rem;
-          font-weight: 500;
+        .job-meta {
+          color: #00f3ff;
+          font-size: 0.85rem;
+          letter-spacing: 1px;
+          margin-bottom: 1.5rem;
         }
 
-        .timeline-bullets {
+        .job-card ul {
           list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
         }
 
-        .timeline-bullets li {
+        .job-card li {
+          margin-bottom: 0.8rem;
+          color: #aaa;
           display: flex;
           align-items: flex-start;
-          gap: 0.5rem;
-          color: #94a3b8;
-          font-size: 0.95rem;
-          line-height: 1.5;
-        }
-
-        /* Personal Interests */
-        .interest-card {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-
-        .interest-icon {
-          width: 45px;
-          height: 45px;
-          background: rgba(99, 102, 241, 0.1);
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #818cf8;
+          gap: 10px;
+          line-height: 1.6;
         }
 
         /* Projects Section */
-        .project-card {
-          cursor: pointer;
-        }
-
         .project-tag {
+          color: #ff007f;
           font-size: 0.75rem;
-          color: #a855f7;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 0.5rem;
+          letter-spacing: 2px;
+          margin-bottom: 1rem;
+          display: block;
         }
 
         .project-metric {
           display: inline-block;
-          margin-top: 1rem;
-          padding: 0.3rem 0.6rem;
-          background: rgba(168, 85, 247, 0.1);
-          color: #c084fc;
-          border-radius: 4px;
-          font-size: 0.85rem;
-          font-weight: 600;
+          margin-top: 1.5rem;
+          padding: 0.5rem 1rem;
+          background: rgba(0, 243, 255, 0.1);
+          color: #00f3ff;
+          border: 1px solid rgba(0, 243, 255, 0.3);
+          font-size: 0.8rem;
+          letter-spacing: 1px;
         }
 
-        /* Modal */
+        /* Modals & Footer */
         .modal-overlay {
           position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(5px);
+          top: 0; left: 0; width: 100%; height: 100%;
+          background: rgba(0,0,0,0.9);
+          backdrop-filter: blur(10px);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
-          padding: 1.5rem;
         }
 
         .modal-content {
-          background: #1e293b;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          padding: 2rem;
-          max-width: 500px;
-          width: 100%;
+          background: #111;
+          padding: 3rem;
+          border: 1px solid #333;
+          max-width: 600px;
+          width: 90%;
           position: relative;
         }
 
-        .modal-close {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          background: none;
-          border: none;
-          color: #94a3b8;
-          cursor: pointer;
-        }
-
-        /* Footer */
         footer {
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 3rem 1.5rem;
           text-align: center;
-          color: #64748b;
-          font-size: 0.9rem;
+          padding: 4rem 1.5rem;
+          border-top: 1px solid #222;
+          background: #000;
         }
 
-        .social-links {
+        .social-icons {
           display: flex;
           justify-content: center;
-          gap: 1.5rem;
-          margin-bottom: 1.5rem;
+          gap: 2rem;
+          margin-bottom: 2rem;
         }
 
-        .social-links a {
-          color: #94a3b8;
-          transition: color 0.2s ease;
+        .social-icons a {
+          color: #fff;
+          transition: all 0.3s;
         }
 
-        .social-links a:hover {
-          color: #6366f1;
+        .social-icons a:hover {
+          color: #ff007f;
+          transform: scale(1.2);
         }
 
         @media (max-width: 768px) {
@@ -634,77 +577,55 @@ export default function App() {
             display: ${menuOpen ? 'flex' : 'none'};
             flex-direction: column;
             position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: #0b0f19;
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            top: 100%; left: 0; width: 100%;
+            background: rgba(5,5,5,0.95);
+            padding: 2rem;
+            border-bottom: 1px solid #333;
           }
-
-          .mobile-toggle {
-            display: block;
-          }
+          .mobile-toggle { display: block; }
+          .section-title { font-size: 2.2rem; }
         }
       `}</style>
 
-      {/* Top Scroll Progress Bar */}
-      <div className="progress-bar" style={{ width: `${scrollProgress}%` }}></div>
-
-      {/* Header / Navigation */}
+      {/* Navigation */}
       <header>
         <div className="nav-container">
-          <a href="#hero" className="logo">
-            {`< ${initials} />`}
-          </a>
-          <button 
-            className="mobile-toggle"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle Navigation"
-          >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          <a href="#hero" className="logo gta-font">{`< ${initials} />`}</a>
+          <button className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
-          <ul className="nav-links">
-            <li><a href="#about" onClick={() => setMenuOpen(false)}>About</a></li>
-            <li><a href="#skills" onClick={() => setMenuOpen(false)}>Skills</a></li>
-            <li><a href="#experience" onClick={() => setMenuOpen(false)}>Experience</a></li>
-            <li><a href="#projects" onClick={() => setMenuOpen(false)}>Highlights</a></li>
-            <li><a href="#interests" onClick={() => setMenuOpen(false)}>Interests</a></li>
-            <li><a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a></li>
+          <ul className="nav-links gta-font">
+            <li><a href="#about" onClick={() => setMenuOpen(false)}>ABOUT</a></li>
+            <li><a href="#skills" onClick={() => setMenuOpen(false)}>SKILLS</a></li>
+            <li><a href="#experience" onClick={() => setMenuOpen(false)}>CAREER</a></li>
+            <li><a href="#projects" onClick={() => setMenuOpen(false)}>PROJECTS</a></li>
           </ul>
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Cinematic Hero */}
       <section id="hero" className="hero">
-        <div className="hero-bg-glow"></div>
-        <div className="hero-content">
-          <div className="badge">
+        <div className="hero-content reveal">
+          <div className="badge gta-font">
             <MapPin size={14} /> {cvData.location}
           </div>
-          <h1>{cvData.name}</h1>
-          <div className="typing-container">
+          <h1 className="gta-font">{cvData.name}</h1>
+          <div className="typing-container gta-font">
             <span>{displayText}</span>
             <span className="cursor"></span>
           </div>
-          <p className="hero-tagline">
-            "{cvData.tagline}"
-          </p>
-          <div className="cta-buttons">
-            <a href="#contact" className="btn-primary">Get In Touch</a>
-            <a href="#experience" className="btn-secondary">View Work</a>
-          </div>
+          <p className="hero-tagline gta-font">{cvData.tagline}</p>
         </div>
+        <ChevronDown className="scroll-indicator" size={40} />
       </section>
 
-      {/* About Bio Section */}
+      {/* About Section */}
       <section id="about">
-        <div className="section-header">
-          <h2 className="section-title">About Me</h2>
-          <p className="section-subtitle">Bridging execution, strategy, and continuous innovation</p>
+        <div className="section-header reveal">
+          <h2 className="section-title gta-font">WHO I AM</h2>
         </div>
-        <div className="card" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#cbd5e1' }}>
+        <div className="card reveal delay-1">
+          <p style={{ fontSize: '1.2rem', lineHeight: '1.8', color: '#ccc' }}>
             {cvData.bio}
           </p>
         </div>
@@ -712,19 +633,18 @@ export default function App() {
 
       {/* Skills Section */}
       <section id="skills">
-        <div className="section-header">
-          <h2 className="section-title">Core Competencies</h2>
-          <p className="section-subtitle">Core expertise across operations, bidding, and optimization</p>
+        <div className="section-header reveal">
+          <h2 className="section-title gta-font">ARSENAL</h2>
         </div>
-        <div className="skills-container">
+        <div className="skills-wrapper">
           {cvData.skills.map((skill, i) => (
-            <div key={i} className="skill-item">
-              <div className="skill-header">
+            <div key={i} className={`skill-box reveal delay-${(i % 3) + 1}`}>
+              <div className="skill-name gta-font">
                 <span>{skill.name}</span>
-                <span style={{ color: '#a855f7' }}>{skill.level}%</span>
+                <span style={{ color: '#00f3ff' }}>{skill.level}%</span>
               </div>
-              <div className="skill-track">
-                <div className="skill-fill" style={{ width: `${skill.level}%` }}></div>
+              <div className="skill-bar-bg">
+                <div className="skill-bar-fill" style={{ width: `${skill.level}%` }}></div>
               </div>
             </div>
           ))}
@@ -733,21 +653,19 @@ export default function App() {
 
       {/* Experience Section */}
       <section id="experience">
-        <div className="section-header">
-          <h2 className="section-title">Professional Experience</h2>
-          <p className="section-subtitle">Demonstrated record of driving revenue growth and efficiency</p>
+        <div className="section-header reveal">
+          <h2 className="section-title gta-font">MISSIONS COMPLETED</h2>
         </div>
-        <div className="timeline">
+        <div>
           {cvData.experience.map((exp, i) => (
-            <div key={i} className="timeline-item">
-              <div className="timeline-dot"></div>
-              <h3 className="timeline-role">{exp.role}</h3>
-              <p className="timeline-meta">{exp.company} | {exp.period} | {exp.location}</p>
-              <ul className="timeline-bullets">
+            <div key={i} className="job-card reveal delay-1">
+              <h3 className="job-title gta-font">{exp.role}</h3>
+              <p className="job-meta gta-font">{exp.company} // {exp.period}</p>
+              <ul>
                 {exp.highlights.map((h, j) => (
                   <li key={j}>
-                    <CheckCircle2 size={16} style={{ color: '#6366f1', flexShrink: 0, marginTop: '3px' }} />
-                    <span>{h}</span>
+                    <CheckCircle2 size={18} color="#ff007f" style={{ flexShrink: 0, marginTop: '3px' }}/>
+                    {h}
                   </li>
                 ))}
               </ul>
@@ -756,106 +674,90 @@ export default function App() {
         </div>
       </section>
 
-      {/* Education Section */}
-      <section id="education">
-        <div className="section-header">
-          <h2 className="section-title">Education & Credentials</h2>
-        </div>
-        <div className="cards-grid">
-          {cvData.education.map((edu, i) => (
-            <div key={i} className="card">
-              <GraduationCap size={28} style={{ color: '#6366f1', marginBottom: '1rem' }} />
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.4rem' }}>{edu.degree}</h3>
-              <p style={{ color: '#a855f7', fontSize: '0.9rem', marginBottom: '0.5rem' }}>{edu.institution} ({edu.year})</p>
-              <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{edu.details}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Projects / Key Highlights */}
+      {/* Projects Section */}
       <section id="projects">
-        <div className="section-header">
-          <h2 className="section-title">Key Projects & Deliverables</h2>
-          <p className="section-subtitle">Click on any card to view breakdown</p>
+        <div className="section-header reveal">
+          <h2 className="section-title gta-font">HEISTS & HIGHLIGHTS</h2>
         </div>
-        <div className="cards-grid">
+        <div className="grid">
           {cvData.projects.map((proj, i) => (
             <div 
               key={i} 
-              className="card project-card"
+              className={`card reveal delay-${(i % 3) + 1}`}
               onClick={() => setSelectedProject(proj)}
+              style={{ cursor: 'pointer' }}
             >
-              <p className="project-tag">{proj.category}</p>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem' }}>{proj.title}</h3>
-              <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.5' }}>{proj.desc}</p>
-              <span className="project-metric">{proj.metrics}</span>
+              <span className="project-tag gta-font">{proj.category}</span>
+              <h3 className="gta-font" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{proj.title}</h3>
+              <p style={{ color: '#888', lineHeight: '1.6' }}>{proj.desc}</p>
+              <span className="project-metric gta-font">{proj.metrics}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Personal Interests */}
-      <section id="interests">
-        <div className="section-header">
-          <h2 className="section-title">Passions & Interests</h2>
-          <p className="section-subtitle">What drives my vision outside the office</p>
-        </div>
-        <div className="cards-grid">
-          {cvData.interests.map((item, i) => {
-            const Icon = item.icon;
-            return (
-              <div key={i} className="card interest-card">
-                <div className="interest-icon">
-                  <Icon size={24} />
-                </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>{item.title}</h3>
-                <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.5' }}>{item.desc}</p>
+      {/* Education & Interests */}
+      <section id="more">
+        <div className="grid">
+          <div className="reveal">
+            <h2 className="section-title gta-font" style={{ fontSize: '2rem', marginBottom: '2rem' }}>CREDENTIALS</h2>
+            {cvData.education.map((edu, i) => (
+              <div key={i} className="card" style={{ marginBottom: '1rem' }}>
+                <GraduationCap size={24} color="#ff7a00" style={{ marginBottom: '1rem' }} />
+                <h3 className="gta-font" style={{ fontSize: '1.1rem' }}>{edu.degree}</h3>
+                <p style={{ color: '#00f3ff', fontSize: '0.8rem', margin: '0.5rem 0' }} className="gta-font">{edu.institution} ({edu.year})</p>
+                <p style={{ color: '#888', fontSize: '0.9rem' }}>{edu.details}</p>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          <div className="reveal delay-1">
+            <h2 className="section-title gta-font" style={{ fontSize: '2rem', marginBottom: '2rem' }}>PASSIONS</h2>
+            {cvData.interests.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={i} className="card" style={{ marginBottom: '1rem', display: 'flex', gap: '1rem' }}>
+                  <Icon size={30} color="#ff007f" />
+                  <div>
+                    <h3 className="gta-font" style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>{item.title}</h3>
+                    <p style={{ color: '#888', fontSize: '0.9rem' }}>{item.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact">
-        <div className="section-header">
-          <h2 className="section-title">Let's Connect</h2>
-          <p className="section-subtitle">Reach out for opportunities, leadership roles, or collaborations</p>
-        </div>
-        <div className="card" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-          <Mail size={36} style={{ color: '#6366f1', marginBottom: '1rem' }} />
-          <h3 style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>Email Me</h3>
-          <p style={{ color: '#94a3b8', marginBottom: '1.5rem' }}>{cvData.email}</p>
-          <a href={`mailto:${cvData.email}`} className="btn-primary" style={{ display: 'inline-block' }}>
-            Send Message
-          </a>
-        </div>
-      </section>
-
-      {/* Project Modal */}
+      {/* Modal */}
       {selectedProject && (
         <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setSelectedProject(null)}>
-              <X size={20} />
+            <button 
+              onClick={() => setSelectedProject(null)}
+              style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+            >
+              <X size={24} />
             </button>
-            <p className="project-tag">{selectedProject.category}</p>
-            <h3 style={{ fontSize: '1.4rem', marginBottom: '0.8rem' }}>{selectedProject.title}</h3>
-            <p style={{ color: '#cbd5e1', lineHeight: '1.6', marginBottom: '1rem' }}>{selectedProject.desc}</p>
-            <div className="project-metric">{selectedProject.metrics}</div>
+            <span className="project-tag gta-font">{selectedProject.category}</span>
+            <h3 className="gta-font" style={{ fontSize: '2rem', marginBottom: '1rem', color: '#fff' }}>{selectedProject.title}</h3>
+            <p style={{ color: '#aaa', lineHeight: '1.6', marginBottom: '2rem' }}>{selectedProject.desc}</p>
+            <span className="project-metric gta-font">{selectedProject.metrics}</span>
           </div>
         </div>
       )}
 
       {/* Footer */}
       <footer>
-        <div className="social-links">
-          <a href={cvData.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedinIcon size={20} /></a>
-          <a href={cvData.github} target="_blank" rel="noreferrer" aria-label="GitHub"><GithubIcon size={20} /></a>
-          <a href={cvData.twitter} target="_blank" rel="noreferrer" aria-label="Twitter"><TwitterIcon size={20} /></a>
+        <div className="social-icons">
+          <a href={cvData.linkedin} target="_blank" rel="noreferrer"><LinkedinIcon size={28} /></a>
+          <a href={cvData.github} target="_blank" rel="noreferrer"><GithubIcon size={28} /></a>
+          <a href={cvData.twitter} target="_blank" rel="noreferrer"><TwitterIcon size={28} /></a>
+          <a href={`mailto:${cvData.email}`}><Mail size={28} /></a>
         </div>
-        <p>© {new Date().getFullYear()} {cvData.name}. All rights reserved.</p>
+        <p className="gta-font" style={{ color: '#555', letterSpacing: '2px', fontSize: '0.8rem' }}>
+          © {new Date().getFullYear()} {cvData.name}. ALL RIGHTS RESERVED.
+        </p>
       </footer>
     </div>
   );
