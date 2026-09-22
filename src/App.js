@@ -145,7 +145,7 @@ export default function App() {
 
   const initials = cvData.name.split(' ').map((n) => n[0]).join('');
 
-  // Cinematic scroll reveal effect (The Rockstar vibe)
+  // Cinematic scroll reveal effect
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -153,7 +153,7 @@ export default function App() {
           entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.15 }); // Triggers when 15% of the section is visible
+    }, { threshold: 0.15 });
 
     const hiddenElements = document.querySelectorAll('.reveal');
     hiddenElements.forEach((el) => observer.observe(el));
@@ -195,7 +195,7 @@ export default function App() {
         }
 
         body {
-          background-color: #050505; /* Deep cinematic black */
+          background-color: #050505;
           color: #ffffff;
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
           overflow-x: hidden;
@@ -265,7 +265,7 @@ export default function App() {
         }
 
         .nav-links a:hover {
-          color: #ff007f; /* Vice City Pink */
+          color: #ff007f;
           text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
         }
 
@@ -288,15 +288,6 @@ export default function App() {
           background: radial-gradient(circle at center, rgba(255,0,127,0.15) 0%, rgba(5,5,5,1) 70%);
         }
 
-        .hero::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; width: 100%; height: 100%;
-          background: url('https://www.transparenttextures.com/patterns/stardust.png');
-          opacity: 0.3;
-          pointer-events: none;
-        }
-
         .hero-content {
           text-align: center;
           z-index: 2;
@@ -311,7 +302,7 @@ export default function App() {
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 50px;
-          color: #00f3ff; /* Vice City Cyan */
+          color: #00f3ff;
           font-size: 0.8rem;
           letter-spacing: 2px;
           margin-bottom: 2rem;
@@ -328,7 +319,7 @@ export default function App() {
 
         .typing-container {
           font-size: clamp(1rem, 3vw, 1.5rem);
-          color: #ff7a00; /* Sunset Orange */
+          color: #ff7a00;
           min-height: 2rem;
           margin-bottom: 2rem;
           letter-spacing: 3px;
@@ -402,7 +393,7 @@ export default function App() {
           border: 1px solid rgba(255, 255, 255, 0.05);
           backdrop-filter: blur(10px);
           padding: 2.5rem;
-          border-radius: 4px; /* Sharp corners for cinematic feel */
+          border-radius: 4px;
           transition: all 0.4s ease;
           position: relative;
           overflow: hidden;
@@ -603,7 +594,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Cinematic Hero */}
+      {/* Hero Section */}
       <section id="hero" className="hero">
         <div className="hero-content reveal">
           <div className="badge gta-font">
@@ -660,7 +651,7 @@ export default function App() {
           {cvData.experience.map((exp, i) => (
             <div key={i} className="job-card reveal delay-1">
               <h3 className="job-title gta-font">{exp.role}</h3>
-              <p className="job-meta gta-font">{exp.company} // {exp.period}</p>
+              <p className="job-meta gta-font">{exp.company} {" | "} {exp.period}</p>
               <ul>
                 {exp.highlights.map((h, j) => (
                   <li key={j}>
