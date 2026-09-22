@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  GraduationCap, 
-  Mail, 
-  Gamepad2, 
-  Trophy, 
-  Sprout, 
-  MapPin, 
-  Menu, 
-  X, 
+import {
+  GraduationCap,
+  Mail,
+  Gamepad2,
+  Trophy,
+  Sprout,
+  MapPin,
+  Menu,
+  X,
   CheckCircle2,
-  ChevronDown
+  ChevronDown,
+  Sparkles
 } from 'lucide-react';
 
-// Custom Social Media Icons (built-in)
 const LinkedinIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
@@ -101,17 +101,23 @@ const cvData = {
     {
       title: "FOOTBALL & REAL MADRID",
       icon: Trophy,
+      accent: "#ff007f",
+      gradient: "linear-gradient(135deg, #1a0010 0%, #4a0028 45%, #ff007f 140%)",
       desc: "Die-hard Real Madrid supporter. Passionate about tactics, team dynamics, and world football."
     },
     {
       title: "GAMING",
       icon: Gamepad2,
+      accent: "#00f3ff",
+      gradient: "linear-gradient(135deg, #001018 0%, #003344 45%, #00f3ff 140%)",
       desc: "Avid gamer. Channeling strategic thinking, tactical agility, and quick decision-making under pressure."
     },
     {
       title: "HYDROPONICS & TECH",
       icon: Sprout,
-      desc: "Aspiring consultant & future hydroponics business founder focused on sustainable agriculture."
+      accent: "#ff7a00",
+      gradient: "linear-gradient(135deg, #120a00 0%, #3a2200 45%, #ff7a00 140%)",
+      desc: "Aspiring consultant and future hydroponics business founder focused on sustainable agriculture."
     }
   ],
   projects: [
@@ -142,26 +148,23 @@ export default function App() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [passionsOpen, setPassionsOpen] = useState(false);
+  const [selectedPassion, setSelectedPassion] = useState(null);
 
   const initials = cvData.name.split(' ').map((n) => n[0]).join('');
 
-  // Cinematic scroll reveal effect
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.15 });
 
     const hiddenElements = document.querySelectorAll('.reveal');
     hiddenElements.forEach((el) => observer.observe(el));
-
     return () => observer.disconnect();
-  }, []);
+  }, [passionsOpen]);
 
-  // Typing effect logic
   useEffect(() => {
     const currentFullText = cvData.heroTitles[titleIndex];
     const speed = isDeleting ? 30 : 70;
@@ -201,11 +204,10 @@ export default function App() {
           overflow-x: hidden;
         }
 
-        /* Cinematic Scroll Reveal Classes */
         .reveal {
           opacity: 0;
           transform: translateY(60px);
-          transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+          transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                       transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .reveal.visible {
@@ -216,14 +218,12 @@ export default function App() {
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
 
-        /* Typography - GTA Vibe */
         .gta-font {
           font-family: 'Arial Black', Impact, sans-serif;
           text-transform: uppercase;
           letter-spacing: 2px;
         }
 
-        /* Header & Nav */
         header {
           position: fixed;
           top: 0;
@@ -277,7 +277,6 @@ export default function App() {
           cursor: pointer;
         }
 
-        /* Hero Section - Vice City Vibe */
         .hero {
           height: 100vh;
           display: flex;
@@ -361,7 +360,6 @@ export default function App() {
           60% { transform: translateY(-10px); }
         }
 
-        /* Layout & Sections */
         section {
           max-width: 1200px;
           margin: 0 auto;
@@ -381,7 +379,6 @@ export default function App() {
           padding-bottom: 10px;
         }
 
-        /* Glassmorphism Cards */
         .grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -393,10 +390,21 @@ export default function App() {
           border: 1px solid rgba(255, 255, 255, 0.05);
           backdrop-filter: blur(10px);
           padding: 2.5rem;
-          border-radius: 4px;
+          border-radius: 18px;
           transition: all 0.4s ease;
           position: relative;
           overflow: hidden;
+        }
+
+        .card.clickable {
+          cursor: pointer;
+        }
+
+        .card.clickable:hover {
+          transform: scale(1.02) translateY(-6px);
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 0, 127, 0.35);
+          box-shadow: 0 24px 50px rgba(0,0,0,0.45);
         }
 
         .card::before {
@@ -408,27 +416,15 @@ export default function App() {
           transition: left 0.5s ease;
         }
 
-        .card:hover {
-          transform: translateY(-10px);
-          background: rgba(255, 255, 255, 0.06);
-          border-color: rgba(255, 0, 127, 0.3);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .card:hover::before {
+        .card.clickable:hover::before {
           left: 100%;
         }
 
-        /* Skills Bars */
         .skills-wrapper {
           display: flex;
           flex-direction: column;
           gap: 1.5rem;
           max-width: 800px;
-        }
-
-        .skill-box {
-          position: relative;
         }
 
         .skill-name {
@@ -449,10 +445,8 @@ export default function App() {
           height: 100%;
           background: #00f3ff;
           box-shadow: 0 0 10px #00f3ff;
-          position: relative;
         }
 
-        /* Experience Timeline */
         .job-card {
           border-left: 2px solid #333;
           padding-left: 2rem;
@@ -485,9 +479,7 @@ export default function App() {
           margin-bottom: 1.5rem;
         }
 
-        .job-card ul {
-          list-style: none;
-        }
+        .job-card ul { list-style: none; }
 
         .job-card li {
           margin-bottom: 0.8rem;
@@ -498,7 +490,6 @@ export default function App() {
           line-height: 1.6;
         }
 
-        /* Projects Section */
         .project-tag {
           color: #ff007f;
           font-size: 0.75rem;
@@ -518,7 +509,137 @@ export default function App() {
           letter-spacing: 1px;
         }
 
-        /* Modals & Footer */
+        /* Apple-style passions hero box */
+        .passion-hero {
+          min-height: 340px;
+          border-radius: 28px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background:
+            radial-gradient(circle at 20% 20%, rgba(255,0,127,0.35), transparent 35%),
+            radial-gradient(circle at 80% 30%, rgba(0,243,255,0.2), transparent 30%),
+            radial-gradient(circle at 50% 80%, rgba(255,122,0,0.2), transparent 35%),
+            linear-gradient(160deg, #0d0d0d, #151515 50%, #0a0a0a);
+          display: flex;
+          align-items: flex-end;
+          padding: 2.5rem;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .passion-hero:hover {
+          transform: scale(1.015);
+          border-color: rgba(255,0,127,0.35);
+          box-shadow: 0 30px 80px rgba(255, 0, 127, 0.15);
+        }
+
+        .passion-hero-copy h3 {
+          font-size: clamp(2rem, 5vw, 3.4rem);
+          margin-bottom: 0.8rem;
+        }
+
+        .passion-hero-copy p {
+          color: #bdbdbd;
+          max-width: 520px;
+          line-height: 1.6;
+          margin-bottom: 1.2rem;
+        }
+
+        .passion-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: #00f3ff;
+          letter-spacing: 2px;
+          font-size: 0.8rem;
+        }
+
+        .passion-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.2rem;
+        }
+
+        .passion-tile {
+          min-height: 280px;
+          border-radius: 24px;
+          padding: 1.8rem;
+          border: 1px solid rgba(255,255,255,0.08);
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          transform: translateY(30px) scale(0.96);
+          opacity: 0;
+          animation: distribute 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .passion-tile:nth-child(1) { animation-delay: 0.05s; }
+        .passion-tile:nth-child(2) { animation-delay: 0.12s; }
+        .passion-tile:nth-child(3) { animation-delay: 0.19s; }
+
+        @keyframes distribute {
+          to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+
+        .passion-tile:hover {
+          transform: scale(1.03);
+          box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        }
+
+        .passion-tile .icon-wrap {
+          width: 54px;
+          height: 54px;
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0,0,0,0.35);
+          margin-bottom: 1rem;
+          backdrop-filter: blur(8px);
+        }
+
+        .passion-tile h3 {
+          font-size: 1.15rem;
+          margin-bottom: 0.6rem;
+        }
+
+        .passion-tile p {
+          color: rgba(255,255,255,0.82);
+          font-size: 0.92rem;
+          line-height: 1.5;
+        }
+
+        .passions-toolbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1.2rem;
+        }
+
+        .ghost-btn {
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.1);
+          color: #fff;
+          padding: 0.7rem 1rem;
+          border-radius: 999px;
+          cursor: pointer;
+          letter-spacing: 1px;
+          font-size: 0.75rem;
+        }
+
+        .ghost-btn:hover {
+          border-color: #ff007f;
+          color: #ff007f;
+        }
+
         .modal-overlay {
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
@@ -528,15 +649,17 @@ export default function App() {
           align-items: center;
           justify-content: center;
           z-index: 1000;
+          padding: 1rem;
         }
 
         .modal-content {
           background: #111;
-          padding: 3rem;
+          padding: 2.5rem;
           border: 1px solid #333;
           max-width: 600px;
-          width: 90%;
+          width: 100%;
           position: relative;
+          border-radius: 18px;
         }
 
         footer {
@@ -563,6 +686,12 @@ export default function App() {
           transform: scale(1.2);
         }
 
+        @media (max-width: 900px) {
+          .passion-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
         @media (max-width: 768px) {
           .nav-links {
             display: ${menuOpen ? 'flex' : 'none'};
@@ -578,7 +707,6 @@ export default function App() {
         }
       `}</style>
 
-      {/* Navigation */}
       <header>
         <div className="nav-container">
           <a href="#hero" className="logo gta-font">{`< ${initials} />`}</a>
@@ -590,11 +718,11 @@ export default function App() {
             <li><a href="#skills" onClick={() => setMenuOpen(false)}>SKILLS</a></li>
             <li><a href="#experience" onClick={() => setMenuOpen(false)}>CAREER</a></li>
             <li><a href="#projects" onClick={() => setMenuOpen(false)}>PROJECTS</a></li>
+            <li><a href="#passions" onClick={() => setMenuOpen(false)}>PASSIONS</a></li>
           </ul>
         </div>
       </header>
 
-      {/* Hero Section */}
       <section id="hero" className="hero">
         <div className="hero-content reveal">
           <div className="badge gta-font">
@@ -610,7 +738,6 @@ export default function App() {
         <ChevronDown className="scroll-indicator" size={40} />
       </section>
 
-      {/* About Section */}
       <section id="about">
         <div className="section-header reveal">
           <h2 className="section-title gta-font">WHO I AM</h2>
@@ -622,14 +749,13 @@ export default function App() {
         </div>
       </section>
 
-      {/* Skills Section */}
       <section id="skills">
         <div className="section-header reveal">
           <h2 className="section-title gta-font">ARSENAL</h2>
         </div>
         <div className="skills-wrapper">
           {cvData.skills.map((skill, i) => (
-            <div key={i} className={`skill-box reveal delay-${(i % 3) + 1}`}>
+            <div key={i} className={`reveal delay-${(i % 3) + 1}`}>
               <div className="skill-name gta-font">
                 <span>{skill.name}</span>
                 <span style={{ color: '#00f3ff' }}>{skill.level}%</span>
@@ -642,7 +768,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Experience Section */}
       <section id="experience">
         <div className="section-header reveal">
           <h2 className="section-title gta-font">MISSIONS COMPLETED</h2>
@@ -655,7 +780,7 @@ export default function App() {
               <ul>
                 {exp.highlights.map((h, j) => (
                   <li key={j}>
-                    <CheckCircle2 size={18} color="#ff007f" style={{ flexShrink: 0, marginTop: '3px' }}/>
+                    <CheckCircle2 size={18} color="#ff007f" style={{ flexShrink: 0, marginTop: '3px' }} />
                     {h}
                   </li>
                 ))}
@@ -665,18 +790,16 @@ export default function App() {
         </div>
       </section>
 
-      {/* Projects Section */}
       <section id="projects">
         <div className="section-header reveal">
           <h2 className="section-title gta-font">HEISTS & HIGHLIGHTS</h2>
         </div>
         <div className="grid">
           {cvData.projects.map((proj, i) => (
-            <div 
-              key={i} 
-              className={`card reveal delay-${(i % 3) + 1}`}
+            <div
+              key={i}
+              className={`card clickable reveal delay-${(i % 3) + 1}`}
               onClick={() => setSelectedProject(proj)}
-              style={{ cursor: 'pointer' }}
             >
               <span className="project-tag gta-font">{proj.category}</span>
               <h3 className="gta-font" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{proj.title}</h3>
@@ -687,58 +810,122 @@ export default function App() {
         </div>
       </section>
 
-      {/* Education & Interests */}
-      <section id="more">
-        <div className="grid">
-          <div className="reveal">
-            <h2 className="section-title gta-font" style={{ fontSize: '2rem', marginBottom: '2rem' }}>CREDENTIALS</h2>
-            {cvData.education.map((edu, i) => (
-              <div key={i} className="card" style={{ marginBottom: '1rem' }}>
-                <GraduationCap size={24} color="#ff7a00" style={{ marginBottom: '1rem' }} />
-                <h3 className="gta-font" style={{ fontSize: '1.1rem' }}>{edu.degree}</h3>
-                <p style={{ color: '#00f3ff', fontSize: '0.8rem', margin: '0.5rem 0' }} className="gta-font">{edu.institution} ({edu.year})</p>
-                <p style={{ color: '#888', fontSize: '0.9rem' }}>{edu.details}</p>
-              </div>
-            ))}
-          </div>
+      {/* Apple-style clickable passions */}
+      <section id="passions">
+        <div className="section-header reveal">
+          <h2 className="section-title gta-font">PASSIONS</h2>
+        </div>
 
-          <div className="reveal delay-1">
-            <h2 className="section-title gta-font" style={{ fontSize: '2rem', marginBottom: '2rem' }}>PASSIONS</h2>
-            {cvData.interests.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <div key={i} className="card" style={{ marginBottom: '1rem', display: 'flex', gap: '1rem' }}>
-                  <Icon size={30} color="#ff007f" />
-                  <div>
-                    <h3 className="gta-font" style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>{item.title}</h3>
-                    <p style={{ color: '#888', fontSize: '0.9rem' }}>{item.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
+        {!passionsOpen ? (
+          <div
+            className="passion-hero reveal"
+            onClick={() => setPassionsOpen(true)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') setPassionsOpen(true);
+            }}
+          >
+            <div className="passion-hero-copy">
+              <h3 className="gta-font">OPEN THE BOX</h3>
+              <p>
+                Click this tile to quickly distribute my world outside work:
+                Real Madrid, gaming, and building a future in hydroponics and consulting.
+              </p>
+              <div className="passion-cta gta-font">
+                <Sparkles size={16} /> TAP TO REVEAL
+              </div>
+            </div>
           </div>
+        ) : (
+          <div className="reveal">
+            <div className="passions-toolbar">
+              <p className="gta-font" style={{ color: '#888', fontSize: '0.8rem' }}>
+                SELECT A TILE
+              </p>
+              <button className="ghost-btn gta-font" onClick={() => setPassionsOpen(false)}>
+                CLOSE BOX
+              </button>
+            </div>
+
+            <div className="passion-grid">
+              {cvData.interests.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={i}
+                    className="passion-tile"
+                    style={{ background: item.gradient }}
+                    onClick={() => setSelectedPassion(item)}
+                  >
+                    <div className="icon-wrap" style={{ color: item.accent }}>
+                      <Icon size={26} />
+                    </div>
+                    <h3 className="gta-font">{item.title}</h3>
+                    <p>{item.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </section>
+
+      <section id="more">
+        <div className="section-header reveal">
+          <h2 className="section-title gta-font">CREDENTIALS</h2>
+        </div>
+        <div className="grid">
+          {cvData.education.map((edu, i) => (
+            <div key={i} className={`card reveal delay-${(i % 3) + 1}`}>
+              <GraduationCap size={24} color="#ff7a00" style={{ marginBottom: '1rem' }} />
+              <h3 className="gta-font" style={{ fontSize: '1.1rem' }}>{edu.degree}</h3>
+              <p style={{ color: '#00f3ff', fontSize: '0.8rem', margin: '0.5rem 0' }} className="gta-font">
+                {edu.institution} ({edu.year})
+              </p>
+              <p style={{ color: '#888', fontSize: '0.9rem' }}>{edu.details}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Modal */}
       {selectedProject && (
         <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button 
+            <button
               onClick={() => setSelectedProject(null)}
               style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
             >
               <X size={24} />
             </button>
             <span className="project-tag gta-font">{selectedProject.category}</span>
-            <h3 className="gta-font" style={{ fontSize: '2rem', marginBottom: '1rem', color: '#fff' }}>{selectedProject.title}</h3>
+            <h3 className="gta-font" style={{ fontSize: '2rem', marginBottom: '1rem', color: '#fff' }}>
+              {selectedProject.title}
+            </h3>
             <p style={{ color: '#aaa', lineHeight: '1.6', marginBottom: '2rem' }}>{selectedProject.desc}</p>
             <span className="project-metric gta-font">{selectedProject.metrics}</span>
           </div>
         </div>
       )}
 
-      {/* Footer */}
+      {selectedPassion && (
+        <div className="modal-overlay" onClick={() => setSelectedPassion(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setSelectedPassion(null)}
+              style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+            >
+              <X size={24} />
+            </button>
+            <span className="project-tag gta-font">PASSION</span>
+            <h3 className="gta-font" style={{ fontSize: '2rem', marginBottom: '1rem', color: '#fff' }}>
+              {selectedPassion.title}
+            </h3>
+            <p style={{ color: '#aaa', lineHeight: '1.6' }}>{selectedPassion.desc}</p>
+          </div>
+        </div>
+      )}
+
       <footer>
         <div className="social-icons">
           <a href={cvData.linkedin} target="_blank" rel="noreferrer"><LinkedinIcon size={28} /></a>
