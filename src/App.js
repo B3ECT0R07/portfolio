@@ -1,25 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Briefcase, 
   GraduationCap, 
-  Award, 
   Mail, 
-  ExternalLink, 
-  ChevronRight, 
   Gamepad2, 
   Trophy, 
   Sprout, 
   MapPin, 
-  Sparkles, 
   Menu, 
   X, 
-  TrendingUp, 
-  Users, 
-  CheckCircle2, 
-  Globe
+  CheckCircle2
 } from 'lucide-react';
 
-// Custom Social Media Icons (built-in so builds never fail)
+// Custom Social Media Icons
 const LinkedinIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
@@ -144,7 +136,6 @@ const cvData = {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('about');
   const [titleIndex, setTitleIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
