@@ -10,7 +10,8 @@ import {
   X,
   CheckCircle2,
   ChevronDown,
-  Sparkles
+  Sparkles,
+  Leaf
 } from 'lucide-react';
 
 const LinkedinIcon = ({ size = 20 }) => (
@@ -36,34 +37,34 @@ const TwitterIcon = ({ size = 20 }) => (
 
 const cvData = {
   name: "Vaibhav Bector",
-  tagline: "I LIKE FOOTBALL AND CREATIVITY.",
+  tagline: "I like football and creativity.",
   location: "Vancouver, BC",
   email: "bector2001@gmail.com",
   github: "https://github.com/B3ECT0R07",
   linkedin: "https://ca.linkedin.com/in/vaibhavbector",
   twitter: "https://x.com/bector2001",
   heroTitles: [
-    "PROJECT MANAGER",
-    "INSTALLATION COORDINATOR",
-    "CONSTRUCTION ESTIMATOR",
-    "SUPPLY CHAIN MANAGER"
+    "Project Manager",
+    "Installation Coordinator",
+    "Construction Estimator",
+    "Supply Chain Manager"
   ],
   bio: "Dynamic operations professional based in Vancouver, BC. Proven track record driving high-impact efficiency improvements, cost reductions, and revenue growth across construction and supply chain operations. Massive Real Madrid fan, passionate gamer, and aspiring entrepreneur with a long-term vision in consultancy and innovative hydroponics.",
   skills: [
-    { name: "PROJECT MANAGEMENT", level: 95 },
-    { name: "SUPPLY CHAIN & OPERATIONS", level: 90 },
-    { name: "CONSTRUCTION ESTIMATING", level: 88 },
-    { name: "LEAN & KAIZEN METHODOLOGIES", level: 85 },
-    { name: "SAP & SALESFORCE", level: 85 },
-    { name: "BUDGET MANAGEMENT", level: 92 },
-    { name: "CROSS-FUNCTIONAL LEADERSHIP", level: 90 }
+    { name: "Project Management", level: 95 },
+    { name: "Supply Chain & Operations", level: 90 },
+    { name: "Construction Estimating & CPM", level: 88 },
+    { name: "Lean & Kaizen Methodologies", level: 85 },
+    { name: "SAP & Salesforce", level: 85 },
+    { name: "Budget Management & Forecasting", level: 92 },
+    { name: "Cross-Functional Leadership", level: 90 }
   ],
   experience: [
     {
-      role: "PROJECT MANAGER / INSTALLATION COORDINATOR",
-      company: "TORMAX CANADA",
-      period: "JULY 2024 – PRESENT",
-      location: "VANCOUVER, BC",
+      role: "Project Manager / Installation Coordinator",
+      company: "TORMAX Canada",
+      period: "July 2024 – Present",
+      location: "Vancouver, BC",
       highlights: [
         "Boosted operational efficiency by 40% through streamlined installation scheduling.",
         "Increased regional revenue by 30% by developing competitive construction bids.",
@@ -72,10 +73,10 @@ const cvData = {
       ]
     },
     {
-      role: "SUPPLY CHAIN MANAGER",
-      company: "WELLNESS EXTRACT",
-      period: "AUGUST 2023 – JULY 2024",
-      location: "VANCOUVER, BC",
+      role: "Supply Chain Manager",
+      company: "Wellness Extract",
+      period: "August 2023 – July 2024",
+      location: "Vancouver, BC",
       highlights: [
         "Achieved 66% growth in order fulfillment within 12 months.",
         "Reduced overall operational logistics costs by 23%.",
@@ -85,59 +86,59 @@ const cvData = {
   ],
   education: [
     {
-      degree: "BACHELOR OF BUSINESS ADMINISTRATION",
-      institution: "UNIVERSITY OF THE FRASER VALLEY",
+      degree: "Bachelor of Business Administration (BBA)",
+      institution: "University of the Fraser Valley (UFV)",
       year: "2023",
       details: "Focused on Supply Chain Management, Operations, and Business Leadership."
     },
     {
-      degree: "DIPLOMA IN INTERNATIONAL BUSINESS",
-      institution: "UNIVERSIDAD DEL ROSARIO",
+      degree: "Diploma in International Business",
+      institution: "Universidad del Rosario",
       year: "2023",
       details: "Global market analysis and cross-cultural trade strategies."
     }
   ],
   interests: [
     {
-      title: "FOOTBALL & REAL MADRID",
+      title: "Football & Real Madrid",
       icon: Trophy,
-      accent: "#ff007f",
-      gradient: "linear-gradient(135deg, #1a0010 0%, #4a0028 45%, #ff007f 140%)",
+      accent: "#d4a017",
+      gradient: "linear-gradient(160deg, #1a2a14 0%, #2f4a24 45%, #6b8e23 150%)",
       desc: "Die-hard Real Madrid supporter. Passionate about tactics, team dynamics, and world football."
     },
     {
-      title: "GAMING",
+      title: "Gaming",
       icon: Gamepad2,
-      accent: "#00f3ff",
-      gradient: "linear-gradient(135deg, #001018 0%, #003344 45%, #00f3ff 140%)",
+      accent: "#7dcea0",
+      gradient: "linear-gradient(160deg, #102018 0%, #1c3a2a 45%, #2e8b57 150%)",
       desc: "Avid gamer. Channeling strategic thinking, tactical agility, and quick decision-making under pressure."
     },
     {
-      title: "HYDROPONICS & TECH",
+      title: "Hydroponics & Tech",
       icon: Sprout,
-      accent: "#ff7a00",
-      gradient: "linear-gradient(135deg, #120a00 0%, #3a2200 45%, #ff7a00 140%)",
+      accent: "#a7d129",
+      gradient: "linear-gradient(160deg, #14200e 0%, #2a4018 45%, #556b2f 150%)",
       desc: "Aspiring consultant and future hydroponics business founder focused on sustainable agriculture."
     }
   ],
   projects: [
     {
-      title: "WORKFLOW OPTIMIZATION",
-      category: "PROCESS ENGINEERING",
+      title: "Workflow Optimization",
+      category: "Process Engineering",
       desc: "Redesigned site installation workflows, cutting project turnaround times by 40%.",
-      metrics: "+40% EFFICIENCY"
+      metrics: "+40% Efficiency"
     },
     {
-      title: "SUPPLY CHAIN SCALE",
-      category: "LOGISTICS",
+      title: "Supply Chain Scale",
+      category: "Logistics",
       desc: "Overhauled warehouse logistics to handle 66% increased order volume while slashing costs.",
-      metrics: "66% GROWTH"
+      metrics: "66% Growth"
     },
     {
-      title: "BIDDING ENGINE",
-      category: "CONSTRUCTION",
+      title: "Bidding Engine",
+      category: "Construction",
       desc: "Built accurate cost estimation structures leading to a 30% increase in contract wins.",
-      metrics: "+30% REVENUE"
+      metrics: "+30% Revenue"
     }
   ]
 };
@@ -158,7 +159,7 @@ export default function App() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12 });
 
     const hiddenElements = document.querySelectorAll('.reveal');
     hiddenElements.forEach((el) => observer.observe(el));
@@ -167,13 +168,13 @@ export default function App() {
 
   useEffect(() => {
     const currentFullText = cvData.heroTitles[titleIndex];
-    const speed = isDeleting ? 30 : 70;
+    const speed = isDeleting ? 28 : 70;
 
     const timer = setTimeout(() => {
       if (!isDeleting) {
         setDisplayText(currentFullText.substring(0, displayText.length + 1));
         if (displayText.length === currentFullText.length) {
-          setTimeout(() => setIsDeleting(true), 2000);
+          setTimeout(() => setIsDeleting(true), 1800);
         }
       } else {
         setDisplayText(currentFullText.substring(0, displayText.length - 1));
@@ -197,18 +198,106 @@ export default function App() {
           scroll-behavior: smooth;
         }
 
+        :root {
+          --bg: #07110b;
+          --moss: #7dcea0;
+          --leaf: #a7d129;
+          --forest: #1b3a2a;
+          --brass: #d4a017;
+          --fog: #cddbcf;
+          --muted: #93a897;
+          --card: rgba(12, 28, 18, 0.62);
+          --line: rgba(167, 209, 41, 0.22);
+        }
+
         body {
-          background-color: #050505;
-          color: #ffffff;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+          background: var(--bg);
+          color: #eef6ef;
+          font-family: Georgia, 'Times New Roman', serif;
           overflow-x: hidden;
+        }
+
+        .bg-live {
+          position: fixed;
+          inset: 0;
+          z-index: -3;
+          overflow: hidden;
+        }
+
+        .bg-live video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: saturate(1.15) contrast(1.05) brightness(0.45);
+          transform: scale(1.05);
+        }
+
+        .bg-fallback {
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 20% 20%, rgba(125, 206, 160, 0.18), transparent 28%),
+            radial-gradient(circle at 80% 30%, rgba(212, 160, 23, 0.12), transparent 26%),
+            radial-gradient(circle at 50% 80%, rgba(46, 139, 87, 0.2), transparent 30%),
+            linear-gradient(160deg, #06140d 0%, #0d2217 40%, #10281b 100%);
+        }
+
+        .bg-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: -2;
+          background:
+            linear-gradient(to bottom, rgba(4, 12, 8, 0.55), rgba(4, 12, 8, 0.72) 40%, rgba(4, 12, 8, 0.9)),
+            radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.35) 100%);
+          pointer-events: none;
+        }
+
+        .bg-vines {
+          position: fixed;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          background:
+            radial-gradient(circle at 0% 100%, rgba(46, 139, 87, 0.16), transparent 28%),
+            radial-gradient(circle at 100% 0%, rgba(167, 209, 41, 0.1), transparent 22%);
+          animation: canopyDrift 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes canopyDrift {
+          from { transform: translateY(0px); }
+          to { transform: translateY(-12px); }
+        }
+
+        .floating-leaf {
+          position: fixed;
+          top: -40px;
+          width: 10px;
+          height: 10px;
+          background: rgba(167, 209, 41, 0.35);
+          border-radius: 2px 8px 2px 8px;
+          z-index: -1;
+          animation: fall linear infinite;
+          pointer-events: none;
+        }
+
+        .floating-leaf:nth-child(1) { left: 10%; animation-duration: 14s; animation-delay: 0s; }
+        .floating-leaf:nth-child(2) { left: 25%; animation-duration: 18s; animation-delay: 2s; width: 7px; height: 7px; }
+        .floating-leaf:nth-child(3) { left: 45%; animation-duration: 16s; animation-delay: 4s; }
+        .floating-leaf:nth-child(4) { left: 65%; animation-duration: 20s; animation-delay: 1s; width: 8px; height: 8px; }
+        .floating-leaf:nth-child(5) { left: 80%; animation-duration: 15s; animation-delay: 3s; }
+        .floating-leaf:nth-child(6) { left: 92%; animation-duration: 17s; animation-delay: 5s; }
+
+        @keyframes fall {
+          0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.7; }
+          100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         .reveal {
           opacity: 0;
-          transform: translateY(60px);
-          transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                      transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transform: translateY(48px);
+          transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                      transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .reveal.visible {
           opacity: 1;
@@ -218,118 +307,114 @@ export default function App() {
         .delay-2 { transition-delay: 0.2s; }
         .delay-3 { transition-delay: 0.3s; }
 
-        .gta-font {
-          font-family: 'Arial Black', Impact, sans-serif;
-          text-transform: uppercase;
-          letter-spacing: 2px;
+        .display-font {
+          font-family: Georgia, 'Times New Roman', serif;
+          letter-spacing: 0.04em;
         }
 
         header {
           position: fixed;
           top: 0;
           width: 100%;
-          background: rgba(5, 5, 5, 0.6);
-          backdrop-filter: blur(15px);
+          background: rgba(6, 16, 11, 0.55);
+          backdrop-filter: blur(16px);
           z-index: 900;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          border-bottom: 1px solid rgba(167, 209, 41, 0.12);
         }
 
         .nav-container {
-          max-width: 1200px;
+          max-width: 1180px;
           margin: 0 auto;
-          padding: 1.5rem;
+          padding: 1.2rem 1.5rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
 
         .logo {
-          font-size: 1.8rem;
-          color: #fff;
+          font-size: 1.5rem;
+          color: var(--leaf);
           text-decoration: none;
-          text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+          text-shadow: 0 0 18px rgba(167, 209, 41, 0.25);
+          font-weight: 700;
         }
 
         .nav-links {
           display: flex;
-          gap: 2.5rem;
+          gap: 2rem;
           list-style: none;
         }
 
         .nav-links a {
-          color: #a0a0a0;
+          color: var(--muted);
           text-decoration: none;
-          font-size: 0.85rem;
-          letter-spacing: 1.5px;
-          transition: all 0.3s ease;
+          font-size: 0.92rem;
+          transition: color 0.25s ease;
         }
 
         .nav-links a:hover {
-          color: #ff007f;
-          text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
+          color: var(--leaf);
         }
 
         .mobile-toggle {
           display: none;
           background: none;
           border: none;
-          color: #fff;
+          color: #eef6ef;
           cursor: pointer;
         }
 
         .hero {
-          height: 100vh;
+          min-height: 100vh;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
           position: relative;
-          background: radial-gradient(circle at center, rgba(255,0,127,0.15) 0%, rgba(5,5,5,1) 70%);
+          padding: 7rem 1.5rem 4rem;
         }
 
         .hero-content {
           text-align: center;
           z-index: 2;
-          padding: 0 1.5rem;
+          max-width: 900px;
         }
 
         .badge {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          padding: 0.5rem 1.2rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 50px;
-          color: #00f3ff;
-          font-size: 0.8rem;
-          letter-spacing: 2px;
-          margin-bottom: 2rem;
-          backdrop-filter: blur(5px);
+          padding: 0.55rem 1rem;
+          background: rgba(27, 58, 42, 0.55);
+          border: 1px solid rgba(125, 206, 160, 0.3);
+          border-radius: 999px;
+          color: var(--moss);
+          font-size: 0.85rem;
+          margin-bottom: 1.5rem;
+          backdrop-filter: blur(8px);
         }
 
         .hero h1 {
-          font-size: clamp(3rem, 8vw, 6rem);
-          line-height: 1;
+          font-size: clamp(2.8rem, 7vw, 5.4rem);
+          line-height: 1.02;
           margin-bottom: 1rem;
-          color: #ffffff;
-          text-shadow: 2px 2px 20px rgba(255, 0, 127, 0.4);
+          color: #f4faf4;
+          text-shadow: 0 10px 40px rgba(0,0,0,0.45);
         }
 
         .typing-container {
-          font-size: clamp(1rem, 3vw, 1.5rem);
-          color: #ff7a00;
+          font-size: clamp(1.05rem, 2.6vw, 1.55rem);
+          color: var(--brass);
           min-height: 2rem;
-          margin-bottom: 2rem;
-          letter-spacing: 3px;
+          margin-bottom: 1.4rem;
         }
 
         .cursor {
           display: inline-block;
-          width: 3px;
+          width: 2px;
           height: 1em;
-          background-color: #ff7a00;
-          margin-left: 5px;
+          background: var(--brass);
+          margin-left: 4px;
           animation: blink 0.8s infinite;
           vertical-align: middle;
         }
@@ -340,60 +425,96 @@ export default function App() {
         }
 
         .hero-tagline {
-          color: #888;
-          font-size: 1.2rem;
-          letter-spacing: 4px;
-          margin-bottom: 3rem;
+          color: var(--fog);
+          font-size: 1.15rem;
+          margin-bottom: 2rem;
+          font-style: italic;
+        }
+
+        .cta-row {
+          display: flex;
+          gap: 0.9rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+          text-decoration: none;
+          padding: 0.85rem 1.4rem;
+          border-radius: 999px;
+          font-size: 0.95rem;
+          transition: 0.25s ease;
+        }
+
+        .btn-primary {
+          background: linear-gradient(135deg, #2e8b57, #a7d129);
+          color: #07110b;
+          font-weight: 700;
+        }
+
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 30px rgba(46, 139, 87, 0.28);
+        }
+
+        .btn-secondary {
+          border: 1px solid rgba(212, 160, 23, 0.45);
+          color: var(--brass);
+          background: rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary:hover {
+          border-color: var(--brass);
+          background: rgba(212, 160, 23, 0.08);
         }
 
         .scroll-indicator {
           position: absolute;
-          bottom: 40px;
-          color: #fff;
+          bottom: 28px;
+          color: var(--moss);
+          opacity: 0.7;
           animation: bounce 2s infinite;
-          opacity: 0.5;
         }
 
         @keyframes bounce {
           0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-          40% { transform: translateY(-20px); }
-          60% { transform: translateY(-10px); }
+          40% { transform: translateY(-14px); }
+          60% { transform: translateY(-7px); }
         }
 
         section {
-          max-width: 1200px;
+          max-width: 1180px;
           margin: 0 auto;
-          padding: 8rem 1.5rem;
-        }
-
-        .section-header {
-          margin-bottom: 4rem;
+          padding: 6.5rem 1.5rem;
+          position: relative;
+          z-index: 1;
         }
 
         .section-title {
-          font-size: 3rem;
-          color: #fff;
-          margin-bottom: 0.5rem;
-          display: inline-block;
-          border-bottom: 4px solid #ff007f;
-          padding-bottom: 10px;
+          font-size: clamp(2rem, 4vw, 3rem);
+          margin-bottom: 0.6rem;
+          color: #f2f8f2;
+        }
+
+        .section-sub {
+          color: var(--muted);
+          margin-bottom: 2.5rem;
         }
 
         .grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-          gap: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1.3rem;
         }
 
         .card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(10px);
-          padding: 2.5rem;
-          border-radius: 18px;
-          transition: all 0.4s ease;
-          position: relative;
-          overflow: hidden;
+          background: var(--card);
+          border: 1px solid var(--line);
+          backdrop-filter: blur(14px);
+          padding: 1.8rem;
+          border-radius: 22px;
+          transition: 0.35s ease;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.18);
         }
 
         .card.clickable {
@@ -401,179 +522,183 @@ export default function App() {
         }
 
         .card.clickable:hover {
-          transform: scale(1.02) translateY(-6px);
-          background: rgba(255, 255, 255, 0.06);
-          border-color: rgba(255, 0, 127, 0.35);
-          box-shadow: 0 24px 50px rgba(0,0,0,0.45);
+          transform: translateY(-8px) scale(1.015);
+          border-color: rgba(125, 206, 160, 0.45);
+          box-shadow: 0 18px 50px rgba(16, 48, 28, 0.45);
         }
 
-        .card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: -100%;
-          width: 100%; height: 3px;
-          background: linear-gradient(90deg, transparent, #ff007f, transparent);
-          transition: left 0.5s ease;
-        }
-
-        .card.clickable:hover::before {
-          left: 100%;
-        }
-
-        .skills-wrapper {
+        .skills-wrap {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
-          max-width: 800px;
+          gap: 1.1rem;
+          max-width: 780px;
         }
 
         .skill-name {
-          font-size: 0.9rem;
-          letter-spacing: 2px;
-          margin-bottom: 0.5rem;
           display: flex;
           justify-content: space-between;
+          margin-bottom: 0.45rem;
+          color: #e7f3e9;
+          font-size: 0.95rem;
         }
 
         .skill-bar-bg {
-          height: 4px;
-          background: rgba(255, 255, 255, 0.1);
-          width: 100%;
+          height: 8px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.08);
+          overflow: hidden;
         }
 
         .skill-bar-fill {
           height: 100%;
-          background: #00f3ff;
-          box-shadow: 0 0 10px #00f3ff;
+          border-radius: 999px;
+          background: linear-gradient(90deg, #2e8b57, #a7d129, #d4a017);
+          box-shadow: 0 0 12px rgba(167, 209, 41, 0.35);
         }
 
         .job-card {
-          border-left: 2px solid #333;
-          padding-left: 2rem;
+          border-left: 2px solid rgba(212, 160, 23, 0.45);
+          padding-left: 1.4rem;
+          margin-bottom: 2rem;
           position: relative;
-          margin-bottom: 3rem;
         }
 
-        .job-card::after {
+        .job-card::before {
           content: '';
           position: absolute;
           left: -7px;
-          top: 0;
+          top: 4px;
           width: 12px;
           height: 12px;
-          background: #ff7a00;
           border-radius: 50%;
-          box-shadow: 0 0 10px #ff7a00;
+          background: var(--brass);
+          box-shadow: 0 0 12px rgba(212, 160, 23, 0.55);
         }
 
         .job-title {
-          font-size: 1.5rem;
-          color: #fff;
-          margin-bottom: 0.5rem;
+          font-size: 1.35rem;
+          margin-bottom: 0.35rem;
         }
 
         .job-meta {
-          color: #00f3ff;
-          font-size: 0.85rem;
-          letter-spacing: 1px;
-          margin-bottom: 1.5rem;
+          color: var(--moss);
+          margin-bottom: 1rem;
+          font-size: 0.92rem;
         }
 
         .job-card ul { list-style: none; }
-
         .job-card li {
-          margin-bottom: 0.8rem;
-          color: #aaa;
           display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          line-height: 1.6;
+          gap: 0.55rem;
+          color: #cfe0d2;
+          margin-bottom: 0.65rem;
+          line-height: 1.55;
         }
 
         .project-tag {
-          color: #ff007f;
-          font-size: 0.75rem;
-          letter-spacing: 2px;
-          margin-bottom: 1rem;
+          color: var(--brass);
+          font-size: 0.78rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          margin-bottom: 0.7rem;
           display: block;
         }
 
         .project-metric {
           display: inline-block;
-          margin-top: 1.5rem;
-          padding: 0.5rem 1rem;
-          background: rgba(0, 243, 255, 0.1);
-          color: #00f3ff;
-          border: 1px solid rgba(0, 243, 255, 0.3);
-          font-size: 0.8rem;
-          letter-spacing: 1px;
+          margin-top: 1rem;
+          padding: 0.4rem 0.75rem;
+          border-radius: 999px;
+          background: rgba(125, 206, 160, 0.12);
+          border: 1px solid rgba(125, 206, 160, 0.28);
+          color: var(--moss);
+          font-size: 0.82rem;
         }
 
-        /* Apple-style passions hero box */
         .passion-hero {
-          min-height: 340px;
+          min-height: 330px;
           border-radius: 28px;
-          border: 1px solid rgba(255,255,255,0.08);
+          border: 1px solid rgba(167, 209, 41, 0.22);
           background:
-            radial-gradient(circle at 20% 20%, rgba(255,0,127,0.35), transparent 35%),
-            radial-gradient(circle at 80% 30%, rgba(0,243,255,0.2), transparent 30%),
-            radial-gradient(circle at 50% 80%, rgba(255,122,0,0.2), transparent 35%),
-            linear-gradient(160deg, #0d0d0d, #151515 50%, #0a0a0a);
+            radial-gradient(circle at 15% 20%, rgba(167, 209, 41, 0.22), transparent 28%),
+            radial-gradient(circle at 85% 25%, rgba(212, 160, 23, 0.16), transparent 24%),
+            radial-gradient(circle at 50% 90%, rgba(46, 139, 87, 0.25), transparent 30%),
+            linear-gradient(160deg, rgba(10, 28, 18, 0.9), rgba(14, 36, 24, 0.88));
           display: flex;
           align-items: flex-end;
-          padding: 2.5rem;
+          padding: 2rem;
           cursor: pointer;
-          position: relative;
           overflow: hidden;
-          transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+          position: relative;
+          transition: 0.35s ease;
         }
 
         .passion-hero:hover {
           transform: scale(1.015);
-          border-color: rgba(255,0,127,0.35);
-          box-shadow: 0 30px 80px rgba(255, 0, 127, 0.15);
+          border-color: rgba(125, 206, 160, 0.5);
+          box-shadow: 0 25px 60px rgba(0,0,0,0.28);
         }
 
-        .passion-hero-copy h3 {
-          font-size: clamp(2rem, 5vw, 3.4rem);
-          margin-bottom: 0.8rem;
+        .passion-hero h3 {
+          font-size: clamp(1.8rem, 4vw, 2.8rem);
+          margin-bottom: 0.7rem;
         }
 
-        .passion-hero-copy p {
-          color: #bdbdbd;
-          max-width: 520px;
+        .passion-hero p {
+          color: #d5e5d8;
+          max-width: 560px;
           line-height: 1.6;
-          margin-bottom: 1.2rem;
+          margin-bottom: 1rem;
         }
 
         .passion-cta {
           display: inline-flex;
           align-items: center;
-          gap: 0.5rem;
-          color: #00f3ff;
-          letter-spacing: 2px;
-          font-size: 0.8rem;
+          gap: 0.45rem;
+          color: var(--leaf);
+          font-size: 0.9rem;
+        }
+
+        .passions-toolbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+          gap: 1rem;
+        }
+
+        .ghost-btn {
+          border: 1px solid rgba(212, 160, 23, 0.35);
+          background: rgba(0,0,0,0.2);
+          color: var(--brass);
+          border-radius: 999px;
+          padding: 0.55rem 0.95rem;
+          cursor: pointer;
+        }
+
+        .ghost-btn:hover {
+          background: rgba(212, 160, 23, 0.1);
         }
 
         .passion-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 1.2rem;
+          gap: 1rem;
         }
 
         .passion-tile {
-          min-height: 280px;
+          min-height: 260px;
           border-radius: 24px;
-          padding: 1.8rem;
+          padding: 1.5rem;
           border: 1px solid rgba(255,255,255,0.08);
           cursor: pointer;
-          position: relative;
-          overflow: hidden;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          transform: translateY(30px) scale(0.96);
+          position: relative;
+          overflow: hidden;
           opacity: 0;
+          transform: translateY(24px) scale(0.96);
           animation: distribute 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
@@ -582,68 +707,29 @@ export default function App() {
         .passion-tile:nth-child(3) { animation-delay: 0.19s; }
 
         @keyframes distribute {
-          to {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-          }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .passion-tile:hover {
           transform: scale(1.03);
-          box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+          box-shadow: 0 18px 40px rgba(0,0,0,0.28);
         }
 
-        .passion-tile .icon-wrap {
-          width: 54px;
-          height: 54px;
-          border-radius: 16px;
+        .icon-wrap {
+          width: 48px;
+          height: 48px;
+          border-radius: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(0,0,0,0.35);
-          margin-bottom: 1rem;
-          backdrop-filter: blur(8px);
-        }
-
-        .passion-tile h3 {
-          font-size: 1.15rem;
-          margin-bottom: 0.6rem;
-        }
-
-        .passion-tile p {
-          color: rgba(255,255,255,0.82);
-          font-size: 0.92rem;
-          line-height: 1.5;
-        }
-
-        .passions-toolbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 1rem;
-          margin-bottom: 1.2rem;
-        }
-
-        .ghost-btn {
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.1);
-          color: #fff;
-          padding: 0.7rem 1rem;
-          border-radius: 999px;
-          cursor: pointer;
-          letter-spacing: 1px;
-          font-size: 0.75rem;
-        }
-
-        .ghost-btn:hover {
-          border-color: #ff007f;
-          color: #ff007f;
+          background: rgba(0,0,0,0.28);
+          margin-bottom: 0.9rem;
         }
 
         .modal-overlay {
           position: fixed;
-          top: 0; left: 0; width: 100%; height: 100%;
-          background: rgba(0,0,0,0.9);
+          inset: 0;
+          background: rgba(3, 10, 7, 0.86);
           backdrop-filter: blur(10px);
           display: flex;
           align-items: center;
@@ -653,43 +739,41 @@ export default function App() {
         }
 
         .modal-content {
-          background: #111;
-          padding: 2.5rem;
-          border: 1px solid #333;
-          max-width: 600px;
-          width: 100%;
+          width: min(600px, 100%);
+          background: rgba(12, 28, 18, 0.95);
+          border: 1px solid rgba(167, 209, 41, 0.25);
+          border-radius: 20px;
+          padding: 2rem;
           position: relative;
-          border-radius: 18px;
         }
 
         footer {
+          border-top: 1px solid rgba(167, 209, 41, 0.12);
           text-align: center;
-          padding: 4rem 1.5rem;
-          border-top: 1px solid #222;
-          background: #000;
+          padding: 3rem 1.5rem;
+          color: var(--muted);
+          background: rgba(0,0,0,0.28);
         }
 
         .social-icons {
           display: flex;
           justify-content: center;
-          gap: 2rem;
-          margin-bottom: 2rem;
+          gap: 1.4rem;
+          margin-bottom: 1.2rem;
         }
 
         .social-icons a {
-          color: #fff;
-          transition: all 0.3s;
+          color: #dceadd;
+          transition: 0.25s ease;
         }
 
         .social-icons a:hover {
-          color: #ff007f;
-          transform: scale(1.2);
+          color: var(--leaf);
+          transform: translateY(-2px);
         }
 
         @media (max-width: 900px) {
-          .passion-grid {
-            grid-template-columns: 1fr;
-          }
+          .passion-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -697,68 +781,92 @@ export default function App() {
             display: ${menuOpen ? 'flex' : 'none'};
             flex-direction: column;
             position: absolute;
-            top: 100%; left: 0; width: 100%;
-            background: rgba(5,5,5,0.95);
-            padding: 2rem;
-            border-bottom: 1px solid #333;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(6, 16, 11, 0.96);
+            padding: 1.2rem 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(167, 209, 41, 0.12);
           }
           .mobile-toggle { display: block; }
-          .section-title { font-size: 2.2rem; }
         }
       `}</style>
 
+      {/* Overgrown nature live atmosphere */}
+      <div className="bg-live" aria-hidden="true">
+        <div className="bg-fallback"></div>
+        <video autoPlay muted loop playsInline poster="">
+          {/* Free stock forest atmosphere video (Pexels-style CDN). Falls back to gradient if blocked. */}
+          <source
+            src="https://videos.pexels.com/video-files/857251/857251-hd_1920_1080_25fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
+      <div className="bg-overlay"></div>
+      <div className="bg-vines"></div>
+      <div className="floating-leaf"></div>
+      <div className="floating-leaf"></div>
+      <div className="floating-leaf"></div>
+      <div className="floating-leaf"></div>
+      <div className="floating-leaf"></div>
+      <div className="floating-leaf"></div>
+
       <header>
         <div className="nav-container">
-          <a href="#hero" className="logo gta-font">{`< ${initials} />`}</a>
+          <a href="#hero" className="logo display-font">{`< ${initials} />`}</a>
           <button className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
+            {menuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
-          <ul className="nav-links gta-font">
-            <li><a href="#about" onClick={() => setMenuOpen(false)}>ABOUT</a></li>
-            <li><a href="#skills" onClick={() => setMenuOpen(false)}>SKILLS</a></li>
-            <li><a href="#experience" onClick={() => setMenuOpen(false)}>CAREER</a></li>
-            <li><a href="#projects" onClick={() => setMenuOpen(false)}>PROJECTS</a></li>
-            <li><a href="#passions" onClick={() => setMenuOpen(false)}>PASSIONS</a></li>
+          <ul className="nav-links">
+            <li><a href="#about" onClick={() => setMenuOpen(false)}>About</a></li>
+            <li><a href="#skills" onClick={() => setMenuOpen(false)}>Skills</a></li>
+            <li><a href="#experience" onClick={() => setMenuOpen(false)}>Experience</a></li>
+            <li><a href="#projects" onClick={() => setMenuOpen(false)}>Projects</a></li>
+            <li><a href="#passions" onClick={() => setMenuOpen(false)}>Passions</a></li>
+            <li><a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a></li>
           </ul>
         </div>
       </header>
 
       <section id="hero" className="hero">
         <div className="hero-content reveal">
-          <div className="badge gta-font">
+          <div className="badge">
             <MapPin size={14} /> {cvData.location}
+            <span style={{ opacity: 0.5 }}>•</span>
+            <Leaf size={14} /> Overgrown Mode
           </div>
-          <h1 className="gta-font">{cvData.name}</h1>
-          <div className="typing-container gta-font">
+          <h1 className="display-font">{cvData.name}</h1>
+          <div className="typing-container">
             <span>{displayText}</span>
             <span className="cursor"></span>
           </div>
-          <p className="hero-tagline gta-font">{cvData.tagline}</p>
+          <p className="hero-tagline">“{cvData.tagline}”</p>
+          <div className="cta-row">
+            <a href="#passions" className="btn-primary">Explore Passions</a>
+            <a href="#experience" className="btn-secondary">View Experience</a>
+          </div>
         </div>
-        <ChevronDown className="scroll-indicator" size={40} />
+        <ChevronDown className="scroll-indicator" size={34} />
       </section>
 
       <section id="about">
-        <div className="section-header reveal">
-          <h2 className="section-title gta-font">WHO I AM</h2>
-        </div>
-        <div className="card reveal delay-1">
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.8', color: '#ccc' }}>
-            {cvData.bio}
-          </p>
+        <h2 className="section-title display-font reveal">About Me</h2>
+        <p className="section-sub reveal delay-1">Rooted in operations. Growing into entrepreneurship.</p>
+        <div className="card reveal delay-2">
+          <p style={{ fontSize: '1.08rem', lineHeight: 1.8, color: '#dceadd' }}>{cvData.bio}</p>
         </div>
       </section>
 
       <section id="skills">
-        <div className="section-header reveal">
-          <h2 className="section-title gta-font">ARSENAL</h2>
-        </div>
-        <div className="skills-wrapper">
+        <h2 className="section-title display-font reveal">Core Competencies</h2>
+        <p className="section-sub reveal delay-1">Tools and methods I use to build momentum.</p>
+        <div className="skills-wrap">
           {cvData.skills.map((skill, i) => (
             <div key={i} className={`reveal delay-${(i % 3) + 1}`}>
-              <div className="skill-name gta-font">
+              <div className="skill-name">
                 <span>{skill.name}</span>
-                <span style={{ color: '#00f3ff' }}>{skill.level}%</span>
+                <span style={{ color: 'var(--leaf)' }}>{skill.level}%</span>
               </div>
               <div className="skill-bar-bg">
                 <div className="skill-bar-fill" style={{ width: `${skill.level}%` }}></div>
@@ -769,31 +877,27 @@ export default function App() {
       </section>
 
       <section id="experience">
-        <div className="section-header reveal">
-          <h2 className="section-title gta-font">MISSIONS COMPLETED</h2>
-        </div>
-        <div>
-          {cvData.experience.map((exp, i) => (
-            <div key={i} className="job-card reveal delay-1">
-              <h3 className="job-title gta-font">{exp.role}</h3>
-              <p className="job-meta gta-font">{exp.company} {" | "} {exp.period}</p>
-              <ul>
-                {exp.highlights.map((h, j) => (
-                  <li key={j}>
-                    <CheckCircle2 size={18} color="#ff007f" style={{ flexShrink: 0, marginTop: '3px' }} />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <h2 className="section-title display-font reveal">Professional Experience</h2>
+        <p className="section-sub reveal delay-1">Where execution met measurable growth.</p>
+        {cvData.experience.map((exp, i) => (
+          <div key={i} className="job-card reveal delay-1">
+            <h3 className="job-title display-font">{exp.role}</h3>
+            <p className="job-meta">{exp.company} | {exp.period} | {exp.location}</p>
+            <ul>
+              {exp.highlights.map((h, j) => (
+                <li key={j}>
+                  <CheckCircle2 size={17} color="#a7d129" style={{ flexShrink: 0, marginTop: 3 }} />
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </section>
 
       <section id="projects">
-        <div className="section-header reveal">
-          <h2 className="section-title gta-font">HEISTS & HIGHLIGHTS</h2>
-        </div>
+        <h2 className="section-title display-font reveal">Key Projects</h2>
+        <p className="section-sub reveal delay-1">Click any box for a quick breakdown.</p>
         <div className="grid">
           {cvData.projects.map((proj, i) => (
             <div
@@ -801,20 +905,18 @@ export default function App() {
               className={`card clickable reveal delay-${(i % 3) + 1}`}
               onClick={() => setSelectedProject(proj)}
             >
-              <span className="project-tag gta-font">{proj.category}</span>
-              <h3 className="gta-font" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{proj.title}</h3>
-              <p style={{ color: '#888', lineHeight: '1.6' }}>{proj.desc}</p>
-              <span className="project-metric gta-font">{proj.metrics}</span>
+              <span className="project-tag">{proj.category}</span>
+              <h3 className="display-font" style={{ fontSize: '1.35rem', marginBottom: '0.6rem' }}>{proj.title}</h3>
+              <p style={{ color: '#c5d6c8', lineHeight: 1.6 }}>{proj.desc}</p>
+              <span className="project-metric">{proj.metrics}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Apple-style clickable passions */}
       <section id="passions">
-        <div className="section-header reveal">
-          <h2 className="section-title gta-font">PASSIONS</h2>
-        </div>
+        <h2 className="section-title display-font reveal">Passions</h2>
+        <p className="section-sub reveal delay-1">Apple-style click box — tap once, watch them spread.</p>
 
         {!passionsOpen ? (
           <div
@@ -826,28 +928,23 @@ export default function App() {
               if (e.key === 'Enter' || e.key === ' ') setPassionsOpen(true);
             }}
           >
-            <div className="passion-hero-copy">
-              <h3 className="gta-font">OPEN THE BOX</h3>
+            <div>
+              <h3 className="display-font">Overgrown Passions</h3>
               <p>
-                Click this tile to quickly distribute my world outside work:
-                Real Madrid, gaming, and building a future in hydroponics and consulting.
+                Click this living tile to quickly distribute my world outside work:
+                Real Madrid, gaming, and building toward hydroponics + consulting.
               </p>
-              <div className="passion-cta gta-font">
-                <Sparkles size={16} /> TAP TO REVEAL
+              <div className="passion-cta">
+                <Sparkles size={16} /> Tap to reveal
               </div>
             </div>
           </div>
         ) : (
           <div className="reveal">
             <div className="passions-toolbar">
-              <p className="gta-font" style={{ color: '#888', fontSize: '0.8rem' }}>
-                SELECT A TILE
-              </p>
-              <button className="ghost-btn gta-font" onClick={() => setPassionsOpen(false)}>
-                CLOSE BOX
-              </button>
+              <span style={{ color: 'var(--muted)' }}>Select a tile</span>
+              <button className="ghost-btn" onClick={() => setPassionsOpen(false)}>Close box</button>
             </div>
-
             <div className="passion-grid">
               {cvData.interests.map((item, i) => {
                 const Icon = item.icon;
@@ -859,10 +956,10 @@ export default function App() {
                     onClick={() => setSelectedPassion(item)}
                   >
                     <div className="icon-wrap" style={{ color: item.accent }}>
-                      <Icon size={26} />
+                      <Icon size={24} />
                     </div>
-                    <h3 className="gta-font">{item.title}</h3>
-                    <p>{item.desc}</p>
+                    <h3 className="display-font" style={{ fontSize: '1.15rem', marginBottom: '0.45rem' }}>{item.title}</h3>
+                    <p style={{ color: 'rgba(255,255,255,0.88)', lineHeight: 1.5, fontSize: '0.95rem' }}>{item.desc}</p>
                   </div>
                 );
               })}
@@ -871,39 +968,40 @@ export default function App() {
         )}
       </section>
 
-      <section id="more">
-        <div className="section-header reveal">
-          <h2 className="section-title gta-font">CREDENTIALS</h2>
-        </div>
-        <div className="grid">
+      <section id="education">
+        <h2 className="section-title display-font reveal">Education</h2>
+        <div className="grid" style={{ marginTop: '1rem' }}>
           {cvData.education.map((edu, i) => (
             <div key={i} className={`card reveal delay-${(i % 3) + 1}`}>
-              <GraduationCap size={24} color="#ff7a00" style={{ marginBottom: '1rem' }} />
-              <h3 className="gta-font" style={{ fontSize: '1.1rem' }}>{edu.degree}</h3>
-              <p style={{ color: '#00f3ff', fontSize: '0.8rem', margin: '0.5rem 0' }} className="gta-font">
-                {edu.institution} ({edu.year})
-              </p>
-              <p style={{ color: '#888', fontSize: '0.9rem' }}>{edu.details}</p>
+              <GraduationCap size={24} color="#d4a017" style={{ marginBottom: '0.8rem' }} />
+              <h3 className="display-font" style={{ fontSize: '1.15rem', marginBottom: '0.4rem' }}>{edu.degree}</h3>
+              <p style={{ color: 'var(--moss)', marginBottom: '0.45rem' }}>{edu.institution} ({edu.year})</p>
+              <p style={{ color: '#c5d6c8', fontSize: '0.95rem' }}>{edu.details}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2 className="section-title display-font reveal">Let’s Connect</h2>
+        <div className="card reveal delay-1" style={{ maxWidth: 600, textAlign: 'center', margin: '0 auto' }}>
+          <Mail size={30} color="#a7d129" style={{ marginBottom: '0.7rem' }} />
+          <h3 className="display-font" style={{ marginBottom: '0.4rem' }}>Email Me</h3>
+          <p style={{ color: 'var(--muted)', marginBottom: '1rem' }}>{cvData.email}</p>
+          <a className="btn-primary" href={`mailto:${cvData.email}`}>Send Message</a>
         </div>
       </section>
 
       {selectedProject && (
         <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setSelectedProject(null)}
-              style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
-            >
-              <X size={24} />
+            <button onClick={() => setSelectedProject(null)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+              <X size={22} />
             </button>
-            <span className="project-tag gta-font">{selectedProject.category}</span>
-            <h3 className="gta-font" style={{ fontSize: '2rem', marginBottom: '1rem', color: '#fff' }}>
-              {selectedProject.title}
-            </h3>
-            <p style={{ color: '#aaa', lineHeight: '1.6', marginBottom: '2rem' }}>{selectedProject.desc}</p>
-            <span className="project-metric gta-font">{selectedProject.metrics}</span>
+            <span className="project-tag">{selectedProject.category}</span>
+            <h3 className="display-font" style={{ fontSize: '1.8rem', marginBottom: '0.8rem' }}>{selectedProject.title}</h3>
+            <p style={{ color: '#cfe0d2', lineHeight: 1.65, marginBottom: '1rem' }}>{selectedProject.desc}</p>
+            <span className="project-metric">{selectedProject.metrics}</span>
           </div>
         </div>
       )}
@@ -911,31 +1009,24 @@ export default function App() {
       {selectedPassion && (
         <div className="modal-overlay" onClick={() => setSelectedPassion(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setSelectedPassion(null)}
-              style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
-            >
-              <X size={24} />
+            <button onClick={() => setSelectedPassion(null)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+              <X size={22} />
             </button>
-            <span className="project-tag gta-font">PASSION</span>
-            <h3 className="gta-font" style={{ fontSize: '2rem', marginBottom: '1rem', color: '#fff' }}>
-              {selectedPassion.title}
-            </h3>
-            <p style={{ color: '#aaa', lineHeight: '1.6' }}>{selectedPassion.desc}</p>
+            <span className="project-tag">Passion</span>
+            <h3 className="display-font" style={{ fontSize: '1.8rem', marginBottom: '0.8rem' }}>{selectedPassion.title}</h3>
+            <p style={{ color: '#cfe0d2', lineHeight: 1.65 }}>{selectedPassion.desc}</p>
           </div>
         </div>
       )}
 
       <footer>
         <div className="social-icons">
-          <a href={cvData.linkedin} target="_blank" rel="noreferrer"><LinkedinIcon size={28} /></a>
-          <a href={cvData.github} target="_blank" rel="noreferrer"><GithubIcon size={28} /></a>
-          <a href={cvData.twitter} target="_blank" rel="noreferrer"><TwitterIcon size={28} /></a>
-          <a href={`mailto:${cvData.email}`}><Mail size={28} /></a>
+          <a href={cvData.linkedin} target="_blank" rel="noreferrer"><LinkedinIcon size={24} /></a>
+          <a href={cvData.github} target="_blank" rel="noreferrer"><GithubIcon size={24} /></a>
+          <a href={cvData.twitter} target="_blank" rel="noreferrer"><TwitterIcon size={24} /></a>
+          <a href={`mailto:${cvData.email}`}><Mail size={24} /></a>
         </div>
-        <p className="gta-font" style={{ color: '#555', letterSpacing: '2px', fontSize: '0.8rem' }}>
-          © {new Date().getFullYear()} {cvData.name}. ALL RIGHTS RESERVED.
-        </p>
+        <p>© {new Date().getFullYear()} {cvData.name}. Grown with intention.</p>
       </footer>
     </div>
   );
