@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import trainVideo from './train.mp4';
 import {
   GraduationCap,
   Mail,
@@ -151,8 +152,16 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [passionsOpen, setPassionsOpen] = useState(false);
   const [selectedPassion, setSelectedPassion] = useState(null);
-
+  
+  const videoRef = useRef(null);
   const initials = cvData.name.split(' ').map((n) => n[0]).join('');
+
+  // Force video playback on mount
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -229,16 +238,7 @@ export default function App() {
           width: 100vw;
           height: 100vh;
           object-fit: cover;
-          filter: saturate(1.1) contrast(1.05) brightness(0.6);
-        }
-
-        .bg-fallback {
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(circle at 20% 20%, rgba(125, 206, 160, 0.18), transparent 28%),
-            radial-gradient(circle at 80% 30%, rgba(212, 160, 23, 0.12), transparent 26%),
-            linear-gradient(160deg, #06140d 0%, #0d2217 40%, #10281b 100%);
+          filter: saturate(1.25) contrast(1.05) brightness(0.85);
         }
 
         .bg-overlay {
@@ -246,7 +246,7 @@ export default function App() {
           inset: 0;
           z-index: -2;
           background:
-            linear-gradient(to bottom, rgba(4, 12, 8, 0.4), rgba(4, 12, 8, 0.6) 50%, rgba(4, 12, 8, 0.85));
+            linear-gradient(to bottom, rgba(4, 12, 8, 0.35), rgba(4, 12, 8, 0.5) 50%, rgba(4, 12, 8, 0.75));
           pointer-events: none;
         }
 
@@ -748,11 +748,10 @@ export default function App() {
         }
       `}</style>
 
-      {/* Background Video */}
+      {/* Video Background Directly Imported from src */}
       <div className="bg-live" aria-hidden="true">
-        <div className="bg-fallback"></div>
-        <video autoPlay muted loop playsInline>
-          <source src={`${process.env.PUBLIC_URL}/train.mp4`} type="video/mp4" />
+        <video ref={videoRef} autoPlay muted loop playsInline>
+          <source src={trainVideo} type="video/mp4" />
         </video>
       </div>
       <div className="bg-overlay"></div>
