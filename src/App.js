@@ -229,7 +229,7 @@ export default function App() {
           width: 100vw;
           height: 100vh;
           object-fit: cover;
-          filter: saturate(1.1) contrast(1.05) brightness(0.55);
+          filter: saturate(1.1) contrast(1.05) brightness(0.6);
         }
 
         .bg-fallback {
@@ -246,7 +246,7 @@ export default function App() {
           inset: 0;
           z-index: -2;
           background:
-            linear-gradient(to bottom, rgba(4, 12, 8, 0.45), rgba(4, 12, 8, 0.65) 50%, rgba(4, 12, 8, 0.85));
+            linear-gradient(to bottom, rgba(4, 12, 8, 0.4), rgba(4, 12, 8, 0.6) 50%, rgba(4, 12, 8, 0.85));
           pointer-events: none;
         }
 
@@ -748,11 +748,11 @@ export default function App() {
         }
       `}</style>
 
-      {/* Plays your local train.mp4 video file as the live wallpaper */}
+      {/* Background Video */}
       <div className="bg-live" aria-hidden="true">
         <div className="bg-fallback"></div>
         <video autoPlay muted loop playsInline>
-          <source src="/train.mp4" type="video/mp4" />
+          <source src={`${process.env.PUBLIC_URL}/train.mp4`} type="video/mp4" />
         </video>
       </div>
       <div className="bg-overlay"></div>
