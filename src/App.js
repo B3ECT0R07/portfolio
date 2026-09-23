@@ -206,7 +206,7 @@ export default function App() {
           --brass: #d4a017;
           --fog: #cddbcf;
           --muted: #93a897;
-          --card: rgba(12, 28, 18, 0.62);
+          --card: rgba(12, 28, 18, 0.75);
           --line: rgba(167, 209, 41, 0.22);
         }
 
@@ -217,6 +217,7 @@ export default function App() {
           overflow-x: hidden;
         }
 
+        /* Video Background Container */
         .bg-live {
           position: fixed;
           inset: 0;
@@ -225,11 +226,10 @@ export default function App() {
         }
 
         .bg-live video {
-          width: 100%;
-          height: 100%;
+          width: 100vw;
+          height: 100vh;
           object-fit: cover;
-          filter: saturate(1.15) contrast(1.05) brightness(0.45);
-          transform: scale(1.05);
+          filter: saturate(1.1) contrast(1.05) brightness(0.55);
         }
 
         .bg-fallback {
@@ -238,7 +238,6 @@ export default function App() {
           background:
             radial-gradient(circle at 20% 20%, rgba(125, 206, 160, 0.18), transparent 28%),
             radial-gradient(circle at 80% 30%, rgba(212, 160, 23, 0.12), transparent 26%),
-            radial-gradient(circle at 50% 80%, rgba(46, 139, 87, 0.2), transparent 30%),
             linear-gradient(160deg, #06140d 0%, #0d2217 40%, #10281b 100%);
         }
 
@@ -247,50 +246,8 @@ export default function App() {
           inset: 0;
           z-index: -2;
           background:
-            linear-gradient(to bottom, rgba(4, 12, 8, 0.55), rgba(4, 12, 8, 0.72) 40%, rgba(4, 12, 8, 0.9)),
-            radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.35) 100%);
+            linear-gradient(to bottom, rgba(4, 12, 8, 0.45), rgba(4, 12, 8, 0.65) 50%, rgba(4, 12, 8, 0.85));
           pointer-events: none;
-        }
-
-        .bg-vines {
-          position: fixed;
-          inset: 0;
-          z-index: -1;
-          pointer-events: none;
-          background:
-            radial-gradient(circle at 0% 100%, rgba(46, 139, 87, 0.16), transparent 28%),
-            radial-gradient(circle at 100% 0%, rgba(167, 209, 41, 0.1), transparent 22%);
-          animation: canopyDrift 18s ease-in-out infinite alternate;
-        }
-
-        @keyframes canopyDrift {
-          from { transform: translateY(0px); }
-          to { transform: translateY(-12px); }
-        }
-
-        .floating-leaf {
-          position: fixed;
-          top: -40px;
-          width: 10px;
-          height: 10px;
-          background: rgba(167, 209, 41, 0.35);
-          border-radius: 2px 8px 2px 8px;
-          z-index: -1;
-          animation: fall linear infinite;
-          pointer-events: none;
-        }
-
-        .floating-leaf:nth-child(1) { left: 10%; animation-duration: 14s; animation-delay: 0s; }
-        .floating-leaf:nth-child(2) { left: 25%; animation-duration: 18s; animation-delay: 2s; width: 7px; height: 7px; }
-        .floating-leaf:nth-child(3) { left: 45%; animation-duration: 16s; animation-delay: 4s; }
-        .floating-leaf:nth-child(4) { left: 65%; animation-duration: 20s; animation-delay: 1s; width: 8px; height: 8px; }
-        .floating-leaf:nth-child(5) { left: 80%; animation-duration: 15s; animation-delay: 3s; }
-        .floating-leaf:nth-child(6) { left: 92%; animation-duration: 17s; animation-delay: 5s; }
-
-        @keyframes fall {
-          0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
-          10% { opacity: 0.7; }
-          100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         .reveal {
@@ -316,10 +273,10 @@ export default function App() {
           position: fixed;
           top: 0;
           width: 100%;
-          background: rgba(6, 16, 11, 0.55);
+          background: rgba(6, 16, 11, 0.65);
           backdrop-filter: blur(16px);
           z-index: 900;
-          border-bottom: 1px solid rgba(167, 209, 41, 0.12);
+          border-bottom: 1px solid rgba(167, 209, 41, 0.15);
         }
 
         .nav-container {
@@ -385,8 +342,8 @@ export default function App() {
           align-items: center;
           gap: 0.5rem;
           padding: 0.55rem 1rem;
-          background: rgba(27, 58, 42, 0.55);
-          border: 1px solid rgba(125, 206, 160, 0.3);
+          background: rgba(27, 58, 42, 0.7);
+          border: 1px solid rgba(125, 206, 160, 0.35);
           border-radius: 999px;
           color: var(--moss);
           font-size: 0.85rem;
@@ -399,7 +356,7 @@ export default function App() {
           line-height: 1.02;
           margin-bottom: 1rem;
           color: #f4faf4;
-          text-shadow: 0 10px 40px rgba(0,0,0,0.45);
+          text-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
         .typing-container {
@@ -454,25 +411,25 @@ export default function App() {
 
         .btn-primary:hover {
           transform: translateY(-2px);
-          box-shadow: 0 12px 30px rgba(46, 139, 87, 0.28);
+          box-shadow: 0 12px 30px rgba(46, 139, 87, 0.35);
         }
 
         .btn-secondary {
-          border: 1px solid rgba(212, 160, 23, 0.45);
+          border: 1px solid rgba(212, 160, 23, 0.5);
           color: var(--brass);
-          background: rgba(0,0,0,0.2);
+          background: rgba(0,0,0,0.35);
         }
 
         .btn-secondary:hover {
           border-color: var(--brass);
-          background: rgba(212, 160, 23, 0.08);
+          background: rgba(212, 160, 23, 0.15);
         }
 
         .scroll-indicator {
           position: absolute;
           bottom: 28px;
           color: var(--moss);
-          opacity: 0.7;
+          opacity: 0.8;
           animation: bounce 2s infinite;
         }
 
@@ -514,7 +471,7 @@ export default function App() {
           padding: 1.8rem;
           border-radius: 22px;
           transition: 0.35s ease;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
 
         .card.clickable {
@@ -524,7 +481,7 @@ export default function App() {
         .card.clickable:hover {
           transform: translateY(-8px) scale(1.015);
           border-color: rgba(125, 206, 160, 0.45);
-          box-shadow: 0 18px 50px rgba(16, 48, 28, 0.45);
+          box-shadow: 0 18px 50px rgba(16, 48, 28, 0.55);
         }
 
         .skills-wrap {
@@ -557,7 +514,7 @@ export default function App() {
         }
 
         .job-card {
-          border-left: 2px solid rgba(212, 160, 23, 0.45);
+          border-left: 2px solid rgba(212, 160, 23, 0.5);
           padding-left: 1.4rem;
           margin-bottom: 2rem;
           position: relative;
@@ -609,8 +566,8 @@ export default function App() {
           margin-top: 1rem;
           padding: 0.4rem 0.75rem;
           border-radius: 999px;
-          background: rgba(125, 206, 160, 0.12);
-          border: 1px solid rgba(125, 206, 160, 0.28);
+          background: rgba(125, 206, 160, 0.15);
+          border: 1px solid rgba(125, 206, 160, 0.35);
           color: var(--moss);
           font-size: 0.82rem;
         }
@@ -618,12 +575,11 @@ export default function App() {
         .passion-hero {
           min-height: 330px;
           border-radius: 28px;
-          border: 1px solid rgba(167, 209, 41, 0.22);
+          border: 1px solid rgba(167, 209, 41, 0.28);
           background:
             radial-gradient(circle at 15% 20%, rgba(167, 209, 41, 0.22), transparent 28%),
             radial-gradient(circle at 85% 25%, rgba(212, 160, 23, 0.16), transparent 24%),
-            radial-gradient(circle at 50% 90%, rgba(46, 139, 87, 0.25), transparent 30%),
-            linear-gradient(160deg, rgba(10, 28, 18, 0.9), rgba(14, 36, 24, 0.88));
+            linear-gradient(160deg, rgba(10, 28, 18, 0.92), rgba(14, 36, 24, 0.9));
           display: flex;
           align-items: flex-end;
           padding: 2rem;
@@ -636,7 +592,7 @@ export default function App() {
         .passion-hero:hover {
           transform: scale(1.015);
           border-color: rgba(125, 206, 160, 0.5);
-          box-shadow: 0 25px 60px rgba(0,0,0,0.28);
+          box-shadow: 0 25px 60px rgba(0,0,0,0.4);
         }
 
         .passion-hero h3 {
@@ -668,8 +624,8 @@ export default function App() {
         }
 
         .ghost-btn {
-          border: 1px solid rgba(212, 160, 23, 0.35);
-          background: rgba(0,0,0,0.2);
+          border: 1px solid rgba(212, 160, 23, 0.4);
+          background: rgba(0,0,0,0.3);
           color: var(--brass);
           border-radius: 999px;
           padding: 0.55rem 0.95rem;
@@ -677,7 +633,7 @@ export default function App() {
         }
 
         .ghost-btn:hover {
-          background: rgba(212, 160, 23, 0.1);
+          background: rgba(212, 160, 23, 0.2);
         }
 
         .passion-grid {
@@ -712,7 +668,7 @@ export default function App() {
 
         .passion-tile:hover {
           transform: scale(1.03);
-          box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+          box-shadow: 0 18px 40px rgba(0,0,0,0.4);
         }
 
         .icon-wrap {
@@ -722,14 +678,14 @@ export default function App() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(0,0,0,0.28);
+          background: rgba(0,0,0,0.35);
           margin-bottom: 0.9rem;
         }
 
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(3, 10, 7, 0.86);
+          background: rgba(3, 10, 7, 0.88);
           backdrop-filter: blur(10px);
           display: flex;
           align-items: center;
@@ -741,7 +697,7 @@ export default function App() {
         .modal-content {
           width: min(600px, 100%);
           background: rgba(12, 28, 18, 0.95);
-          border: 1px solid rgba(167, 209, 41, 0.25);
+          border: 1px solid rgba(167, 209, 41, 0.3);
           border-radius: 20px;
           padding: 2rem;
           position: relative;
@@ -752,7 +708,7 @@ export default function App() {
           text-align: center;
           padding: 3rem 1.5rem;
           color: var(--muted);
-          background: rgba(0,0,0,0.28);
+          background: rgba(0,0,0,0.35);
         }
 
         .social-icons {
@@ -792,25 +748,14 @@ export default function App() {
         }
       `}</style>
 
-      {/* Overgrown nature live atmosphere */}
+      {/* Plays your local train.mp4 video file as the live wallpaper */}
       <div className="bg-live" aria-hidden="true">
         <div className="bg-fallback"></div>
-        <video autoPlay muted loop playsInline poster="">
-          {/* Free stock forest atmosphere video (Pexels-style CDN). Falls back to gradient if blocked. */}
-          <source
-            src="https://videos.pexels.com/video-files/857251/857251-hd_1920_1080_25fps.mp4"
-            type="video/mp4"
-          />
+        <video autoPlay muted loop playsInline>
+          <source src="/train.mp4" type="video/mp4" />
         </video>
       </div>
       <div className="bg-overlay"></div>
-      <div className="bg-vines"></div>
-      <div className="floating-leaf"></div>
-      <div className="floating-leaf"></div>
-      <div className="floating-leaf"></div>
-      <div className="floating-leaf"></div>
-      <div className="floating-leaf"></div>
-      <div className="floating-leaf"></div>
 
       <header>
         <div className="nav-container">
@@ -834,7 +779,7 @@ export default function App() {
           <div className="badge">
             <MapPin size={14} /> {cvData.location}
             <span style={{ opacity: 0.5 }}>•</span>
-            <Leaf size={14} /> Overgrown Mode
+            <Leaf size={14} /> Live Wallpaper
           </div>
           <h1 className="display-font">{cvData.name}</h1>
           <div className="typing-container">
@@ -1026,7 +971,7 @@ export default function App() {
           <a href={cvData.twitter} target="_blank" rel="noreferrer"><TwitterIcon size={24} /></a>
           <a href={`mailto:${cvData.email}`}><Mail size={24} /></a>
         </div>
-        <p>© {new Date().getFullYear()} {cvData.name}. Grown with intention.</p>
+        <p>© {new Date().getFullYear()} {cvData.name}. All rights reserved.</p>
       </footer>
     </div>
   );
