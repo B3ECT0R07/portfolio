@@ -137,6 +137,7 @@ export default function App() {
   const [heroReady, setHeroReady] = useState(false);
   const [expandedPassions, setExpandedPassions] = useState(['football']);
   const [selectedProject, setSelectedProject] = useState(null);
+  const videoRef = useRef(null);
 
   const personalInfo = {
     name: 'Vaibhav Bector',
@@ -214,8 +215,18 @@ export default function App() {
   ];
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 50);
+
+      // Parallax: video drifts with scroll across the whole page
+      if (videoRef.current) {
+        videoRef.current.style.transform = `scale(1.12) translate3d(0, ${y * 0.18}px, 0)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -240,6 +251,22 @@ export default function App() {
   return (
     <div className="mercury-app">
       <GlitchTrail />
+
+      {/* FULL-SITE fixed video — stays with you while scrolling */}
+      <div className="page-video-bg" aria-hidden="true">
+        <video
+          ref={videoRef}
+          className="page-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/meditating-ninja-4k.mp4" type="video/mp4" />
+        </video>
+        <div className="page-video-overlay" />
+      </div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap');
@@ -268,6 +295,47 @@ export default function App() {
           -webkit-font-smoothing: antialiased;
           overflow-x: hidden;
           scroll-behavior: smooth;
+        }
+
+        .mercury-app {
+          position: relative;
+          isolation: isolate;
+        }
+
+        /* Fixed full-viewport video background */
+        .page-video-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .page-video {
+          width: 100%;
+          height: 120%;
+          object-fit: cover;
+          object-position: center;
+          transform: scale(1.12);
+          will-change: transform;
+          pointer-events: none;
+        }
+
+        .page-video-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(23, 23, 33, 0.55) 0%,
+            rgba(23, 23, 33, 0.78) 45%,
+            rgba(23, 23, 33, 0.92) 100%
+          );
+        }
+
+        /* All UI sits above the video */
+        .page-content {
+          position: relative;
+          z-index: 1;
         }
 
         .reveal {
@@ -312,42 +380,8 @@ export default function App() {
           justify-content: center;
           text-align: center;
           padding: 80px 24px 40px;
-          background-color: var(--color-onyx);
+          background-color: transparent;
           overflow: hidden;
-        }
-
-        /* Video background container */
-        .hero-bg {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          overflow: hidden;
-        }
-
-        .hero-video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-          transform: scale(1.06);
-          transition: transform 1.6s var(--ease-out);
-          pointer-events: none;
-        }
-
-        .hero-ready .hero-video {
-          transform: scale(1);
-        }
-
-        .hero-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to bottom,
-            rgba(23, 23, 33, 0.45) 0%,
-            rgba(23, 23, 33, 0.75) 55%,
-            rgba(23, 23, 33, 1) 100%
-          );
-          z-index: 1;
         }
 
         .hero-content {
@@ -392,6 +426,8 @@ export default function App() {
           display: inline-flex;
           align-items: center;
           gap: 6px;
+          background: rgba(23, 23, 33, 0.35);
+          backdrop-filter: blur(8px);
         }
 
         .hero-title {
@@ -445,11 +481,12 @@ export default function App() {
         }
 
         .btn-ghost {
-          background-color: transparent;
+          background-color: rgba(23, 23, 33, 0.4);
           color: var(--color-ivory);
           border: 1px solid var(--color-slate);
           padding: 14px 24px;
           font-weight: 400;
+          backdrop-filter: blur(8px);
         }
 
         .btn-ghost:hover {
@@ -549,7 +586,8 @@ export default function App() {
         }
 
         .graphite-card {
-          background-color: var(--color-graphite);
+          background-color: rgba(30, 30, 42, 0.88);
+          backdrop-filter: blur(12px);
           border-radius: 12px;
           padding: 32px;
           border: 1px solid transparent;
@@ -567,7 +605,7 @@ export default function App() {
         .graphite-card.interactive:hover {
           transform: translateY(-6px);
           border-color: rgba(82, 102, 235, 0.25);
-          background-color: #21212f;
+          background-color: rgba(33, 33, 47, 0.94);
         }
 
         .grid-2 {
@@ -756,6 +794,8 @@ export default function App() {
           text-align: center;
           font-size: 14px;
           color: var(--color-ash);
+          background: rgba(23, 23, 33, 0.55);
+          backdrop-filter: blur(8px);
         }
 
         @media (max-width: 768px) {
@@ -766,254 +806,242 @@ export default function App() {
         }
       `}</style>
 
-      {/* Navigation */}
-      <nav className={`nav-bar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="nav-logo">Vaibhav Bector.</div>
-        <div className="nav-links">
-          <a href="#experience" className="nav-link">Experience</a>
-          <a href="#projects" className="nav-link">Projects</a>
-          <a href="#about" className="nav-link">About</a>
-        </div>
-        <a
-          href={`mailto:${personalInfo.email}`}
-          className="btn-ghost"
-          style={{ padding: '8px 16px', fontSize: '14px' }}
-        >
-          <Mail size={14} /> Contact
-        </a>
-      </nav>
-
-      {/* Hero — profile image unchanged, MP4 is background only */}
-      <header className={`hero ${heroReady ? 'hero-ready' : ''}`}>
-        <div className="hero-bg" aria-hidden="true">
-          <video
-            className="hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
+      <div className="page-content">
+        {/* Navigation */}
+        <nav className={`nav-bar ${scrolled ? 'scrolled' : ''}`}>
+          <div className="nav-logo">Vaibhav Bector.</div>
+          <div className="nav-links">
+            <a href="#experience" className="nav-link">Experience</a>
+            <a href="#projects" className="nav-link">Projects</a>
+            <a href="#about" className="nav-link">About</a>
+          </div>
+          <a
+            href={`mailto:${personalInfo.email}`}
+            className="btn-ghost"
+            style={{ padding: '8px 16px', fontSize: '14px' }}
           >
-            <source src="/meditating-ninja-4k.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div className="hero-overlay" />
+            <Mail size={14} /> Contact
+          </a>
+        </nav>
 
-        <div className="hero-content">
-          <div className="portrait-container hero-item hero-item-0">
-            <img
-              src={profilePic}
-              alt="Vaibhav Bector"
-              className="portrait-img"
-            />
-          </div>
+        {/* Hero — profile image unchanged; video is global now */}
+        <header className={`hero ${heroReady ? 'hero-ready' : ''}`}>
+          <div className="hero-content">
+            <div className="portrait-container hero-item hero-item-0">
+              <img
+                src={profilePic}
+                alt="Vaibhav Bector"
+                className="portrait-img"
+              />
+            </div>
 
-          <div className="hero-badge hero-item hero-item-1">
-            <MapPin size={14} /> {personalInfo.location} — Operations & Strategy
-          </div>
+            <div className="hero-badge hero-item hero-item-1">
+              <MapPin size={14} /> {personalInfo.location} — Operations & Strategy
+            </div>
 
-          <h1 className="hero-title hero-item hero-item-2">
-            Orchestrating complex systems.
-          </h1>
+            <h1 className="hero-title hero-item hero-item-2">
+              Orchestrating complex systems.
+            </h1>
 
-          <p className="hero-subtitle hero-item hero-item-3">
-            {personalInfo.tagline} Designed to eliminate operational bottlenecks
-            and architect predictable, high-growth delivery.
-          </p>
-
-          <div className="button-group hero-item hero-item-4">
-            <a href="#projects" className="btn-primary">
-              View Initiatives <ArrowRight size={18} />
-            </a>
-            <a
-              href={personalInfo.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-ghost"
-            >
-              <LinkedinIcon /> LinkedIn
-            </a>
-            <a
-              href={personalInfo.github}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-ghost"
-            >
-              <GithubIcon /> GitHub
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* Experience */}
-      <section id="experience" className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <h2 className="section-title">Track Record</h2>
-            <p className="section-desc">
-              Executing lean operations across supply chain management and
-              architectural installations.
+            <p className="hero-subtitle hero-item hero-item-3">
+              {personalInfo.tagline} Designed to eliminate operational bottlenecks
+              and architect predictable, high-growth delivery.
             </p>
-          </div>
-        </Reveal>
 
-        <div className="grid-2">
-          {experiences.map((exp, idx) => (
-            <Reveal key={exp.company} delay={idx * 120}>
-              <div className="graphite-card">
-                <h3 className="exp-role">{exp.role}</h3>
-                <div className="exp-meta">
-                  <span>{exp.company}</span>
-                  <span>{exp.period}</span>
-                </div>
-                <ul className="exp-list">
-                  {exp.highlights.map((highlight) => (
-                    <li key={highlight}>{highlight}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Projects */}
-      <section id="projects" className="section-container" style={{ paddingTop: 0 }}>
-        <Reveal>
-          <div className="section-header">
-            <h2 className="section-title">Key Initiatives</h2>
-          </div>
-        </Reveal>
-
-        <div className="grid-2">
-          {projects.map((proj, idx) => (
-            <Reveal key={proj.id} delay={idx * 120}>
-              <div
-                className="graphite-card interactive"
-                onClick={() => setSelectedProject(proj)}
+            <div className="button-group hero-item hero-item-4">
+              <a href="#projects" className="btn-primary">
+                View Initiatives <ArrowRight size={18} />
+              </a>
+              <a
+                href={personalInfo.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost"
               >
-                <div
-                  style={{
-                    color: 'var(--color-slate)',
-                    fontSize: '14px',
-                    marginBottom: '8px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  {proj.category}
-                </div>
-                <h3 className="exp-role">{proj.title}</h3>
-                <p
-                  style={{
-                    color: 'var(--color-ash)',
-                    fontSize: '16px',
-                    lineHeight: 1.5,
-                    marginTop: '12px',
-                  }}
-                >
-                  {proj.desc}
-                </p>
-                <div className="project-link">
-                  View details <ExternalLink size={14} />
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* About / Passions */}
-      <section id="about" className="section-container" style={{ paddingTop: 0 }}>
-        <Reveal>
-          <div className="section-header">
-            <h2 className="section-title">Driving Principles</h2>
-            <p className="section-desc">
-              The philosophies that influence my approach to complex project
-              management.
-            </p>
+                <LinkedinIcon /> LinkedIn
+              </a>
+              <a
+                href={personalInfo.github}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost"
+              >
+                <GithubIcon /> GitHub
+              </a>
+            </div>
           </div>
-        </Reveal>
+        </header>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {passions.map((passion, idx) => {
-            const isOpen = expandedPassions.includes(passion.id);
-            return (
-              <Reveal key={passion.id} delay={idx * 90}>
+        {/* Experience */}
+        <section id="experience" className="section-container">
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Track Record</h2>
+              <p className="section-desc">
+                Executing lean operations across supply chain management and
+                architectural installations.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid-2">
+            {experiences.map((exp, idx) => (
+              <Reveal key={exp.company} delay={idx * 120}>
                 <div className="graphite-card">
-                  <div
-                    className="dropbox-header"
-                    onClick={() => togglePassion(passion.id)}
-                  >
-                    <div>
-                      <h3 className="dropbox-title">{passion.title}</h3>
-                      <div className="dropbox-tagline">{passion.tagline}</div>
-                    </div>
-                    <ChevronDown
-                      size={24}
-                      className={`chevron ${isOpen ? 'open' : ''}`}
-                    />
+                  <h3 className="exp-role">{exp.role}</h3>
+                  <div className="exp-meta">
+                    <span>{exp.company}</span>
+                    <span>{exp.period}</span>
                   </div>
+                  <ul className="exp-list">
+                    {exp.highlights.map((highlight) => (
+                      <li key={highlight}>{highlight}</li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
 
-                  <div className={`dropbox-content ${isOpen ? 'open' : ''}`}>
-                    <div className="dropbox-content-inner">
-                      <div>{passion.fullContent}</div>
-                    </div>
+        {/* Projects */}
+        <section id="projects" className="section-container" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Key Initiatives</h2>
+            </div>
+          </Reveal>
+
+          <div className="grid-2">
+            {projects.map((proj, idx) => (
+              <Reveal key={proj.id} delay={idx * 120}>
+                <div
+                  className="graphite-card interactive"
+                  onClick={() => setSelectedProject(proj)}
+                >
+                  <div
+                    style={{
+                      color: 'var(--color-slate)',
+                      fontSize: '14px',
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    {proj.category}
+                  </div>
+                  <h3 className="exp-role">{proj.title}</h3>
+                  <p
+                    style={{
+                      color: 'var(--color-ash)',
+                      fontSize: '16px',
+                      lineHeight: 1.5,
+                      marginTop: '12px',
+                    }}
+                  >
+                    {proj.desc}
+                  </p>
+                  <div className="project-link">
+                    View details <ExternalLink size={14} />
                   </div>
                 </div>
               </Reveal>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close"
-              onClick={() => setSelectedProject(null)}
-              aria-label="Close"
-            >
-              <X size={24} />
-            </button>
-            <div
-              style={{
-                color: 'var(--color-slate)',
-                fontSize: '14px',
-                marginBottom: '8px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}
-            >
-              {selectedProject.category}
-            </div>
-            <h3
-              className="section-title"
-              style={{ fontSize: '32px', marginBottom: '24px' }}
-            >
-              {selectedProject.title}
-            </h3>
-            <p
-              style={{
-                color: 'var(--color-ivory)',
-                fontSize: '16px',
-                lineHeight: 1.6,
-              }}
-            >
-              {selectedProject.details}
-            </p>
+            ))}
           </div>
-        </div>
-      )}
+        </section>
 
-      <footer className="footer">
-        <p>
-          © {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine banking
-          aesthetics.
-        </p>
-      </footer>
+        {/* About / Passions */}
+        <section id="about" className="section-container" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Driving Principles</h2>
+              <p className="section-desc">
+                The philosophies that influence my approach to complex project
+                management.
+              </p>
+            </div>
+          </Reveal>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {passions.map((passion, idx) => {
+              const isOpen = expandedPassions.includes(passion.id);
+              return (
+                <Reveal key={passion.id} delay={idx * 90}>
+                  <div className="graphite-card">
+                    <div
+                      className="dropbox-header"
+                      onClick={() => togglePassion(passion.id)}
+                    >
+                      <div>
+                        <h3 className="dropbox-title">{passion.title}</h3>
+                        <div className="dropbox-tagline">{passion.tagline}</div>
+                      </div>
+                      <ChevronDown
+                        size={24}
+                        className={`chevron ${isOpen ? 'open' : ''}`}
+                      />
+                    </div>
+
+                    <div className={`dropbox-content ${isOpen ? 'open' : ''}`}>
+                      <div className="dropbox-content-inner">
+                        <div>{passion.fullContent}</div>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Project Modal */}
+        {selectedProject && (
+          <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="modal-close"
+                onClick={() => setSelectedProject(null)}
+                aria-label="Close"
+              >
+                <X size={24} />
+              </button>
+              <div
+                style={{
+                  color: 'var(--color-slate)',
+                  fontSize: '14px',
+                  marginBottom: '8px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                {selectedProject.category}
+              </div>
+              <h3
+                className="section-title"
+                style={{ fontSize: '32px', marginBottom: '24px' }}
+              >
+                {selectedProject.title}
+              </h3>
+              <p
+                style={{
+                  color: 'var(--color-ivory)',
+                  fontSize: '16px',
+                  lineHeight: 1.6,
+                }}
+              >
+                {selectedProject.details}
+              </p>
+            </div>
+          </div>
+        )}
+
+        <footer className="footer">
+          <p>
+            © {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine banking
+            aesthetics.
+          </p>
+        </footer>
+      </div>
     </div>
   );
 }
