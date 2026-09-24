@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mail, MapPin, X, ChevronDown, Sparkles, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, X, ChevronDown, ChevronUp, Sparkles, ExternalLink, SlidersHorizontal } from 'lucide-react';
 
 const roles = [
   "Project Manager",
@@ -30,7 +30,9 @@ export default function App() {
   const [typedRole, setTypedRole] = useState('');
   const [roleIndex, setRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [selectedPassion, setSelectedPassion] = useState(null);
+  
+  // Passions drop box state (open specific ID or all)
+  const [expandedPassions, setExpandedPassions] = useState(['football']); // Default football expanded
   const [selectedProject, setSelectedProject] = useState(null);
   const videoRef = useRef(null);
 
@@ -51,29 +53,29 @@ export default function App() {
       id: "football",
       title: "Football & Real Madrid",
       icon: "⚽",
-      tagline: "Hala Madrid y nada más",
-      fullContent: "Football is more than a game to me. It is a lesson in strategy, leadership, and performing under pressure. As a Real Madrid supporter, I take inspiration from constant improvement, teamwork, and ambition."
+      tagline: "Hala Madrid y nada más — Strategy & Leadership",
+      fullContent: `Football is more than a game to me—it's a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: constant relentless growth, clutch performance under pressure, and unyielding ambition. Whether coordinating complex project timelines or analyzing field dynamics, the drive for tactical excellence remains identical.`
     },
     {
       id: "hydroponics",
       title: "Overgrown Nature & Hydroponics",
       icon: "🌿",
-      tagline: "Sustainable growth and vertical farming",
-      fullContent: "Hydroponics combines technology and nature. I am interested in automated growing, nutrient systems, and cleaner ways to produce food without soil."
+      tagline: "Sustainable growth, vertical farming & bio-tech",
+      fullContent: `Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around vertical urban farming, automated nutrient recirculating systems, and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.`
     },
     {
       id: "gaming",
       title: "Gaming & Interactive Design",
       icon: "🎮",
-      tagline: "Immersive worlds and sharp decisions",
-      fullContent: "Gaming shapes how I think about design, feedback, and fast decisions. From strategy games to open-world storytelling, it keeps my creative side active."
+      tagline: "Immersive open worlds, GTA VI hype & UX loops",
+      fullContent: `From high-stakes strategic simulations to massive open-world environments like GTA VI, gaming inspires my approach to digital user experience and operational system loops. Complex games require seamless feedback, instant decision making, and intuitive control layout—principles I apply directly to project coordination and workflow optimization.`
     },
     {
       id: "entrepreneurship",
       title: "Entrepreneurship & Consulting",
       icon: "💡",
-      tagline: "Turning ideas into working systems",
-      fullContent: "I like finding bottlenecks and turning them into simple, repeatable systems. That same mindset drives my work in operations, consulting, and project delivery."
+      tagline: "Lean operations, supply chain & problem solving",
+      fullContent: `Building lean, scalable systems is at the heart of everything I do. My track record in supply chain management (achieving 66% fulfillment growth) and installation coordination (boosting project efficiency by 40%) stems from an entrepreneurial drive to eliminate operational bottlenecks and build predictable success.`
     }
   ];
 
@@ -84,9 +86,9 @@ export default function App() {
       period: "July 2024 – Present",
       location: "Vancouver, BC",
       highlights: [
-        "Improved project efficiency by 40% using Lean and Kaizen frameworks.",
-        "Supported 30% regional revenue growth through planning and client coordination.",
-        "Managed CPM scheduling for commercial entrance installation projects."
+        "Boosted operational project delivery efficiency by 40% using Lean and Kaizen frameworks.",
+        "Supported 30% regional revenue growth through precise resource allocation and client coordination.",
+        "Managed Critical Path Method (CPM) scheduling for commercial entrance installations."
       ]
     },
     {
@@ -95,9 +97,9 @@ export default function App() {
       period: "August 2023 – July 2024",
       location: "Vancouver, BC",
       highlights: [
-        "Grew order fulfillment by 66% through multi-channel inventory coordination.",
-        "Reduced logistics costs by 23% by improving freight and vendor terms.",
-        "Managed supply chain flow across North American fulfillment channels."
+        "Scaled order fulfillment capacity by 66% through automated multi-channel inventory control.",
+        "Reduced logistics operational costs by 23% by renegotiating freight and vendor contracts.",
+        "Managed end-to-end supply chain pipelines across North American fulfillment hubs."
       ]
     }
   ];
@@ -120,18 +122,30 @@ export default function App() {
       id: "tormax-tracker",
       title: "Lean Project Delivery Engine",
       category: "Operations & Project Management",
-      desc: "Built planning workflows that reduced installation delays and kept field teams aligned.",
-      details: "Critical path scheduling and clear status tracking improved installation flow, coordinated technicians with materials, and supported regional growth."
+      desc: "Built resource planning matrices that cut project delays by 40% and aligned installation teams.",
+      details: "By combining Critical Path Method (CPM) scheduling with agile tracking, this system improved site installation flow, aligned technicians with supply hubs, and drove regional growth."
     },
     {
       id: "supply-chain-hub",
       title: "Multi-Channel Fulfillment Optimizer",
       category: "Supply Chain & Logistics",
-      desc: "Organized inventory and shipping workflows that supported a 66% fulfillment increase.",
-      details: "Better stock visibility and freight decisions helped prevent stockouts and reduced logistics cost by 23%."
+      desc: "Architected end-to-end inventory workflows supporting a 66% order volume increase.",
+      details: "Leveraged inventory analytics to optimize stock levels, prevent stockouts, and reduce overall freight expenditure by 23% across North American distribution channels."
     }
   ];
 
+  // Video Autoplay enforcer
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {
+        console.log("Video autoplay fallback active");
+      });
+    }
+  }, []);
+
+  // Typing effect logic
   useEffect(() => {
     const current = roles[roleIndex];
     const timer = setTimeout(() => {
@@ -152,6 +166,23 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [typedRole, isDeleting, roleIndex]);
 
+  // Drop Box Toggle Logic
+  const togglePassion = (id) => {
+    if (expandedPassions.includes(id)) {
+      setExpandedPassions(expandedPassions.filter(item => item !== id));
+    } else {
+      setExpandedPassions([...expandedPassions, id]);
+    }
+  };
+
+  const toggleAllPassions = () => {
+    if (expandedPassions.length === passions.length) {
+      setExpandedPassions([]);
+    } else {
+      setExpandedPassions(passions.map(p => p.id));
+    }
+  };
+
   return (
     <div className="portfolio-app">
       <style>{`
@@ -160,33 +191,35 @@ export default function App() {
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body, html {
-          background-color: #0b130e;
+          background-color: #08110b;
           color: #e2ebd8;
           font-family: 'Plus Jakarta Sans', sans-serif;
           overflow-x: hidden;
           scroll-behavior: smooth;
         }
 
+        /* Video Background + Atmospheric Fallback */
         .bg-live {
           position: fixed;
           inset: 0;
           z-index: -2;
           overflow: hidden;
+          background: radial-gradient(circle at 50% 30%, #172e1e 0%, #08110b 80%);
         }
 
         .bg-live video {
-          width: 100%;
-          height: 100%;
+          width: 100vw;
+          height: 100vh;
           object-fit: cover;
-          filter: brightness(0.4) contrast(1.15) saturate(1.1);
+          filter: brightness(0.45) contrast(1.15) saturate(1.2);
         }
 
         .bg-overlay {
           position: fixed;
           inset: 0;
           background:
-            radial-gradient(circle at center, rgba(11, 19, 14, 0.4) 0%, rgba(7, 12, 9, 0.92) 100%),
-            linear-gradient(to bottom, rgba(11, 19, 14, 0.6), rgba(11, 19, 14, 0.85));
+            radial-gradient(circle at center, rgba(11, 22, 15, 0.3) 0%, rgba(5, 10, 7, 0.88) 100%),
+            linear-gradient(to bottom, rgba(8, 17, 11, 0.5), rgba(8, 17, 11, 0.9));
           z-index: -1;
           pointer-events: none;
         }
@@ -198,8 +231,8 @@ export default function App() {
           right: 0;
           z-index: 50;
           backdrop-filter: blur(16px);
-          background: rgba(14, 24, 18, 0.65);
-          border-bottom: 1px solid rgba(138, 171, 123, 0.15);
+          background: rgba(12, 22, 15, 0.7);
+          border-bottom: 1px solid rgba(138, 171, 123, 0.2);
           padding: 1.25rem 2rem;
           display: flex;
           justify-content: space-between;
@@ -225,11 +258,12 @@ export default function App() {
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 1px;
+          transition: color 0.3s ease;
         }
 
         .nav-link:hover { color: #d4af37; }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 1.5rem; }
 
         .hero {
           min-height: 100vh;
@@ -244,8 +278,8 @@ export default function App() {
           align-items: center;
           gap: 0.5rem;
           padding: 0.5rem 1rem;
-          background: rgba(45, 74, 50, 0.4);
-          border: 1px solid rgba(168, 201, 156, 0.3);
+          background: rgba(45, 74, 50, 0.45);
+          border: 1px solid rgba(168, 201, 156, 0.35);
           border-radius: 999px;
           color: #a8c99c;
           font-size: 0.85rem;
@@ -293,7 +327,7 @@ export default function App() {
 
         .hero-subtitle {
           font-size: 1.15rem;
-          color: #9ab392;
+          color: #a3bf9b;
           max-width: 650px;
           line-height: 1.6;
           margin-bottom: 2.5rem;
@@ -308,10 +342,11 @@ export default function App() {
           width: 44px;
           height: 44px;
           border-radius: 12px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(168, 201, 156, 0.2);
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(168, 201, 156, 0.25);
           color: #d4e7c5;
           text-decoration: none;
+          transition: all 0.3s ease;
         }
 
         .social-btn:hover {
@@ -322,14 +357,26 @@ export default function App() {
         }
 
         .glass-card {
-          background: rgba(18, 30, 22, 0.55);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(168, 201, 156, 0.18);
+          background: rgba(16, 28, 20, 0.65);
+          backdrop-filter: blur(14px);
+          border: 1px solid rgba(168, 201, 156, 0.2);
           border-radius: 20px;
           padding: 2rem;
+          transition: all 0.3s ease;
         }
 
-        .section-header { margin-bottom: 3rem; }
+        .glass-card:hover {
+          border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .section-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-bottom: 2rem;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
 
         .section-tag {
           color: #d4af37;
@@ -345,19 +392,81 @@ export default function App() {
 
         .section-title { font-size: 2.2rem; font-weight: 800; color: #ffffff; }
 
-        .passions-grid, .projects-grid, .education-grid {
+        /* DROP BOX ACCORDION STYLES */
+        .dropbox-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(212, 175, 55, 0.12);
+          border: 1px solid rgba(212, 175, 55, 0.4);
+          color: #d4af37;
+          padding: 0.6rem 1.2rem;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .dropbox-btn:hover {
+          background: rgba(212, 175, 55, 0.25);
+          transform: translateY(-2px);
+        }
+
+        .passions-dropbox-container {
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+          margin-bottom: 5rem;
+        }
+
+        .passion-dropbox-card {
+          cursor: pointer;
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+
+        .passion-dropbox-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .passion-title-group {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .passion-icon { font-size: 2rem; }
+
+        .passion-title { font-size: 1.25rem; font-weight: 700; color: #ffffff; }
+        .passion-tagline { font-size: 0.9rem; color: #a8c99c; margin-top: 0.2rem; }
+
+        .passion-dropbox-content {
+          margin-top: 1.25rem;
+          padding-top: 1.25rem;
+          border-top: 1px solid rgba(168, 201, 156, 0.2);
+          color: #c9dbc1;
+          line-height: 1.7;
+          font-size: 0.98rem;
+          animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .projects-grid, .education-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 1.5rem;
           margin-bottom: 5rem;
         }
 
-        .passion-tile, .project-card { cursor: pointer; }
-
-        .passion-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-        .passion-title, .project-title, .exp-company { color: #ffffff; font-weight: 700; }
-        .passion-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
-        .passion-tagline, .project-desc, .edu-year { color: #9ab392; }
+        .project-card { cursor: pointer; }
 
         .exp-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 5rem; }
 
@@ -369,7 +478,7 @@ export default function App() {
           flex-wrap: wrap;
         }
 
-        .exp-company, .project-title { font-size: 1.3rem; margin-bottom: 0.35rem; }
+        .exp-company, .project-title { font-size: 1.3rem; margin-bottom: 0.35rem; color: #ffffff; font-weight: 700; }
         .exp-role, .project-cat { color: #d4af37; font-weight: 700; }
         .exp-meta { color: #8aab7b; font-size: 0.85rem; text-align: right; }
 
@@ -386,8 +495,8 @@ export default function App() {
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(5, 10, 7, 0.85);
-          backdrop-filter: blur(10px);
+          background: rgba(5, 10, 7, 0.88);
+          backdrop-filter: blur(12px);
           z-index: 100;
           display: flex;
           align-items: center;
@@ -396,7 +505,7 @@ export default function App() {
         }
 
         .modal-content {
-          background: #121e16;
+          background: #111f15;
           border: 1px solid rgba(212, 175, 55, 0.4);
           border-radius: 24px;
           max-width: 550px;
@@ -434,6 +543,7 @@ export default function App() {
         }
       `}</style>
 
+      {/* Live Video Background */}
       <div className="bg-live" aria-hidden="true">
         <video ref={videoRef} autoPlay muted loop playsInline>
           <source src="/train.mp4" type="video/mp4" />
@@ -441,6 +551,7 @@ export default function App() {
         <div className="bg-overlay"></div>
       </div>
 
+      {/* Header */}
       <header className="header">
         <div className="logo">{`< ${initials} />`}</div>
         <nav className="nav-links">
@@ -450,7 +561,9 @@ export default function App() {
         </nav>
       </header>
 
+      {/* Main Container */}
       <main className="container">
+        {/* Hero Section */}
         <section className="hero">
           <div className="hero-badge">
             <Sparkles size={14} /> Available for Operations & PM Roles
@@ -461,42 +574,72 @@ export default function App() {
             <span className="cursor"></span>
           </div>
           <p className="hero-subtitle">
-            Based in {personalInfo.location}. {personalInfo.tagline} I work across project management, installation coordination, estimating, and supply chain, with a creative eye for how systems should feel and flow.
+            Based in {personalInfo.location}. {personalInfo.tagline} Driving operational growth, lean execution, and project coordination with creative strategic vision.
           </p>
           <div className="social-bar">
             <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="social-btn" aria-label="LinkedIn"><LinkedinIcon /></a>
             <a href={personalInfo.github} target="_blank" rel="noreferrer" className="social-btn" aria-label="GitHub"><GithubIcon /></a>
             <a href={personalInfo.twitter} target="_blank" rel="noreferrer" className="social-btn" aria-label="Twitter"><TwitterIcon /></a>
             <a href={`mailto:${personalInfo.email}`} className="social-btn" aria-label="Email"><Mail size={20} /></a>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#8aab7b' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#8aab7b', fontSize: '0.9rem' }}>
               <MapPin size={16} /> {personalInfo.location}
             </span>
           </div>
         </section>
 
+        {/* PASSIONS SECTION WITH EXPANDABLE DROP BOX ACCORDION */}
         <section id="passions" style={{ padding: '4rem 0' }}>
           <div className="section-header">
-            <div className="section-tag"><Sparkles size={14} /> Core Interests</div>
-            <h2 className="section-title">Passions & Creative Drive</h2>
+            <div>
+              <div className="section-tag"><Sparkles size={14} /> Core Interests</div>
+              <h2 className="section-title">Passions & Creative Drive</h2>
+            </div>
+            <button className="dropbox-btn" onClick={toggleAllPassions}>
+              <SlidersHorizontal size={16} />
+              {expandedPassions.length === passions.length ? "Collapse Drop Box" : "Expand All Drop Box"}
+            </button>
           </div>
-          <div className="passions-grid">
-            {passions.map((passion) => (
-              <div key={passion.id} className="glass-card passion-tile" onClick={() => setSelectedPassion(passion)}>
-                <div className="passion-icon">{passion.icon}</div>
-                <div className="passion-title">{passion.title}</div>
-                <div className="passion-tagline">{passion.tagline}</div>
-                <div style={{ marginTop: '1rem', color: '#d4af37', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                  Click to explore <ChevronDown size={14} style={{ transform: 'rotate(-90deg)' }} />
+
+          <div className="passions-dropbox-container">
+            {passions.map((p) => {
+              const isOpen = expandedPassions.includes(p.id);
+              return (
+                <div
+                  key={p.id}
+                  className="glass-card passion-dropbox-card"
+                  onClick={() => togglePassion(p.id)}
+                >
+                  <div className="passion-dropbox-header">
+                    <div className="passion-title-group">
+                      <span className="passion-icon">{p.icon}</span>
+                      <div>
+                        <div className="passion-title">{p.title}</div>
+                        <div className="passion-tagline">{p.tagline}</div>
+                      </div>
+                    </div>
+                    <div style={{ color: '#d4af37' }}>
+                      {isOpen ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
+                    </div>
+                  </div>
+
+                  {isOpen && (
+                    <div className="passion-dropbox-content">
+                      {p.fullContent}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
-        <section id="experience" style={{ padding: '4rem 0' }}>
+        {/* Experience Section */}
+        <section id="experience" style={{ padding: '2rem 0 4rem' }}>
           <div className="section-header">
-            <div className="section-tag"><Sparkles size={14} /> Track Record</div>
-            <h2 className="section-title">Professional Experience</h2>
+            <div>
+              <div className="section-tag"><Sparkles size={14} /> Track Record</div>
+              <h2 className="section-title">Professional Experience</h2>
+            </div>
           </div>
           <div className="exp-grid">
             {experiences.map((exp) => (
@@ -519,33 +662,39 @@ export default function App() {
           </div>
         </section>
 
+        {/* Education Section */}
         <section id="education" style={{ padding: '2rem 0 4rem' }}>
           <div className="section-header">
-            <div className="section-tag"><Sparkles size={14} /> Education</div>
-            <h2 className="section-title">Studies</h2>
+            <div>
+              <div className="section-tag"><Sparkles size={14} /> Education</div>
+              <h2 className="section-title">Academic Background</h2>
+            </div>
           </div>
           <div className="education-grid">
             {education.map((item) => (
               <div key={item.school} className="glass-card">
                 <div className="exp-role">{item.year}</div>
-                <div className="passion-title">{item.credential}</div>
-                <div className="edu-year">{item.school}</div>
+                <div className="passion-title" style={{ margin: '0.4rem 0' }}>{item.credential}</div>
+                <div style={{ color: '#9ab392' }}>{item.school}</div>
               </div>
             ))}
           </div>
         </section>
 
+        {/* Projects Section */}
         <section id="projects" style={{ padding: '2rem 0 4rem' }}>
           <div className="section-header">
-            <div className="section-tag"><Sparkles size={14} /> Strategic Initiatives</div>
-            <h2 className="section-title">Key Operational Projects</h2>
+            <div>
+              <div className="section-tag"><Sparkles size={14} /> Strategic Initiatives</div>
+              <h2 className="section-title">Key Operational Projects</h2>
+            </div>
           </div>
           <div className="projects-grid">
             {projects.map((proj) => (
               <div key={proj.id} className="glass-card project-card" onClick={() => setSelectedProject(proj)}>
                 <div className="project-cat">{proj.category}</div>
                 <div className="project-title">{proj.title}</div>
-                <div className="project-desc">{proj.desc}</div>
+                <div style={{ color: '#9ab392', fontSize: '0.95rem', lineHeight: '1.5' }}>{proj.desc}</div>
                 <div style={{ marginTop: '1.5rem', color: '#a8c99c', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   View details <ExternalLink size={14} />
                 </div>
@@ -555,18 +704,7 @@ export default function App() {
         </section>
       </main>
 
-      {selectedPassion && (
-        <div className="modal-overlay" onClick={() => setSelectedPassion(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setSelectedPassion(null)} aria-label="Close"><X size={20} /></button>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>{selectedPassion.icon}</div>
-            <h3 style={{ fontSize: '1.8rem', color: '#fff', marginBottom: '0.5rem' }}>{selectedPassion.title}</h3>
-            <p style={{ color: '#d4af37', fontWeight: 600, marginBottom: '1.5rem' }}>{selectedPassion.tagline}</p>
-            <p style={{ color: '#c3d6b8', lineHeight: 1.7 }}>{selectedPassion.fullContent}</p>
-          </div>
-        </div>
-      )}
-
+      {/* Project Modal */}
       {selectedProject && (
         <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -578,9 +716,10 @@ export default function App() {
         </div>
       )}
 
+      {/* Footer */}
       <footer className="footer">
         <div className="container">
-          <p>© {new Date().getFullYear()} {personalInfo.name} — Designed with an overgrown nature train aesthetic.</p>
+          <p>© {new Date().getFullYear()} {personalInfo.name} — Designed with Overgrown Nature Aesthetic.</p>
         </div>
       </footer>
     </div>
