@@ -88,7 +88,6 @@ export default function App() {
     }
   ];
 
-  // Handle scroll for the frosted glass nav
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -108,11 +107,9 @@ export default function App() {
   return (
     <div className="mercury-app">
       <style>{`
-        /* Google Fonts: Inter for UI/Body, Space Grotesk for Display */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap');
 
         :root {
-          /* Mercury Colors */
           --color-onyx: #171721;
           --color-graphite: #1e1e2a;
           --color-obsidian: #272735;
@@ -123,7 +120,6 @@ export default function App() {
           --color-cobalt: #5266eb;
           --color-white: #ffffff;
 
-          /* Typography */
           --font-body: 'Inter', sans-serif;
           --font-display: 'Space Grotesk', sans-serif;
         }
@@ -139,10 +135,6 @@ export default function App() {
           scroll-behavior: smooth;
         }
 
-        /* 
-          Hero Section 
-          Photographic cinematic background with dark overlay 
-        */
         .hero {
           position: relative;
           min-height: 100vh;
@@ -174,7 +166,7 @@ export default function App() {
         .hero-content {
           position: relative;
           z-index: 2;
-          max-width: 640px;
+          max-width: 680px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -191,6 +183,9 @@ export default function App() {
           margin-bottom: 32px;
           letter-spacing: 0.05em;
           text-transform: uppercase;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
         }
 
         .hero-title {
@@ -210,10 +205,9 @@ export default function App() {
           line-height: 1.5;
           color: var(--color-ivory);
           margin-bottom: 40px;
-          max-width: 520px;
+          max-width: 540px;
         }
 
-        /* Buttons */
         .btn-primary {
           background-color: var(--color-cobalt);
           color: var(--color-white);
@@ -258,12 +252,11 @@ export default function App() {
 
         .button-group {
           display: flex;
-          gap: 16px;
+          gap: 12px;
           flex-wrap: wrap;
           justify-content: center;
         }
 
-        /* Navigation */
         .nav-bar {
           position: fixed;
           top: 0;
@@ -307,7 +300,6 @@ export default function App() {
 
         .nav-link:hover { color: var(--color-white); }
 
-        /* Sections & Layout */
         .section-container {
           max-width: 1200px;
           margin: 0 auto;
@@ -335,30 +327,21 @@ export default function App() {
           line-height: 1.5;
         }
 
-        /* Graphite Cards */
         .graphite-card {
           background-color: var(--color-graphite);
           border-radius: 12px;
           padding: 32px;
           border: none;
-          box-shadow: none; /* Relies on value contrast, not shadow */
+          box-shadow: none;
           transition: transform 0.2s ease;
         }
 
-        /* Grids */
         .grid-2 {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
           gap: 24px;
         }
 
-        .grid-3 {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 24px;
-        }
-
-        /* Experience Layout */
         .exp-role {
           font-family: var(--font-display);
           font-size: 24px;
@@ -401,7 +384,6 @@ export default function App() {
           background-color: var(--color-slate);
         }
 
-        /* Dropbox Accordion (Mercury Style) */
         .dropbox-header {
           display: flex;
           justify-content: space-between;
@@ -437,7 +419,6 @@ export default function App() {
           to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Footer */
         .footer {
           border-top: 1px solid var(--color-obsidian);
           padding: 40px 24px;
@@ -446,7 +427,6 @@ export default function App() {
           color: var(--color-ash);
         }
 
-        /* Modal Overlay */
         .modal-overlay {
           position: fixed;
           inset: 0;
@@ -495,7 +475,7 @@ export default function App() {
           <a href="#about" className="nav-link">About</a>
         </div>
         <a href={`mailto:${personalInfo.email}`} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '14px' }}>
-          Contact
+          <Mail size={14} /> Contact
         </a>
       </nav>
 
@@ -505,10 +485,12 @@ export default function App() {
         <div className="hero-overlay"></div>
         
         <div className="hero-content">
-          <div className="hero-badge">Operations & Strategy</div>
+          <div className="hero-badge">
+            <MapPin size={14} /> {personalInfo.location} — Operations & Strategy
+          </div>
           <h1 className="hero-title">Orchestrating complex systems.</h1>
           <p className="hero-subtitle">
-            {personalInfo.tagline} Based in {personalInfo.location}. Designed to eliminate bottlenecks and architect predictable, high-growth delivery.
+            {personalInfo.tagline} Designed to eliminate operational bottlenecks and architect predictable, high-growth delivery.
           </p>
           <div className="button-group">
             <a href="#projects" className="btn-primary">
@@ -516,6 +498,9 @@ export default function App() {
             </a>
             <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="btn-ghost">
               <LinkedinIcon /> LinkedIn
+            </a>
+            <a href={personalInfo.github} target="_blank" rel="noreferrer" className="btn-ghost">
+              <GithubIcon /> GitHub
             </a>
           </div>
         </div>
@@ -575,7 +560,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Passions / About Section (Dropbox Style) */}
+      {/* Passions / About Section */}
       <section id="about" className="section-container" style={{ paddingTop: '0' }}>
         <div className="section-header">
           <h2 className="section-title">Driving Principles</h2>
