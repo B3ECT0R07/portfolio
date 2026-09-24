@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mail, MapPin, X, ChevronDown, ChevronUp, ArrowRight, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, X, ChevronDown, ArrowRight, ExternalLink } from 'lucide-react';
 
 const LinkedinIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -134,13 +134,11 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Hero entrance after a tiny beat (feels intentional)
   useEffect(() => {
     const t = setTimeout(() => setHeroReady(true), 80);
     return () => clearTimeout(t);
   }, []);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = selectedProject ? 'hidden' : '';
     return () => {
