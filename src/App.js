@@ -1,12 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Mail, MapPin, X, ChevronDown, ChevronUp, Sparkles, ExternalLink, SlidersHorizontal } from 'lucide-react';
-
-const roles = [
-  "Project Manager",
-  "Installation Coordinator",
-  "Construction Estimator",
-  "Supply Chain Manager"
-];
+import React, { useState, useEffect } from 'react';
+import { Mail, MapPin, X, ChevronDown, ChevronUp, ArrowRight, ExternalLink } from 'lucide-react';
 
 const LinkedinIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -20,62 +13,38 @@ const GithubIcon = () => (
   </svg>
 );
 
-const TwitterIcon = () => (
-  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-  </svg>
-);
-
 export default function App() {
-  const [typedRole, setTypedRole] = useState('');
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  
-  // Passions drop box state (open specific ID or all)
-  const [expandedPassions, setExpandedPassions] = useState(['football']); // Default football expanded
+  const [scrolled, setScrolled] = useState(false);
+  const [expandedPassions, setExpandedPassions] = useState(['football']); 
   const [selectedProject, setSelectedProject] = useState(null);
-  const videoRef = useRef(null);
-
-  const initials = "VB";
 
   const personalInfo = {
     name: "Vaibhav Bector",
     location: "Vancouver, BC",
     email: "bector2001@gmail.com",
-    tagline: "I like football and creativity.",
-    github: "https://github.com/B3ECT0R07",
+    tagline: "I build lean operations and scalable supply chains.",
     linkedin: "https://ca.linkedin.com/in/vaibhavbector",
-    twitter: "https://x.com/bector2001"
+    github: "https://github.com/B3ECT0R07",
   };
 
   const passions = [
     {
       id: "football",
-      title: "Football & Real Madrid",
-      icon: "⚽",
-      tagline: "Hala Madrid y nada más — Strategy & Leadership",
-      fullContent: `Football is more than a game to me—it's a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: constant relentless growth, clutch performance under pressure, and unyielding ambition. Whether coordinating complex project timelines or analyzing field dynamics, the drive for tactical excellence remains identical.`
+      title: "Tactical Execution",
+      tagline: "Strategy & Leadership — Hala Madrid",
+      fullContent: `Football is a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: relentless growth, clutch performance under pressure, and unyielding ambition. I apply this exact framework to coordinating complex project timelines.`
     },
     {
       id: "hydroponics",
-      title: "Overgrown Nature & Hydroponics",
-      icon: "🌿",
-      tagline: "Sustainable growth, vertical farming & bio-tech",
-      fullContent: `Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around vertical urban farming, automated nutrient recirculating systems, and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.`
-    },
-    {
-      id: "gaming",
-      title: "Gaming & Interactive Design",
-      icon: "🎮",
-      tagline: "Immersive open worlds, GTA VI hype & UX loops",
-      fullContent: `From high-stakes strategic simulations to massive open-world environments like GTA VI, gaming inspires my approach to digital user experience and operational system loops. Complex games require seamless feedback, instant decision making, and intuitive control layout—principles I apply directly to project coordination and workflow optimization.`
+      title: "Sustainable Systems",
+      tagline: "Vertical farming & bio-tech",
+      fullContent: `Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around automated nutrient recirculating systems and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.`
     },
     {
       id: "entrepreneurship",
-      title: "Entrepreneurship & Consulting",
-      icon: "💡",
-      tagline: "Lean operations, supply chain & problem solving",
-      fullContent: `Building lean, scalable systems is at the heart of everything I do. My track record in supply chain management (achieving 66% fulfillment growth) and installation coordination (boosting project efficiency by 40%) stems from an entrepreneurial drive to eliminate operational bottlenecks and build predictable success.`
+      title: "Lean Operations",
+      tagline: "Supply chain & problem solving",
+      fullContent: `Building scalable systems is at the heart of everything I do. My track record in supply chain management and installation coordination stems from an entrepreneurial drive to eliminate bottlenecks and build predictable success.`
     }
   ];
 
@@ -84,36 +53,21 @@ export default function App() {
       company: "TORMAX Canada",
       role: "Project Manager / Installation Coordinator",
       period: "July 2024 – Present",
-      location: "Vancouver, BC",
       highlights: [
         "Boosted operational project delivery efficiency by 40% using Lean and Kaizen frameworks.",
-        "Supported 30% regional revenue growth through precise resource allocation and client coordination.",
-        "Managed Critical Path Method (CPM) scheduling for commercial entrance installations."
+        "Supported 30% regional revenue growth through precise resource allocation.",
+        "Managed Critical Path Method (CPM) scheduling for commercial architectural installations."
       ]
     },
     {
       company: "Wellness Extract",
       role: "Supply Chain Manager",
       period: "August 2023 – July 2024",
-      location: "Vancouver, BC",
       highlights: [
         "Scaled order fulfillment capacity by 66% through automated multi-channel inventory control.",
         "Reduced logistics operational costs by 23% by renegotiating freight and vendor contracts.",
         "Managed end-to-end supply chain pipelines across North American fulfillment hubs."
       ]
-    }
-  ];
-
-  const education = [
-    {
-      school: "University of the Fraser Valley",
-      credential: "Bachelor of Business Administration (BBA)",
-      year: "2023"
-    },
-    {
-      school: "Universidad del Rosario",
-      credential: "Diploma in International Business",
-      year: "2023"
     }
   ];
 
@@ -127,46 +81,22 @@ export default function App() {
     },
     {
       id: "supply-chain-hub",
-      title: "Multi-Channel Fulfillment Optimizer",
+      title: "Fulfillment Optimizer",
       category: "Supply Chain & Logistics",
       desc: "Architected end-to-end inventory workflows supporting a 66% order volume increase.",
       details: "Leveraged inventory analytics to optimize stock levels, prevent stockouts, and reduce overall freight expenditure by 23% across North American distribution channels."
     }
   ];
 
-  // Video Autoplay enforcer
+  // Handle scroll for the frosted glass nav
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true;
-      videoRef.current.muted = true;
-      videoRef.current.play().catch(() => {
-        console.log("Video autoplay fallback active");
-      });
-    }
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Typing effect logic
-  useEffect(() => {
-    const current = roles[roleIndex];
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        setTypedRole(current.substring(0, typedRole.length + 1));
-        if (typedRole === current) {
-          setTimeout(() => setIsDeleting(true), 2000);
-        }
-      } else {
-        setTypedRole(current.substring(0, typedRole.length - 1));
-        if (typedRole === '') {
-          setIsDeleting(false);
-          setRoleIndex((prev) => (prev + 1) % roles.length);
-        }
-      }
-    }, isDeleting ? 40 : 80);
-
-    return () => clearTimeout(timer);
-  }, [typedRole, isDeleting, roleIndex]);
-
-  // Drop Box Toggle Logic
   const togglePassion = (id) => {
     if (expandedPassions.includes(id)) {
       setExpandedPassions(expandedPassions.filter(item => item !== id));
@@ -175,552 +105,530 @@ export default function App() {
     }
   };
 
-  const toggleAllPassions = () => {
-    if (expandedPassions.length === passions.length) {
-      setExpandedPassions([]);
-    } else {
-      setExpandedPassions(passions.map(p => p.id));
-    }
-  };
-
   return (
-    <div className="portfolio-app">
+    <div className="mercury-app">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Cinzel:wght@600;800&display=swap');
+        /* Google Fonts: Inter for UI/Body, Space Grotesk for Display */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap');
+
+        :root {
+          /* Mercury Colors */
+          --color-onyx: #171721;
+          --color-graphite: #1e1e2a;
+          --color-obsidian: #272735;
+          --color-slate: #70707d;
+          --color-mist: #e2e3ed;
+          --color-ash: #c3c3cc;
+          --color-ivory: #ededf3;
+          --color-cobalt: #5266eb;
+          --color-white: #ffffff;
+
+          /* Typography */
+          --font-body: 'Inter', sans-serif;
+          --font-display: 'Space Grotesk', sans-serif;
+        }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body, html {
-          background-color: #08110b;
-          color: #e2ebd8;
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          background-color: var(--color-onyx);
+          color: var(--color-ivory);
+          font-family: var(--font-body);
+          -webkit-font-smoothing: antialiased;
           overflow-x: hidden;
           scroll-behavior: smooth;
         }
 
-        /* Video Background + Atmospheric Fallback */
-        .bg-live {
-          position: fixed;
+        /* 
+          Hero Section 
+          Photographic cinematic background with dark overlay 
+        */
+        .hero {
+          position: relative;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 0 24px;
+          background-color: var(--color-onyx);
+        }
+
+        .hero-bg {
+          position: absolute;
           inset: 0;
-          z-index: -2;
-          overflow: hidden;
-          background: radial-gradient(circle at 50% 30%, #172e1e 0%, #08110b 80%);
+          background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2074&auto=format&fit=crop');
+          background-size: cover;
+          background-position: center;
+          z-index: 0;
         }
 
-        .bg-live video {
-          width: 100vw;
-          height: 100vh;
-          object-fit: cover;
-          filter: brightness(0.45) contrast(1.15) saturate(1.2);
-        }
-
-        .bg-overlay {
-          position: fixed;
+        .hero-overlay {
+          position: absolute;
           inset: 0;
-          background:
-            radial-gradient(circle at center, rgba(11, 22, 15, 0.3) 0%, rgba(5, 10, 7, 0.88) 100%),
-            linear-gradient(to bottom, rgba(8, 17, 11, 0.5), rgba(8, 17, 11, 0.9));
-          z-index: -1;
-          pointer-events: none;
+          background: linear-gradient(to bottom, rgba(23, 23, 33, 0.4) 0%, rgba(23, 23, 33, 1) 100%);
+          z-index: 1;
         }
 
-        .header {
+        .hero-content {
+          position: relative;
+          z-index: 2;
+          max-width: 640px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .hero-badge {
+          font-family: var(--font-body);
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--color-ash);
+          border: 1px solid var(--color-slate);
+          padding: 8px 16px;
+          border-radius: 40px;
+          margin-bottom: 32px;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+        }
+
+        .hero-title {
+          font-family: var(--font-display);
+          font-size: clamp(42px, 6vw, 65px);
+          font-weight: 500;
+          line-height: 1.1;
+          letter-spacing: -0.01em;
+          color: var(--color-white);
+          margin-bottom: 24px;
+        }
+
+        .hero-subtitle {
+          font-family: var(--font-body);
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 1.5;
+          color: var(--color-ivory);
+          margin-bottom: 40px;
+          max-width: 520px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+          background-color: var(--color-cobalt);
+          color: var(--color-white);
+          border: none;
+          padding: 14px 24px;
+          border-radius: 32px;
+          font-family: var(--font-body);
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: background-color 0.2s ease;
+          text-decoration: none;
+        }
+
+        .btn-primary:hover {
+          background-color: #4255d6;
+        }
+
+        .btn-ghost {
+          background-color: transparent;
+          color: var(--color-ivory);
+          border: 1px solid var(--color-slate);
+          padding: 14px 24px;
+          border-radius: 32px;
+          font-family: var(--font-body);
+          font-size: 16px;
+          font-weight: 400;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: border-color 0.2s ease;
+          text-decoration: none;
+        }
+
+        .btn-ghost:hover {
+          border-color: var(--color-mist);
+        }
+
+        .button-group {
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        /* Navigation */
+        .nav-bar {
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
-          z-index: 50;
-          backdrop-filter: blur(16px);
-          background: rgba(12, 22, 15, 0.7);
-          border-bottom: 1px solid rgba(138, 171, 123, 0.2);
-          padding: 1.25rem 2rem;
+          padding: 20px 40px;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          z-index: 100;
+          transition: all 0.3s ease;
+          background: transparent;
         }
 
-        .logo {
-          font-family: 'Cinzel', serif;
-          font-size: 1.5rem;
-          font-weight: 800;
-          letter-spacing: 2px;
-          background: linear-gradient(135deg, #d4af37, #a8c99c);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+        .nav-bar.scrolled {
+          background: rgba(23, 23, 33, 0.85);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--color-obsidian);
         }
 
-        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-logo {
+          font-family: var(--font-display);
+          font-size: 20px;
+          font-weight: 500;
+          color: var(--color-ivory);
+          letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 32px;
+        }
 
         .nav-link {
-          color: #a8c99c;
+          color: var(--color-ivory);
           text-decoration: none;
-          font-size: 0.9rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          transition: color 0.3s ease;
+          font-size: 14px;
+          font-weight: 400;
+          transition: color 0.2s ease;
         }
 
-        .nav-link:hover { color: #d4af37; }
+        .nav-link:hover { color: var(--color-white); }
 
-        .container { max-width: 1050px; margin: 0 auto; padding: 0 1.5rem; }
-
-        .hero {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          padding-top: 6rem;
-        }
-
-        .hero-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.5rem 1rem;
-          background: rgba(45, 74, 50, 0.45);
-          border: 1px solid rgba(168, 201, 156, 0.35);
-          border-radius: 999px;
-          color: #a8c99c;
-          font-size: 0.85rem;
-          font-weight: 600;
-          margin-bottom: 1.5rem;
-          width: fit-content;
-        }
-
-        .hero-title {
-          font-size: clamp(2.8rem, 6vw, 4.5rem);
-          font-weight: 800;
-          line-height: 1.1;
-          margin-bottom: 1rem;
-        }
-
-        .hero-title span {
-          background: linear-gradient(135deg, #ffffff, #a8c99c);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        .typing-container {
-          font-size: clamp(1.4rem, 3vw, 2.2rem);
-          color: #d4af37;
-          font-weight: 700;
-          min-height: 3rem;
-          display: flex;
-          align-items: center;
-          margin-bottom: 1.5rem;
-        }
-
-        .cursor {
-          display: inline-block;
-          width: 3px;
-          height: 1.8rem;
-          background-color: #d4af37;
-          margin-left: 6px;
-          animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-
-        .hero-subtitle {
-          font-size: 1.15rem;
-          color: #a3bf9b;
-          max-width: 650px;
-          line-height: 1.6;
-          margin-bottom: 2.5rem;
-        }
-
-        .social-bar { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-
-        .social-btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 44px;
-          height: 44px;
-          border-radius: 12px;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(168, 201, 156, 0.25);
-          color: #d4e7c5;
-          text-decoration: none;
-          transition: all 0.3s ease;
-        }
-
-        .social-btn:hover {
-          background: rgba(168, 201, 156, 0.2);
-          border-color: #d4af37;
-          color: #d4af37;
-          transform: translateY(-3px);
-        }
-
-        .glass-card {
-          background: rgba(16, 28, 20, 0.65);
-          backdrop-filter: blur(14px);
-          border: 1px solid rgba(168, 201, 156, 0.2);
-          border-radius: 20px;
-          padding: 2rem;
-          transition: all 0.3s ease;
-        }
-
-        .glass-card:hover {
-          border-color: rgba(212, 175, 55, 0.4);
+        /* Sections & Layout */
+        .section-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 112px 24px;
         }
 
         .section-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          margin-bottom: 2rem;
-          flex-wrap: wrap;
-          gap: 1rem;
+          margin-bottom: 56px;
         }
 
-        .section-tag {
-          color: #d4af37;
-          text-transform: uppercase;
-          font-size: 0.85rem;
-          font-weight: 700;
-          letter-spacing: 2px;
-          margin-bottom: 0.5rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
+        .section-title {
+          font-family: var(--font-display);
+          font-size: 42px;
+          font-weight: 500;
+          line-height: 1.15;
+          letter-spacing: -0.01em;
+          color: var(--color-white);
+          margin-bottom: 16px;
         }
 
-        .section-title { font-size: 2.2rem; font-weight: 800; color: #ffffff; }
+        .section-desc {
+          font-size: 18px;
+          color: var(--color-ash);
+          max-width: 600px;
+          line-height: 1.5;
+        }
 
-        /* DROP BOX ACCORDION STYLES */
-        .dropbox-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: rgba(212, 175, 55, 0.12);
-          border: 1px solid rgba(212, 175, 55, 0.4);
-          color: #d4af37;
-          padding: 0.6rem 1.2rem;
+        /* Graphite Cards */
+        .graphite-card {
+          background-color: var(--color-graphite);
           border-radius: 12px;
-          font-weight: 600;
-          font-size: 0.85rem;
-          cursor: pointer;
-          transition: all 0.2s ease;
+          padding: 32px;
+          border: none;
+          box-shadow: none; /* Relies on value contrast, not shadow */
+          transition: transform 0.2s ease;
         }
 
-        .dropbox-btn:hover {
-          background: rgba(212, 175, 55, 0.25);
-          transform: translateY(-2px);
+        /* Grids */
+        .grid-2 {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+          gap: 24px;
         }
 
-        .passions-dropbox-container {
+        .grid-3 {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 24px;
+        }
+
+        /* Experience Layout */
+        .exp-role {
+          font-family: var(--font-display);
+          font-size: 24px;
+          font-weight: 500;
+          color: var(--color-white);
+          margin-bottom: 8px;
+        }
+
+        .exp-meta {
+          font-size: 16px;
+          color: var(--color-ash);
+          margin-bottom: 24px;
           display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-          margin-bottom: 5rem;
+          justify-content: space-between;
+          border-bottom: 1px solid var(--color-obsidian);
+          padding-bottom: 16px;
         }
 
-        .passion-dropbox-card {
-          cursor: pointer;
-          overflow: hidden;
-          transition: all 0.3s ease;
+        .exp-list {
+          list-style: none;
+          color: var(--color-ivory);
+          font-size: 16px;
+          line-height: 1.6;
         }
 
-        .passion-dropbox-header {
+        .exp-list li {
+          position: relative;
+          padding-left: 20px;
+          margin-bottom: 12px;
+        }
+
+        .exp-list li::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 10px;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background-color: var(--color-slate);
+        }
+
+        /* Dropbox Accordion (Mercury Style) */
+        .dropbox-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          gap: 1rem;
+          cursor: pointer;
         }
 
-        .passion-title-group {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
+        .dropbox-title {
+          font-family: var(--font-display);
+          font-size: 21px;
+          font-weight: 500;
+          color: var(--color-white);
         }
 
-        .passion-icon { font-size: 2rem; }
-
-        .passion-title { font-size: 1.25rem; font-weight: 700; color: #ffffff; }
-        .passion-tagline { font-size: 0.9rem; color: #a8c99c; margin-top: 0.2rem; }
-
-        .passion-dropbox-content {
-          margin-top: 1.25rem;
-          padding-top: 1.25rem;
-          border-top: 1px solid rgba(168, 201, 156, 0.2);
-          color: #c9dbc1;
-          line-height: 1.7;
-          font-size: 0.98rem;
-          animation: fadeIn 0.3s ease-in-out;
+        .dropbox-tagline {
+          font-size: 14px;
+          color: var(--color-ash);
+          margin-top: 4px;
         }
 
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-6px); }
+        .dropbox-content {
+          margin-top: 24px;
+          padding-top: 24px;
+          border-top: 1px solid var(--color-obsidian);
+          color: var(--color-ivory);
+          line-height: 1.6;
+          font-size: 16px;
+          animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-10px); }
           to { opacity: 1; transform: translateY(0); }
         }
 
-        .projects-grid, .education-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 5rem;
+        /* Footer */
+        .footer {
+          border-top: 1px solid var(--color-obsidian);
+          padding: 40px 24px;
+          text-align: center;
+          font-size: 14px;
+          color: var(--color-ash);
         }
 
-        .project-card { cursor: pointer; }
-
-        .exp-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 5rem; }
-
-        .exp-header {
-          display: flex;
-          justify-content: space-between;
-          gap: 1rem;
-          margin-bottom: 1rem;
-          flex-wrap: wrap;
-        }
-
-        .exp-company, .project-title { font-size: 1.3rem; margin-bottom: 0.35rem; color: #ffffff; font-weight: 700; }
-        .exp-role, .project-cat { color: #d4af37; font-weight: 700; }
-        .exp-meta { color: #8aab7b; font-size: 0.85rem; text-align: right; }
-
-        .exp-list { list-style: none; }
-        .exp-list li {
-          position: relative;
-          padding-left: 1.25rem;
-          margin-bottom: 0.6rem;
-          color: #c3d6b8;
-          line-height: 1.5;
-        }
-        .exp-list li::before { content: "▹"; position: absolute; left: 0; color: #a8c99c; }
-
+        /* Modal Overlay */
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(5, 10, 7, 0.88);
-          backdrop-filter: blur(12px);
-          z-index: 100;
+          background: rgba(23, 23, 33, 0.95);
+          backdrop-filter: blur(8px);
+          z-index: 200;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 1.5rem;
+          padding: 24px;
         }
 
         .modal-content {
-          background: #111f15;
-          border: 1px solid rgba(212, 175, 55, 0.4);
-          border-radius: 24px;
-          max-width: 550px;
+          background-color: var(--color-graphite);
+          border-radius: 12px;
+          padding: 40px;
+          max-width: 600px;
           width: 100%;
-          padding: 2.5rem;
           position: relative;
         }
-
-        .close-btn {
+        
+        .modal-close {
           position: absolute;
-          top: 1.25rem;
-          right: 1.25rem;
-          background: rgba(255, 255, 255, 0.08);
+          top: 24px;
+          right: 24px;
+          background: transparent;
           border: none;
-          color: #e2ebd8;
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          color: var(--color-ash);
           cursor: pointer;
         }
+        .modal-close:hover { color: var(--color-white); }
 
-        .footer {
-          border-top: 1px solid rgba(168, 201, 156, 0.15);
-          padding: 3rem 0;
-          text-align: center;
-          color: #79966b;
-        }
-
-        @media (max-width: 640px) {
-          .exp-meta { text-align: left; }
+        @media (max-width: 768px) {
           .nav-links { display: none; }
+          .hero-title { font-size: 42px; }
+          .section-container { padding: 72px 24px; }
         }
       `}</style>
 
-      {/* Live Video Background */}
-      <div className="bg-live" aria-hidden="true">
-        <video ref={videoRef} autoPlay muted loop playsInline>
-          <source src="/train.mp4" type="video/mp4" />
-        </video>
-        <div className="bg-overlay"></div>
-      </div>
-
-      {/* Header */}
-      <header className="header">
-        <div className="logo">{`< ${initials} />`}</div>
-        <nav className="nav-links">
-          <a href="#passions" className="nav-link">Passions</a>
+      {/* Navigation */}
+      <nav className={`nav-bar ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-logo">Vaibhav Bector.</div>
+        <div className="nav-links">
           <a href="#experience" className="nav-link">Experience</a>
           <a href="#projects" className="nav-link">Projects</a>
-        </nav>
+          <a href="#about" className="nav-link">About</a>
+        </div>
+        <a href={`mailto:${personalInfo.email}`} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '14px' }}>
+          Contact
+        </a>
+      </nav>
+
+      {/* Cinematic Hero Section */}
+      <header className="hero">
+        <div className="hero-bg" aria-hidden="true"></div>
+        <div className="hero-overlay"></div>
+        
+        <div className="hero-content">
+          <div className="hero-badge">Operations & Strategy</div>
+          <h1 className="hero-title">Orchestrating complex systems.</h1>
+          <p className="hero-subtitle">
+            {personalInfo.tagline} Based in {personalInfo.location}. Designed to eliminate bottlenecks and architect predictable, high-growth delivery.
+          </p>
+          <div className="button-group">
+            <a href="#projects" className="btn-primary">
+              View Initiatives <ArrowRight size={18} />
+            </a>
+            <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="btn-ghost">
+              <LinkedinIcon /> LinkedIn
+            </a>
+          </div>
+        </div>
       </header>
 
-      {/* Main Container */}
-      <main className="container">
-        {/* Hero Section */}
-        <section className="hero">
-          <div className="hero-badge">
-            <Sparkles size={14} /> Available for Operations & PM Roles
-          </div>
-          <h1 className="hero-title">Hi, I'm <span>{personalInfo.name}</span></h1>
-          <div className="typing-container">
-            <span>{typedRole}</span>
-            <span className="cursor"></span>
-          </div>
-          <p className="hero-subtitle">
-            Based in {personalInfo.location}. {personalInfo.tagline} Driving operational growth, lean execution, and project coordination with creative strategic vision.
-          </p>
-          <div className="social-bar">
-            <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="social-btn" aria-label="LinkedIn"><LinkedinIcon /></a>
-            <a href={personalInfo.github} target="_blank" rel="noreferrer" className="social-btn" aria-label="GitHub"><GithubIcon /></a>
-            <a href={personalInfo.twitter} target="_blank" rel="noreferrer" className="social-btn" aria-label="Twitter"><TwitterIcon /></a>
-            <a href={`mailto:${personalInfo.email}`} className="social-btn" aria-label="Email"><Mail size={20} /></a>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#8aab7b', fontSize: '0.9rem' }}>
-              <MapPin size={16} /> {personalInfo.location}
-            </span>
-          </div>
-        </section>
+      {/* Experience Section */}
+      <section id="experience" className="section-container">
+        <div className="section-header">
+          <h2 className="section-title">Track Record</h2>
+          <p className="section-desc">Executing lean operations across supply chain management and architectural installations.</p>
+        </div>
 
-        {/* PASSIONS SECTION WITH EXPANDABLE DROP BOX ACCORDION */}
-        <section id="passions" style={{ padding: '4rem 0' }}>
-          <div className="section-header">
-            <div>
-              <div className="section-tag"><Sparkles size={14} /> Core Interests</div>
-              <h2 className="section-title">Passions & Creative Drive</h2>
+        <div className="grid-2">
+          {experiences.map((exp, idx) => (
+            <div key={idx} className="graphite-card">
+              <h3 className="exp-role">{exp.role}</h3>
+              <div className="exp-meta">
+                <span>{exp.company}</span>
+                <span>{exp.period}</span>
+              </div>
+              <ul className="exp-list">
+                {exp.highlights.map((highlight, i) => (
+                  <li key={i}>{highlight}</li>
+                ))}
+              </ul>
             </div>
-            <button className="dropbox-btn" onClick={toggleAllPassions}>
-              <SlidersHorizontal size={16} />
-              {expandedPassions.length === passions.length ? "Collapse Drop Box" : "Expand All Drop Box"}
-            </button>
-          </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="passions-dropbox-container">
-            {passions.map((p) => {
-              const isOpen = expandedPassions.includes(p.id);
-              return (
-                <div
-                  key={p.id}
-                  className="glass-card passion-dropbox-card"
-                  onClick={() => togglePassion(p.id)}
-                >
-                  <div className="passion-dropbox-header">
-                    <div className="passion-title-group">
-                      <span className="passion-icon">{p.icon}</span>
-                      <div>
-                        <div className="passion-title">{p.title}</div>
-                        <div className="passion-tagline">{p.tagline}</div>
-                      </div>
-                    </div>
-                    <div style={{ color: '#d4af37' }}>
-                      {isOpen ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
-                    </div>
-                  </div>
+      {/* Projects Section */}
+      <section id="projects" className="section-container" style={{ paddingTop: '0' }}>
+        <div className="section-header">
+          <h2 className="section-title">Key Initiatives</h2>
+        </div>
 
-                  {isOpen && (
-                    <div className="passion-dropbox-content">
-                      {p.fullContent}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Experience Section */}
-        <section id="experience" style={{ padding: '2rem 0 4rem' }}>
-          <div className="section-header">
-            <div>
-              <div className="section-tag"><Sparkles size={14} /> Track Record</div>
-              <h2 className="section-title">Professional Experience</h2>
+        <div className="grid-2">
+          {projects.map((proj) => (
+            <div 
+              key={proj.id} 
+              className="graphite-card" 
+              style={{ cursor: 'pointer' }}
+              onClick={() => setSelectedProject(proj)}
+            >
+              <div style={{ color: 'var(--color-slate)', fontSize: '14px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                {proj.category}
+              </div>
+              <h3 className="exp-role">{proj.title}</h3>
+              <p style={{ color: 'var(--color-ash)', fontSize: '16px', lineHeight: '1.5', marginTop: '12px' }}>
+                {proj.desc}
+              </p>
+              <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-cobalt)', fontWeight: '500', fontSize: '14px' }}>
+                View details <ExternalLink size={14} />
+              </div>
             </div>
-          </div>
-          <div className="exp-grid">
-            {experiences.map((exp) => (
-              <div key={exp.company} className="glass-card">
-                <div className="exp-header">
+          ))}
+        </div>
+      </section>
+
+      {/* Passions / About Section (Dropbox Style) */}
+      <section id="about" className="section-container" style={{ paddingTop: '0' }}>
+        <div className="section-header">
+          <h2 className="section-title">Driving Principles</h2>
+          <p className="section-desc">The philosophies that influence my approach to complex project management.</p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {passions.map((passion) => {
+            const isOpen = expandedPassions.includes(passion.id);
+            return (
+              <div key={passion.id} className="graphite-card">
+                <div className="dropbox-header" onClick={() => togglePassion(passion.id)}>
                   <div>
-                    <div className="exp-company">{exp.company}</div>
-                    <div className="exp-role">{exp.role}</div>
+                    <h3 className="dropbox-title">{passion.title}</h3>
+                    <div className="dropbox-tagline">{passion.tagline}</div>
                   </div>
-                  <div className="exp-meta">
-                    <div>{exp.period}</div>
-                    <div>{exp.location}</div>
+                  <div style={{ color: 'var(--color-slate)' }}>
+                    {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
                   </div>
                 </div>
-                <ul className="exp-list">
-                  {exp.highlights.map((item) => <li key={item}>{item}</li>)}
-                </ul>
+                
+                {isOpen && (
+                  <div className="dropbox-content">
+                    {passion.fullContent}
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        </section>
+            )
+          })}
+        </div>
+      </section>
 
-        {/* Education Section */}
-        <section id="education" style={{ padding: '2rem 0 4rem' }}>
-          <div className="section-header">
-            <div>
-              <div className="section-tag"><Sparkles size={14} /> Education</div>
-              <h2 className="section-title">Academic Background</h2>
-            </div>
-          </div>
-          <div className="education-grid">
-            {education.map((item) => (
-              <div key={item.school} className="glass-card">
-                <div className="exp-role">{item.year}</div>
-                <div className="passion-title" style={{ margin: '0.4rem 0' }}>{item.credential}</div>
-                <div style={{ color: '#9ab392' }}>{item.school}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section id="projects" style={{ padding: '2rem 0 4rem' }}>
-          <div className="section-header">
-            <div>
-              <div className="section-tag"><Sparkles size={14} /> Strategic Initiatives</div>
-              <h2 className="section-title">Key Operational Projects</h2>
-            </div>
-          </div>
-          <div className="projects-grid">
-            {projects.map((proj) => (
-              <div key={proj.id} className="glass-card project-card" onClick={() => setSelectedProject(proj)}>
-                <div className="project-cat">{proj.category}</div>
-                <div className="project-title">{proj.title}</div>
-                <div style={{ color: '#9ab392', fontSize: '0.95rem', lineHeight: '1.5' }}>{proj.desc}</div>
-                <div style={{ marginTop: '1.5rem', color: '#a8c99c', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  View details <ExternalLink size={14} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
-
-      {/* Project Modal */}
+      {/* Project Detail Modal */}
       {selectedProject && (
         <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setSelectedProject(null)} aria-label="Close"><X size={20} /></button>
-            <div className="project-cat">{selectedProject.category}</div>
-            <h3 style={{ fontSize: '1.8rem', color: '#fff', margin: '0.5rem 0 1rem' }}>{selectedProject.title}</h3>
-            <p style={{ color: '#c3d6b8', lineHeight: 1.7 }}>{selectedProject.details}</p>
+            <button className="modal-close" onClick={() => setSelectedProject(null)}>
+              <X size={24} />
+            </button>
+            <div style={{ color: 'var(--color-slate)', fontSize: '14px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {selectedProject.category}
+            </div>
+            <h3 className="section-title" style={{ fontSize: '32px', marginBottom: '24px' }}>{selectedProject.title}</h3>
+            <p style={{ color: 'var(--color-ivory)', fontSize: '16px', lineHeight: '1.6' }}>
+              {selectedProject.details}
+            </p>
           </div>
         </div>
       )}
 
       {/* Footer */}
       <footer className="footer">
-        <div className="container">
-          <p>© {new Date().getFullYear()} {personalInfo.name} — Designed with Overgrown Nature Aesthetic.</p>
-        </div>
+        <p>© {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine banking aesthetics.</p>
       </footer>
     </div>
   );
