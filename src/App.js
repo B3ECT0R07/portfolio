@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, MapPin, X, ChevronDown, ArrowRight, ExternalLink } from 'lucide-react';
-import ProfilePic from './Profile.jpg'; // Direct React import guarantees Vercel bundles it!
+import profilePic from './Profile.jpg';
 
 const LinkedinIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
