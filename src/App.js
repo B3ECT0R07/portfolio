@@ -13,7 +13,6 @@ const GithubIcon = () => (
   </svg>
 );
 
-// Simple scroll-reveal wrapper
 function Reveal({ children, delay = 0, className = '' }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -183,7 +182,6 @@ export default function App() {
           scroll-behavior: smooth;
         }
 
-        /* ---------- SCROLL REVEAL ---------- */
         .reveal {
           opacity: 0;
           transform: translateY(28px);
@@ -198,7 +196,6 @@ export default function App() {
           transform: translateY(0);
         }
 
-        /* ---------- HERO ENTRANCE ---------- */
         .hero-item {
           opacity: 0;
           transform: translateY(20px);
@@ -212,10 +209,11 @@ export default function App() {
           transform: translateY(0);
         }
 
-        .hero-item-1 { transition-delay: 0.05s; }
-        .hero-item-2 { transition-delay: 0.18s; }
-        .hero-item-3 { transition-delay: 0.32s; }
-        .hero-item-4 { transition-delay: 0.46s; }
+        .hero-item-0 { transition-delay: 0.02s; }
+        .hero-item-1 { transition-delay: 0.12s; }
+        .hero-item-2 { transition-delay: 0.24s; }
+        .hero-item-3 { transition-delay: 0.36s; }
+        .hero-item-4 { transition-delay: 0.48s; }
 
         .hero-bg {
           transform: scale(1.06);
@@ -226,7 +224,6 @@ export default function App() {
           transform: scale(1);
         }
 
-        /* ---------- LAYOUT ---------- */
         .hero {
           position: relative;
           min-height: 100vh;
@@ -235,7 +232,7 @@ export default function App() {
           align-items: center;
           justify-content: center;
           text-align: center;
-          padding: 0 24px;
+          padding: 80px 24px 40px;
           background-color: var(--color-onyx);
           overflow: hidden;
         }
@@ -265,6 +262,27 @@ export default function App() {
           align-items: center;
         }
 
+        /* Portrait Styling */
+        .portrait-container {
+          margin-bottom: 24px;
+          position: relative;
+        }
+
+        .portrait-img {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid var(--color-obsidian);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+          transition: transform 0.35s var(--ease-out), border-color 0.35s ease;
+        }
+
+        .portrait-img:hover {
+          transform: scale(1.05);
+          border-color: var(--color-cobalt);
+        }
+
         .hero-badge {
           font-size: 14px;
           font-weight: 400;
@@ -272,7 +290,7 @@ export default function App() {
           border: 1px solid var(--color-slate);
           padding: 8px 16px;
           border-radius: 40px;
-          margin-bottom: 32px;
+          margin-bottom: 28px;
           letter-spacing: 0.05em;
           text-transform: uppercase;
           display: inline-flex;
@@ -299,7 +317,6 @@ export default function App() {
           max-width: 540px;
         }
 
-        /* ---------- BUTTONS ---------- */
         .btn-primary,
         .btn-ghost {
           border-radius: 32px;
@@ -331,8 +348,6 @@ export default function App() {
           box-shadow: 0 12px 28px rgba(82, 102, 235, 0.28);
         }
 
-        .btn-primary:active { transform: translateY(0); }
-
         .btn-ghost {
           background-color: transparent;
           color: var(--color-ivory);
@@ -353,7 +368,6 @@ export default function App() {
           justify-content: center;
         }
 
-        /* ---------- NAV ---------- */
         .nav-bar {
           position: fixed;
           top: 0;
@@ -413,7 +427,6 @@ export default function App() {
         .nav-link:hover { color: var(--color-white); }
         .nav-link:hover::after { width: 100%; }
 
-        /* ---------- SECTIONS ---------- */
         .section-container {
           max-width: 1200px;
           margin: 0 auto;
@@ -439,7 +452,6 @@ export default function App() {
           line-height: 1.5;
         }
 
-        /* ---------- CARDS ---------- */
         .graphite-card {
           background-color: var(--color-graphite);
           border-radius: 12px;
@@ -527,7 +539,6 @@ export default function App() {
           gap: 12px;
         }
 
-        /* ---------- ACCORDION ---------- */
         .dropbox-header {
           display: flex;
           justify-content: space-between;
@@ -593,7 +604,6 @@ export default function App() {
           transform: translateY(0);
         }
 
-        /* ---------- MODAL ---------- */
         .modal-overlay {
           position: fixed;
           inset: 0;
@@ -658,24 +668,6 @@ export default function App() {
           .section-container { padding: 72px 24px; }
           .nav-bar, .nav-bar.scrolled { padding: 16px 20px; }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-          .reveal,
-          .hero-item,
-          .hero-bg,
-          .graphite-card,
-          .btn-primary,
-          .btn-ghost,
-          .dropbox-content,
-          .dropbox-content-inner > div,
-          .modal-overlay,
-          .modal-content {
-            transition: none !important;
-            animation: none !important;
-            transform: none !important;
-            opacity: 1 !important;
-          }
-        }
       `}</style>
 
       {/* Navigation */}
@@ -695,12 +687,25 @@ export default function App() {
         </a>
       </nav>
 
-      {/* Hero */}
+      {/* Hero with Personal Portrait */}
       <header className={`hero ${heroReady ? 'hero-ready' : ''}`}>
         <div className="hero-bg" aria-hidden="true" />
         <div className="hero-overlay" />
 
         <div className="hero-content">
+          {/* Portrait Image Container */}
+          <div className="portrait-container hero-item hero-item-0">
+            <img 
+              src="/profile.jpg" 
+              alt="Vaibhav Bector" 
+              className="portrait-img"
+              onError={(e) => {
+                // If profile.jpg isn't placed in public folder yet, hide broken image icon cleanly
+                e.target.style.display = 'none';
+              }}
+            />
+          </div>
+
           <div className="hero-badge hero-item hero-item-1">
             <MapPin size={14} /> {personalInfo.location} — Operations & Strategy
           </div>
