@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import profilePic from './Profile.jpg';
 
-// --- GLITCH CURSOR TRAIL COMPONENT ---
+// --- 1. GLITCH CURSOR TRAIL ---
 const GlitchTrail = () => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
@@ -19,18 +19,17 @@ const GlitchTrail = () => {
     resize();
 
     const onMouseMove = (e) => {
-      // Create 2-3 glitch artifacts per mouse movement
       const numParticles = Math.floor(Math.random() * 2) + 2;
       for (let i = 0; i < numParticles; i++) {
         particles.current.push({
           x: e.clientX + (Math.random() - 0.5) * 30,
           y: e.clientY + (Math.random() - 0.5) * 30,
-          width: Math.random() * 20 + 5, // horizontal bar width
-          height: Math.random() * 3 + 1, // thin height for glitch look
+          width: Math.random() * 20 + 5,
+          height: Math.random() * 3 + 1,
           life: 1,
-          decay: Math.random() * 0.05 + 0.02, // how fast it fades
-          color: Math.random() > 0.5 ? '#5266eb' : '#70707d', // Cobalt or Slate
-          shiftX: (Math.random() - 0.5) * 2 // horizontal drift
+          decay: Math.random() * 0.05 + 0.02,
+          color: Math.random() > 0.5 ? '#5266eb' : '#70707d',
+          shiftX: (Math.random() - 0.5) * 2
         });
       }
     };
@@ -40,11 +39,10 @@ const GlitchTrail = () => {
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Iterate backwards to safely remove dead particles
       for (let i = particles.current.length - 1; i >= 0; i--) {
         const p = particles.current[i];
         p.life -= p.decay;
-        p.x += p.shiftX; // apply drift
+        p.x += p.shiftX; 
 
         if (p.life <= 0) {
           particles.current.splice(i, 1);
@@ -52,7 +50,6 @@ const GlitchTrail = () => {
           ctx.globalAlpha = p.life;
           ctx.fillStyle = p.color;
           
-          // Add a subtle glow to the cobalt ones
           if (p.color === '#5266eb') {
             ctx.shadowBlur = 8;
             ctx.shadowColor = '#5266eb';
@@ -60,7 +57,6 @@ const GlitchTrail = () => {
             ctx.shadowBlur = 0;
           }
 
-          // Randomly "snap" the glitch horizontally for a frame
           const glitchSnap = Math.random() > 0.9 ? (Math.random() - 0.5) * 15 : 0;
           ctx.fillRect(p.x + glitchSnap, p.y, p.width, p.height);
         }
@@ -90,8 +86,8 @@ const GlitchTrail = () => {
   );
 };
 
-// --- SCROLL REVEAL COMPONENT ---
-const Reveal = ({ children }) => {
+// --- 2. SCROLL REVEAL (WITH STAGGER) ---
+const Reveal = ({ children, delay = 0 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const domRef = useRef();
 
@@ -100,7 +96,8 @@ const Reveal = ({ children }) => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setTimeout(() => setIsVisible(true), delay);
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.1 });
@@ -109,7 +106,7 @@ const Reveal = ({ children }) => {
     return () => {
       if (currentRef) observer.unobserve(currentRef);
     };
-  }, []);
+  }, [delay]);
 
   return (
     <div
@@ -118,7 +115,8 @@ const Reveal = ({ children }) => {
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
         transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-        willChange: 'opacity, transform'
+        willChange: 'opacity, transform',
+        width: '100%'
       }}
     >
       {children}
@@ -126,7 +124,7 @@ const Reveal = ({ children }) => {
   );
 };
 
-// --- ACCORDION COMPONENT ---
+// --- 3. SMOOTH ACCORDION ---
 const Accordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -165,13 +163,66 @@ const Accordion = ({ title, children }) => {
   );
 };
 
-// --- MAIN APP COMPONENT ---
+// --- 4. PROJECT MODAL ---
+const Modal = ({ isOpen, onClose, title, content }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div style={styles.modalOverlay} onClick={onClose}>
+      <div style={styles.modalCard} onClick={e => e.stopPropagation()}>
+        <div style={styles.modalHeader}>
+          <h3 style={styles.modalTitle}>{title}</h3>
+          <button onClick={onClose} style={styles.closeBtn}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div style={styles.modalBody}>
+          {content}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- MAIN APP ---
 export default function App() {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [activeModal, setActiveModal] = useState(null);
+
+  const projectsData = {
+    leanOps: {
+      title: "Lean Framework Integration",
+      content: (
+        <>
+          <p style={styles.modalText}>At TORMAX Canada, I orchestrated a robust lean framework specifically aimed at mitigating operational bottlenecks.</p>
+          <ul style={styles.list}>
+            <li style={styles.listItem}>Achieved a 40% efficiency boost in process management.</li>
+            <li style={styles.listItem}>Utilized CPM scheduling to forecast and remove delays.</li>
+            <li style={styles.listItem}>Drove a 30% regional revenue growth through streamlined scheduling.</li>
+          </ul>
+        </>
+      )
+    },
+    supplyChain: {
+      title: "Logistics & Fulfillment Scaling",
+      content: (
+        <>
+          <p style={styles.modalText}>At Wellness Extract, the challenge was to handle rapid growth without bloating operational costs.</p>
+          <ul style={styles.list}>
+            <li style={styles.listItem}>Scaled fulfillment operations by 66% while minimizing system downtime.</li>
+            <li style={styles.listItem}>Cut overall logistics and freight costs by 23% via vendor negotiations.</li>
+            <li style={styles.listItem}>Designed and deployed a real-time multi-channel tracking architecture.</li>
+          </ul>
+        </>
+      )
+    }
+  };
 
   return (
     <div style={styles.appContainer}>
-      {/* The new glitch cursor effect */}
       <GlitchTrail />
 
       {/* Navigation */}
@@ -189,18 +240,18 @@ export default function App() {
       {/* Hero Section */}
       <header style={styles.hero}>
         <div style={styles.heroContent}>
-          <Reveal>
+          <Reveal delay={0}>
             <div style={styles.imageContainer}>
               <img src={profilePic} alt="Vaibhav Bector" style={styles.profileImg} />
             </div>
           </Reveal>
-          <Reveal>
+          <Reveal delay={100}>
             <h1 style={styles.heroTitle}>
               I build lean operations<br />
               <span style={styles.heroTitleHighlight}>& scalable supply chains.</span>
             </h1>
           </Reveal>
-          <Reveal>
+          <Reveal delay={200}>
             <p style={styles.heroSubtitle}>
               Project Manager & Supply Chain Specialist based in Vancouver, BC. <br/>
               I also like football tactics and creative entrepreneurship.
@@ -209,7 +260,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Content Layout */}
       <main style={styles.main}>
         {/* Experience Section */}
         <section style={styles.section}>
@@ -217,7 +267,7 @@ export default function App() {
             <h2 style={styles.sectionTitle}>Experience</h2>
           </Reveal>
           
-          <Reveal>
+          <Reveal delay={100}>
             <div 
               style={{ ...styles.card, transform: hoveredCard === 'tormax' ? 'translateY(-4px)' : 'translateY(0)' }}
               onMouseEnter={() => setHoveredCard('tormax')}
@@ -239,7 +289,7 @@ export default function App() {
             </div>
           </Reveal>
 
-          <Reveal>
+          <Reveal delay={200}>
             <div 
               style={{ ...styles.card, transform: hoveredCard === 'wellness' ? 'translateY(-4px)' : 'translateY(0)' }}
               onMouseEnter={() => setHoveredCard('wellness')}
@@ -262,6 +312,40 @@ export default function App() {
           </Reveal>
         </section>
 
+        {/* Highlighted Projects / Modals Section */}
+        <section style={styles.section}>
+          <Reveal>
+            <h2 style={styles.sectionTitle}>Key Initiatives</h2>
+          </Reveal>
+          <div style={styles.twoColumn}>
+            <Reveal delay={100}>
+              <div 
+                style={{ ...styles.card, cursor: 'pointer', height: '100%', transform: hoveredCard === 'proj1' ? 'translateY(-4px)' : 'translateY(0)' }}
+                onMouseEnter={() => setHoveredCard('proj1')}
+                onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => setActiveModal('leanOps')}
+              >
+                <h3 style={styles.roleTitle}>Lean Ops Framework</h3>
+                <p style={styles.company}>Process Optimization & CPM</p>
+                <span style={styles.textButton}>Read Case Study →</span>
+              </div>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div 
+                style={{ ...styles.card, cursor: 'pointer', height: '100%', transform: hoveredCard === 'proj2' ? 'translateY(-4px)' : 'translateY(0)' }}
+                onMouseEnter={() => setHoveredCard('proj2')}
+                onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => setActiveModal('supplyChain')}
+              >
+                <h3 style={styles.roleTitle}>Fulfillment Scaling</h3>
+                <p style={styles.company}>Cost Reduction & Tracking</p>
+                <span style={styles.textButton}>Read Case Study →</span>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         {/* Education & Principles Section */}
         <section style={{...styles.section, ...styles.twoColumn}}>
           <div>
@@ -277,7 +361,7 @@ export default function App() {
             </Reveal>
           </div>
           <div>
-            <Reveal>
+            <Reveal delay={100}>
               <h2 style={styles.sectionTitle}>Core Principles</h2>
               <div style={{...styles.card, ...styles.tagContainer}}>
                 {["Lean Operations", "Kaizen Frameworks", "CPM Scheduling", "Logistics Scaling", "Football Tactics", "Hydroponics", "Vertical Farming"].map((tag, i) => (
@@ -295,18 +379,29 @@ export default function App() {
           <p style={styles.footerText}>© {new Date().getFullYear()} Vaibhav Bector. Built in Vancouver.</p>
         </Reveal>
       </footer>
+
+      {/* Render Active Modal */}
+      {activeModal && (
+        <Modal 
+          isOpen={true} 
+          onClose={() => setActiveModal(null)}
+          title={projectsData[activeModal].title}
+          content={projectsData[activeModal].content}
+        />
+      )}
     </div>
   );
 }
 
-// --- STYLES (Mercury Alpine Banking Design System) ---
+// --- 5. STYLES (Mercury Alpine Banking Design System) ---
 const styles = {
   appContainer: {
-    backgroundColor: '#171721', // Onyx canvas
+    backgroundColor: '#171721', 
     minHeight: '100vh',
-    color: '#e2e3ed', // Mist body text
+    color: '#e2e3ed', 
     fontFamily: '"Inter", sans-serif',
     WebkitFontSmoothing: 'antialiased',
+    position: 'relative',
   },
   nav: {
     position: 'fixed',
@@ -339,18 +434,18 @@ const styles = {
     alignItems: 'center',
   },
   navLink: {
-    color: '#70707d', // Slate
+    color: '#70707d',
     textDecoration: 'none',
     fontSize: '14px',
     fontWeight: 500,
     transition: 'color 0.2s ease',
   },
   primaryButton: {
-    backgroundColor: '#5266eb', // Cobalt Primary
+    backgroundColor: '#5266eb',
     color: '#ffffff',
     textDecoration: 'none',
     padding: '10px 20px',
-    borderRadius: '40px', // Pill shape
+    borderRadius: '40px',
     fontSize: '14px',
     fontWeight: 500,
     transition: 'background-color 0.2s ease, transform 0.2s ease',
@@ -422,11 +517,12 @@ const styles = {
     borderBottom: '1px solid #272735',
   },
   card: {
-    backgroundColor: '#1e1e2a', // Graphite Elevated
+    backgroundColor: '#1e1e2a', 
     borderRadius: '12px',
     padding: '32px',
     marginBottom: '24px',
-    transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s',
+    transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+    boxSizing: 'border-box',
   },
   cardHeader: {
     display: 'flex',
@@ -449,12 +545,19 @@ const styles = {
     margin: '0 0 24px 0',
   },
   dateBadge: {
-    backgroundColor: '#272735', // Obsidian
+    backgroundColor: '#272735', 
     color: '#e2e3ed',
     padding: '6px 14px',
-    borderRadius: '32px', // Pill
+    borderRadius: '32px', 
     fontSize: '13px',
     fontWeight: 500,
+  },
+  textButton: {
+    color: '#5266eb',
+    fontSize: '14px',
+    fontWeight: 500,
+    marginTop: 'auto',
+    display: 'inline-block',
   },
   accordionContainer: {
     borderTop: '1px solid #272735',
@@ -512,4 +615,63 @@ const styles = {
     fontSize: '14px',
     margin: 0,
   },
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'rgba(23, 23, 33, 0.95)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+    padding: '24px',
+    boxSizing: 'border-box',
+    backdropFilter: 'blur(8px)',
+  },
+  modalCard: {
+    backgroundColor: '#1e1e2a',
+    borderRadius: '12px',
+    padding: '32px',
+    width: '100%',
+    maxWidth: '600px',
+    border: '1px solid #272735',
+    boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+  },
+  modalHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '24px',
+    paddingBottom: '16px',
+    borderBottom: '1px solid #272735',
+  },
+  modalTitle: {
+    fontFamily: '"Space Grotesk", sans-serif',
+    fontSize: '24px',
+    fontWeight: 500,
+    color: '#e2e3ed',
+    margin: 0,
+  },
+  closeBtn: {
+    background: 'none',
+    border: 'none',
+    color: '#70707d',
+    cursor: 'pointer',
+    padding: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    transition: 'background-color 0.2s',
+  },
+  modalBody: {
+    color: '#70707d',
+    lineHeight: 1.6,
+  },
+  modalText: {
+    marginBottom: '20px',
+    fontSize: '15px',
+  }
 };
