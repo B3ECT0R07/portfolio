@@ -132,11 +132,70 @@ const GlitchTrail = () => {
   );
 };
 
+// --- PAGE LOADER ---
+const PageLoader = ({ isLoading }) => {
+  const [progress, setProgress] = useState(0);
+  const [hiding, setHiding] = useState(false);
+  const [gone, setGone] = useState(false);
+
+  // Fake smooth progress while assets load
+  useEffect(() => {
+    if (!isLoading) return;
+
+    let current = 0;
+    const id = setInterval(() => {
+      current += Math.random() * 12 + 4;
+      if (current >= 90) {
+        current = 90;
+        clearInterval(id);
+      }
+      setProgress(Math.min(90, Math.floor(current)));
+    }, 180);
+
+    return () => clearInterval(id);
+  }, [isLoading]);
+
+  // Finish to 100% then fade out
+  useEffect(() => {
+    if (isLoading) return;
+
+    setProgress(100);
+    const hideTimer = setTimeout(() => setHiding(true), 280);
+    const goneTimer = setTimeout(() => setGone(true), 900);
+
+    return () => {
+      clearTimeout(hideTimer);
+      clearTimeout(goneTimer);
+    };
+  }, [isLoading]);
+
+  if (gone) return null;
+
+  return (
+    <div className={`page-loader ${hiding ? 'page-loader-hide' : ''}`}>
+      <div className="loader-inner">
+        <div className="loader-mark">VB</div>
+        <div className="loader-bar-track">
+          <div
+            className="loader-bar-fill"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="loader-meta">
+          <span className="loader-label">Loading systems</span>
+          <span className="loader-pct">{progress}%</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
   const [expandedPassions, setExpandedPassions] = useState(['football']);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
 
   const personalInfo = {
@@ -214,12 +273,38 @@ export default function App() {
     },
   ];
 
+  // Loading gate: wait for video readiness + min display time
+  useEffect(() => {
+    const minTime = new Promise((resolve) => setTimeout(resolve, 1200));
+    const video = videoRef.current;
+
+    const videoReady = new Promise((resolve) => {
+      if (!video) {
+        resolve();
+        return;
+      }
+      if (video.readyState >= 3) {
+        resolve();
+        return;
+      }
+      const done = () => resolve();
+      video.addEventListener('canplaythrough', done, { once: true });
+      video.addEventListener('loadeddata', done, { once: true });
+      // Safety fallback if video is slow / blocked
+      setTimeout(done, 4000);
+    });
+
+    Promise.all([minTime, videoReady]).then(() => {
+      setIsLoading(false);
+      setTimeout(() => setHeroReady(true), 200);
+    });
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 50);
 
-      // Parallax: video drifts with scroll across the whole page
       if (videoRef.current) {
         videoRef.current.style.transform = `scale(1.12) translate3d(0, ${y * 0.18}px, 0)`;
       }
@@ -231,16 +316,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setHeroReady(true), 80);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = selectedProject ? 'hidden' : '';
+    document.body.style.overflow = selectedProject || isLoading ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [selectedProject]);
+  }, [selectedProject, isLoading]);
 
   const togglePassion = (id) => {
     setExpandedPassions((prev) =>
@@ -250,9 +330,10 @@ export default function App() {
 
   return (
     <div className="mercury-app">
+      <PageLoader isLoading={isLoading} />
       <GlitchTrail />
 
-      {/* FULL-SITE fixed video — stays with you while scrolling */}
+      {/* FULL-SITE fixed video */}
       <div className="page-video-bg" aria-hidden="true">
         <video
           ref={videoRef}
@@ -302,6 +383,87 @@ export default function App() {
           isolation: isolate;
         }
 
+        /* ========== LOADER ========== */
+        .page-loader {
+          position: fixed;
+          inset: 0;
+          z-index: 10000;
+          background: var(--color-onyx);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition:
+            opacity 0.55s var(--ease-out),
+            visibility 0.55s var(--ease-out);
+        }
+
+        .page-loader-hide {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+
+        .loader-inner {
+          width: min(280px, 70vw);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 28px;
+        }
+
+        .loader-mark {
+          font-family: var(--font-display);
+          font-size: 42px;
+          font-weight: 500;
+          letter-spacing: -0.03em;
+          color: var(--color-white);
+          animation: loaderPulse 1.6s var(--ease-out) infinite;
+        }
+
+        @keyframes loaderPulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.72; transform: scale(0.98); }
+        }
+
+        .loader-bar-track {
+          width: 100%;
+          height: 2px;
+          background: var(--color-obsidian);
+          border-radius: 2px;
+          overflow: hidden;
+        }
+
+        .loader-bar-fill {
+          height: 100%;
+          background: var(--color-cobalt);
+          border-radius: 2px;
+          box-shadow: 0 0 12px rgba(82, 102, 235, 0.55);
+          transition: width 0.35s var(--ease-out);
+        }
+
+        .loader-meta {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .loader-label {
+          font-size: 12px;
+          font-weight: 400;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--color-slate);
+        }
+
+        .loader-pct {
+          font-family: var(--font-display);
+          font-size: 12px;
+          font-weight: 500;
+          color: var(--color-ash);
+          font-variant-numeric: tabular-nums;
+        }
+
         /* Fixed full-viewport video background */
         .page-video-bg {
           position: fixed;
@@ -332,7 +494,6 @@ export default function App() {
           );
         }
 
-        /* All UI sits above the video */
         .page-content {
           position: relative;
           z-index: 1;
@@ -807,7 +968,6 @@ export default function App() {
       `}</style>
 
       <div className="page-content">
-        {/* Navigation */}
         <nav className={`nav-bar ${scrolled ? 'scrolled' : ''}`}>
           <div className="nav-logo">Vaibhav Bector.</div>
           <div className="nav-links">
@@ -824,7 +984,6 @@ export default function App() {
           </a>
         </nav>
 
-        {/* Hero — profile image unchanged; video is global now */}
         <header className={`hero ${heroReady ? 'hero-ready' : ''}`}>
           <div className="hero-content">
             <div className="portrait-container hero-item hero-item-0">
@@ -872,7 +1031,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* Experience */}
         <section id="experience" className="section-container">
           <Reveal>
             <div className="section-header">
@@ -904,7 +1062,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Projects */}
         <section id="projects" className="section-container" style={{ paddingTop: 0 }}>
           <Reveal>
             <div className="section-header">
@@ -950,7 +1107,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* About / Passions */}
         <section id="about" className="section-container" style={{ paddingTop: 0 }}>
           <Reveal>
             <div className="section-header">
@@ -994,7 +1150,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Project Modal */}
         {selectedProject && (
           <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
