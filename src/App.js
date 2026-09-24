@@ -125,6 +125,7 @@ export default function App() {
   ];
 
   // Typing effect logic
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const current = roles[roleIndex];
     const timer = setTimeout(() => {
