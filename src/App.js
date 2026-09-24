@@ -47,7 +47,7 @@ function Reveal({ children, delay = 0, className = '' }) {
   );
 }
 
-// --- GLITCH CURSOR TRAIL COMPONENT ---
+// --- GLITCH CURSOR TRAIL ---
 const GlitchTrail = () => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
@@ -84,18 +84,18 @@ const GlitchTrail = () => {
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       for (let i = particles.current.length - 1; i >= 0; i--) {
         const p = particles.current[i];
         p.life -= p.decay;
-        p.x += p.shiftX; 
+        p.x += p.shiftX;
 
         if (p.life <= 0) {
           particles.current.splice(i, 1);
         } else {
           ctx.globalAlpha = p.life;
           ctx.fillStyle = p.color;
-          
+
           if (p.color === '#5266eb') {
             ctx.shadowBlur = 8;
             ctx.shadowColor = '#5266eb';
@@ -119,15 +119,15 @@ const GlitchTrail = () => {
   }, []);
 
   return (
-    <canvas 
-      ref={canvasRef} 
-      style={{ 
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        pointerEvents: 'none', 
-        zIndex: 9999 
-      }} 
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        pointerEvents: 'none',
+        zIndex: 9999
+      }}
     />
   );
 };
@@ -239,7 +239,6 @@ export default function App() {
 
   return (
     <div className="mercury-app">
-      {/* GLITCH TRAIL COMPONENT INJECTED HERE */}
       <GlitchTrail />
 
       <style>{`
@@ -304,15 +303,6 @@ export default function App() {
         .hero-item-3 { transition-delay: 0.36s; }
         .hero-item-4 { transition-delay: 0.48s; }
 
-        .hero-bg {
-          transform: scale(1.06);
-          transition: transform 1.6s var(--ease-out);
-        }
-
-        .hero-ready .hero-bg {
-          transform: scale(1);
-        }
-
         .hero {
           position: relative;
           min-height: 100vh;
@@ -326,19 +316,37 @@ export default function App() {
           overflow: hidden;
         }
 
+        /* Video background container */
         .hero-bg {
           position: absolute;
           inset: 0;
-          background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2074&auto=format&fit=crop');
-          background-size: cover;
-          background-position: center;
           z-index: 0;
+          overflow: hidden;
+        }
+
+        .hero-video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          transform: scale(1.06);
+          transition: transform 1.6s var(--ease-out);
+          pointer-events: none;
+        }
+
+        .hero-ready .hero-video {
+          transform: scale(1);
         }
 
         .hero-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to bottom, rgba(23, 23, 33, 0.4) 0%, rgba(23, 23, 33, 1) 100%);
+          background: linear-gradient(
+            to bottom,
+            rgba(23, 23, 33, 0.45) 0%,
+            rgba(23, 23, 33, 0.75) 55%,
+            rgba(23, 23, 33, 1) 100%
+          );
           z-index: 1;
         }
 
@@ -351,7 +359,6 @@ export default function App() {
           align-items: center;
         }
 
-        /* Portrait Styling */
         .portrait-container {
           margin-bottom: 24px;
           position: relative;
@@ -776,17 +783,27 @@ export default function App() {
         </a>
       </nav>
 
-      {/* Hero with Personal Portrait */}
+      {/* Hero — profile image unchanged, MP4 is background only */}
       <header className={`hero ${heroReady ? 'hero-ready' : ''}`}>
-        <div className="hero-bg" aria-hidden="true" />
+        <div className="hero-bg" aria-hidden="true">
+          <video
+            className="hero-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          >
+            <source src="/meditating-ninja-4k.mp4" type="video/mp4" />
+          </video>
+        </div>
         <div className="hero-overlay" />
 
         <div className="hero-content">
-          {/* Portrait Image Container */}
           <div className="portrait-container hero-item hero-item-0">
-            <img 
-              src={profilePic} 
-              alt="Vaibhav Bector" 
+            <img
+              src={profilePic}
+              alt="Vaibhav Bector"
               className="portrait-img"
             />
           </div>
