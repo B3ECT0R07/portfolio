@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, MapPin, X, ChevronDown, ArrowRight, ExternalLink } from 'lucide-react';
+import ProfilePic from './Profile.jpg'; // Direct React import guarantees Vercel bundles it!
 
 const LinkedinIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -696,13 +697,9 @@ export default function App() {
           {/* Portrait Image Container */}
           <div className="portrait-container hero-item hero-item-0">
             <img 
-              src="/profile.jpg" 
+              src={profilePic} 
               alt="Vaibhav Bector" 
               className="portrait-img"
-              onError={(e) => {
-                // If profile.jpg isn't placed in public folder yet, hide broken image icon cleanly
-                e.target.style.display = 'none';
-              }}
             />
           </div>
 
