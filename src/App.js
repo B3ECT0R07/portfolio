@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Mail, MapPin, X, ChevronDown, ChevronUp, ArrowRight, ExternalLink } from 'lucide-react';
 
 const LinkedinIcon = () => (
@@ -13,95 +13,145 @@ const GithubIcon = () => (
   </svg>
 );
 
+// Simple scroll-reveal wrapper
+function Reveal({ children, delay = 0, className = '' }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? 'reveal-in' : ''} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
-  const [expandedPassions, setExpandedPassions] = useState(['football']); 
+  const [heroReady, setHeroReady] = useState(false);
+  const [expandedPassions, setExpandedPassions] = useState(['football']);
   const [selectedProject, setSelectedProject] = useState(null);
 
   const personalInfo = {
-    name: "Vaibhav Bector",
-    location: "Vancouver, BC",
-    email: "bector2001@gmail.com",
-    tagline: "I build lean operations and scalable supply chains.",
-    linkedin: "https://ca.linkedin.com/in/vaibhavbector",
-    github: "https://github.com/B3ECT0R07",
+    name: 'Vaibhav Bector',
+    location: 'Vancouver, BC',
+    email: 'bector2001@gmail.com',
+    tagline: 'I build lean operations and scalable supply chains.',
+    linkedin: 'https://ca.linkedin.com/in/vaibhavbector',
+    github: 'https://github.com/B3ECT0R07',
   };
 
   const passions = [
     {
-      id: "football",
-      title: "Tactical Execution",
-      tagline: "Strategy & Leadership — Hala Madrid",
-      fullContent: `Football is a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: relentless growth, clutch performance under pressure, and unyielding ambition. I apply this exact framework to coordinating complex project timelines.`
+      id: 'football',
+      title: 'Tactical Execution',
+      tagline: 'Strategy & Leadership — Hala Madrid',
+      fullContent:
+        'Football is a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: relentless growth, clutch performance under pressure, and unyielding ambition. I apply this exact framework to coordinating complex project timelines.',
     },
     {
-      id: "hydroponics",
-      title: "Sustainable Systems",
-      tagline: "Vertical farming & bio-tech",
-      fullContent: `Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around automated nutrient recirculating systems and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.`
+      id: 'hydroponics',
+      title: 'Sustainable Systems',
+      tagline: 'Vertical farming & bio-tech',
+      fullContent:
+        'Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around automated nutrient recirculating systems and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.',
     },
     {
-      id: "entrepreneurship",
-      title: "Lean Operations",
-      tagline: "Supply chain & problem solving",
-      fullContent: `Building scalable systems is at the heart of everything I do. My track record in supply chain management and installation coordination stems from an entrepreneurial drive to eliminate bottlenecks and build predictable success.`
-    }
+      id: 'entrepreneurship',
+      title: 'Lean Operations',
+      tagline: 'Supply chain & problem solving',
+      fullContent:
+        'Building scalable systems is at the heart of everything I do. My track record in supply chain management and installation coordination stems from an entrepreneurial drive to eliminate bottlenecks and build predictable success.',
+    },
   ];
 
   const experiences = [
     {
-      company: "TORMAX Canada",
-      role: "Project Manager / Installation Coordinator",
-      period: "July 2024 – Present",
+      company: 'TORMAX Canada',
+      role: 'Project Manager / Installation Coordinator',
+      period: 'July 2024 – Present',
       highlights: [
-        "Boosted operational project delivery efficiency by 40% using Lean and Kaizen frameworks.",
-        "Supported 30% regional revenue growth through precise resource allocation.",
-        "Managed Critical Path Method (CPM) scheduling for commercial architectural installations."
-      ]
+        'Boosted operational project delivery efficiency by 40% using Lean and Kaizen frameworks.',
+        'Supported 30% regional revenue growth through precise resource allocation.',
+        'Managed Critical Path Method (CPM) scheduling for commercial architectural installations.',
+      ],
     },
     {
-      company: "Wellness Extract",
-      role: "Supply Chain Manager",
-      period: "August 2023 – July 2024",
+      company: 'Wellness Extract',
+      role: 'Supply Chain Manager',
+      period: 'August 2023 – July 2024',
       highlights: [
-        "Scaled order fulfillment capacity by 66% through automated multi-channel inventory control.",
-        "Reduced logistics operational costs by 23% by renegotiating freight and vendor contracts.",
-        "Managed end-to-end supply chain pipelines across North American fulfillment hubs."
-      ]
-    }
+        'Scaled order fulfillment capacity by 66% through automated multi-channel inventory control.',
+        'Reduced logistics operational costs by 23% by renegotiating freight and vendor contracts.',
+        'Managed end-to-end supply chain pipelines across North American fulfillment hubs.',
+      ],
+    },
   ];
 
   const projects = [
     {
-      id: "tormax-tracker",
-      title: "Lean Project Delivery Engine",
-      category: "Operations & Project Management",
-      desc: "Built resource planning matrices that cut project delays by 40% and aligned installation teams.",
-      details: "By combining Critical Path Method (CPM) scheduling with agile tracking, this system improved site installation flow, aligned technicians with supply hubs, and drove regional growth."
+      id: 'tormax-tracker',
+      title: 'Lean Project Delivery Engine',
+      category: 'Operations & Project Management',
+      desc: 'Built resource planning matrices that cut project delays by 40% and aligned installation teams.',
+      details:
+        'By combining Critical Path Method (CPM) scheduling with agile tracking, this system improved site installation flow, aligned technicians with supply hubs, and drove regional growth.',
     },
     {
-      id: "supply-chain-hub",
-      title: "Fulfillment Optimizer",
-      category: "Supply Chain & Logistics",
-      desc: "Architected end-to-end inventory workflows supporting a 66% order volume increase.",
-      details: "Leveraged inventory analytics to optimize stock levels, prevent stockouts, and reduce overall freight expenditure by 23% across North American distribution channels."
-    }
+      id: 'supply-chain-hub',
+      title: 'Fulfillment Optimizer',
+      category: 'Supply Chain & Logistics',
+      desc: 'Architected end-to-end inventory workflows supporting a 66% order volume increase.',
+      details:
+        'Leveraged inventory analytics to optimize stock levels, prevent stockouts, and reduce overall freight expenditure by 23% across North American distribution channels.',
+    },
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Hero entrance after a tiny beat (feels intentional)
+  useEffect(() => {
+    const t = setTimeout(() => setHeroReady(true), 80);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = selectedProject ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject]);
+
   const togglePassion = (id) => {
-    if (expandedPassions.includes(id)) {
-      setExpandedPassions(expandedPassions.filter(item => item !== id));
-    } else {
-      setExpandedPassions([...expandedPassions, id]);
-    }
+    setExpandedPassions((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   return (
@@ -119,9 +169,9 @@ export default function App() {
           --color-ivory: #ededf3;
           --color-cobalt: #5266eb;
           --color-white: #ffffff;
-
           --font-body: 'Inter', sans-serif;
           --font-display: 'Space Grotesk', sans-serif;
+          --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -135,6 +185,50 @@ export default function App() {
           scroll-behavior: smooth;
         }
 
+        /* ---------- SCROLL REVEAL ---------- */
+        .reveal {
+          opacity: 0;
+          transform: translateY(28px);
+          transition:
+            opacity 0.8s var(--ease-out),
+            transform 0.8s var(--ease-out);
+          will-change: opacity, transform;
+        }
+
+        .reveal.reveal-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* ---------- HERO ENTRANCE ---------- */
+        .hero-item {
+          opacity: 0;
+          transform: translateY(20px);
+          transition:
+            opacity 0.9s var(--ease-out),
+            transform 0.9s var(--ease-out);
+        }
+
+        .hero-ready .hero-item {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .hero-item-1 { transition-delay: 0.05s; }
+        .hero-item-2 { transition-delay: 0.18s; }
+        .hero-item-3 { transition-delay: 0.32s; }
+        .hero-item-4 { transition-delay: 0.46s; }
+
+        .hero-bg {
+          transform: scale(1.06);
+          transition: transform 1.6s var(--ease-out);
+        }
+
+        .hero-ready .hero-bg {
+          transform: scale(1);
+        }
+
+        /* ---------- LAYOUT ---------- */
         .hero {
           position: relative;
           min-height: 100vh;
@@ -145,6 +239,7 @@ export default function App() {
           text-align: center;
           padding: 0 24px;
           background-color: var(--color-onyx);
+          overflow: hidden;
         }
 
         .hero-bg {
@@ -173,7 +268,6 @@ export default function App() {
         }
 
         .hero-badge {
-          font-family: var(--font-body);
           font-size: 14px;
           font-weight: 400;
           color: var(--color-ash);
@@ -199,7 +293,6 @@ export default function App() {
         }
 
         .hero-subtitle {
-          font-family: var(--font-body);
           font-size: 18px;
           font-weight: 400;
           line-height: 1.5;
@@ -208,46 +301,51 @@ export default function App() {
           max-width: 540px;
         }
 
+        /* ---------- BUTTONS ---------- */
+        .btn-primary,
+        .btn-ghost {
+          border-radius: 32px;
+          font-family: var(--font-body);
+          font-size: 16px;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          transition:
+            background-color 0.25s ease,
+            border-color 0.25s ease,
+            transform 0.25s var(--ease-out),
+            box-shadow 0.25s ease;
+        }
+
         .btn-primary {
           background-color: var(--color-cobalt);
           color: var(--color-white);
           border: none;
           padding: 14px 24px;
-          border-radius: 32px;
-          font-family: var(--font-body);
-          font-size: 16px;
           font-weight: 500;
-          cursor: pointer;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          transition: background-color 0.2s ease;
-          text-decoration: none;
         }
 
         .btn-primary:hover {
           background-color: #4255d6;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 28px rgba(82, 102, 235, 0.28);
         }
+
+        .btn-primary:active { transform: translateY(0); }
 
         .btn-ghost {
           background-color: transparent;
           color: var(--color-ivory);
           border: 1px solid var(--color-slate);
           padding: 14px 24px;
-          border-radius: 32px;
-          font-family: var(--font-body);
-          font-size: 16px;
           font-weight: 400;
-          cursor: pointer;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          transition: border-color 0.2s ease;
-          text-decoration: none;
         }
 
         .btn-ghost:hover {
           border-color: var(--color-mist);
+          transform: translateY(-2px);
         }
 
         .button-group {
@@ -257,6 +355,7 @@ export default function App() {
           justify-content: center;
         }
 
+        /* ---------- NAV ---------- */
         .nav-bar {
           position: fixed;
           top: 0;
@@ -267,14 +366,20 @@ export default function App() {
           justify-content: space-between;
           align-items: center;
           z-index: 100;
-          transition: all 0.3s ease;
+          transition:
+            background 0.35s ease,
+            border-color 0.35s ease,
+            backdrop-filter 0.35s ease,
+            padding 0.35s ease;
           background: transparent;
+          border-bottom: 1px solid transparent;
         }
 
         .nav-bar.scrolled {
           background: rgba(23, 23, 33, 0.85);
           backdrop-filter: blur(12px);
           border-bottom: 1px solid var(--color-obsidian);
+          padding: 16px 40px;
         }
 
         .nav-logo {
@@ -285,30 +390,39 @@ export default function App() {
           letter-spacing: -0.02em;
         }
 
-        .nav-links {
-          display: flex;
-          gap: 32px;
-        }
+        .nav-links { display: flex; gap: 32px; }
 
         .nav-link {
           color: var(--color-ivory);
           text-decoration: none;
           font-size: 14px;
           font-weight: 400;
+          position: relative;
           transition: color 0.2s ease;
         }
 
-        .nav-link:hover { color: var(--color-white); }
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -4px;
+          width: 0;
+          height: 1px;
+          background: var(--color-ivory);
+          transition: width 0.3s var(--ease-out);
+        }
 
+        .nav-link:hover { color: var(--color-white); }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ---------- SECTIONS ---------- */
         .section-container {
           max-width: 1200px;
           margin: 0 auto;
           padding: 112px 24px;
         }
 
-        .section-header {
-          margin-bottom: 56px;
-        }
+        .section-header { margin-bottom: 56px; }
 
         .section-title {
           font-family: var(--font-display);
@@ -327,13 +441,27 @@ export default function App() {
           line-height: 1.5;
         }
 
+        /* ---------- CARDS ---------- */
         .graphite-card {
           background-color: var(--color-graphite);
           border-radius: 12px;
           padding: 32px;
-          border: none;
+          border: 1px solid transparent;
           box-shadow: none;
-          transition: transform 0.2s ease;
+          transition:
+            transform 0.35s var(--ease-out),
+            border-color 0.35s ease,
+            background-color 0.35s ease;
+        }
+
+        .graphite-card.interactive {
+          cursor: pointer;
+        }
+
+        .graphite-card.interactive:hover {
+          transform: translateY(-6px);
+          border-color: rgba(82, 102, 235, 0.25);
+          background-color: #21212f;
         }
 
         .grid-2 {
@@ -356,6 +484,8 @@ export default function App() {
           margin-bottom: 24px;
           display: flex;
           justify-content: space-between;
+          gap: 12px;
+          flex-wrap: wrap;
           border-bottom: 1px solid var(--color-obsidian);
           padding-bottom: 16px;
         }
@@ -374,7 +504,7 @@ export default function App() {
         }
 
         .exp-list li::before {
-          content: "";
+          content: '';
           position: absolute;
           left: 0;
           top: 10px;
@@ -384,11 +514,28 @@ export default function App() {
           background-color: var(--color-slate);
         }
 
+        .project-link {
+          margin-top: 24px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--color-cobalt);
+          font-weight: 500;
+          font-size: 14px;
+          transition: gap 0.25s var(--ease-out);
+        }
+
+        .graphite-card.interactive:hover .project-link {
+          gap: 12px;
+        }
+
+        /* ---------- ACCORDION ---------- */
         .dropbox-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
           cursor: pointer;
+          gap: 16px;
         }
 
         .dropbox-title {
@@ -404,19 +551,99 @@ export default function App() {
           margin-top: 4px;
         }
 
+        .chevron {
+          color: var(--color-slate);
+          transition: transform 0.35s var(--ease-out), color 0.25s ease;
+          flex-shrink: 0;
+        }
+
+        .chevron.open {
+          transform: rotate(180deg);
+          color: var(--color-ivory);
+        }
+
         .dropbox-content {
+          display: grid;
+          grid-template-rows: 0fr;
+          transition: grid-template-rows 0.4s var(--ease-out);
+        }
+
+        .dropbox-content.open {
+          grid-template-rows: 1fr;
+        }
+
+        .dropbox-content-inner {
+          overflow: hidden;
+        }
+
+        .dropbox-content-inner > div {
           margin-top: 24px;
           padding-top: 24px;
           border-top: 1px solid var(--color-obsidian);
           color: var(--color-ivory);
           line-height: 1.6;
           font-size: 16px;
-          animation: slideDown 0.3s ease-out;
+          opacity: 0;
+          transform: translateY(-6px);
+          transition:
+            opacity 0.35s ease 0.05s,
+            transform 0.35s var(--ease-out) 0.05s;
         }
 
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
+        .dropbox-content.open .dropbox-content-inner > div {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* ---------- MODAL ---------- */
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(23, 23, 33, 0.92);
+          backdrop-filter: blur(10px);
+          z-index: 200;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          animation: fadeIn 0.25s ease;
+        }
+
+        .modal-content {
+          background-color: var(--color-graphite);
+          border-radius: 12px;
+          padding: 40px;
+          max-width: 600px;
+          width: 100%;
+          position: relative;
+          border: 1px solid var(--color-obsidian);
+          animation: modalIn 0.4s var(--ease-out);
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes modalIn {
+          from { opacity: 0; transform: translateY(16px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-close {
+          position: absolute;
+          top: 24px;
+          right: 24px;
+          background: transparent;
+          border: none;
+          color: var(--color-ash);
+          cursor: pointer;
+          transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .modal-close:hover {
+          color: var(--color-white);
+          transform: rotate(90deg);
         }
 
         .footer {
@@ -427,42 +654,29 @@ export default function App() {
           color: var(--color-ash);
         }
 
-        .modal-overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(23, 23, 33, 0.95);
-          backdrop-filter: blur(8px);
-          z-index: 200;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
-        }
-
-        .modal-content {
-          background-color: var(--color-graphite);
-          border-radius: 12px;
-          padding: 40px;
-          max-width: 600px;
-          width: 100%;
-          position: relative;
-        }
-        
-        .modal-close {
-          position: absolute;
-          top: 24px;
-          right: 24px;
-          background: transparent;
-          border: none;
-          color: var(--color-ash);
-          cursor: pointer;
-        }
-        .modal-close:hover { color: var(--color-white); }
-
         @media (max-width: 768px) {
           .nav-links { display: none; }
           .hero-title { font-size: 42px; }
           .section-container { padding: 72px 24px; }
+          .nav-bar, .nav-bar.scrolled { padding: 16px 20px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .reveal,
+          .hero-item,
+          .hero-bg,
+          .graphite-card,
+          .btn-primary,
+          .btn-ghost,
+          .dropbox-content,
+          .dropbox-content-inner > div,
+          .modal-overlay,
+          .modal-content {
+            transition: none !important;
+            animation: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
         }
       `}</style>
 
@@ -474,146 +688,226 @@ export default function App() {
           <a href="#projects" className="nav-link">Projects</a>
           <a href="#about" className="nav-link">About</a>
         </div>
-        <a href={`mailto:${personalInfo.email}`} className="btn-ghost" style={{ padding: '8px 16px', fontSize: '14px' }}>
+        <a
+          href={`mailto:${personalInfo.email}`}
+          className="btn-ghost"
+          style={{ padding: '8px 16px', fontSize: '14px' }}
+        >
           <Mail size={14} /> Contact
         </a>
       </nav>
 
-      {/* Cinematic Hero Section */}
-      <header className="hero">
-        <div className="hero-bg" aria-hidden="true"></div>
-        <div className="hero-overlay"></div>
-        
+      {/* Hero */}
+      <header className={`hero ${heroReady ? 'hero-ready' : ''}`}>
+        <div className="hero-bg" aria-hidden="true" />
+        <div className="hero-overlay" />
+
         <div className="hero-content">
-          <div className="hero-badge">
+          <div className="hero-badge hero-item hero-item-1">
             <MapPin size={14} /> {personalInfo.location} — Operations & Strategy
           </div>
-          <h1 className="hero-title">Orchestrating complex systems.</h1>
-          <p className="hero-subtitle">
-            {personalInfo.tagline} Designed to eliminate operational bottlenecks and architect predictable, high-growth delivery.
+
+          <h1 className="hero-title hero-item hero-item-2">
+            Orchestrating complex systems.
+          </h1>
+
+          <p className="hero-subtitle hero-item hero-item-3">
+            {personalInfo.tagline} Designed to eliminate operational bottlenecks
+            and architect predictable, high-growth delivery.
           </p>
-          <div className="button-group">
+
+          <div className="button-group hero-item hero-item-4">
             <a href="#projects" className="btn-primary">
               View Initiatives <ArrowRight size={18} />
             </a>
-            <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="btn-ghost">
+            <a
+              href={personalInfo.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost"
+            >
               <LinkedinIcon /> LinkedIn
             </a>
-            <a href={personalInfo.github} target="_blank" rel="noreferrer" className="btn-ghost">
+            <a
+              href={personalInfo.github}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost"
+            >
               <GithubIcon /> GitHub
             </a>
           </div>
         </div>
       </header>
 
-      {/* Experience Section */}
+      {/* Experience */}
       <section id="experience" className="section-container">
-        <div className="section-header">
-          <h2 className="section-title">Track Record</h2>
-          <p className="section-desc">Executing lean operations across supply chain management and architectural installations.</p>
-        </div>
+        <Reveal>
+          <div className="section-header">
+            <h2 className="section-title">Track Record</h2>
+            <p className="section-desc">
+              Executing lean operations across supply chain management and
+              architectural installations.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="grid-2">
           {experiences.map((exp, idx) => (
-            <div key={idx} className="graphite-card">
-              <h3 className="exp-role">{exp.role}</h3>
-              <div className="exp-meta">
-                <span>{exp.company}</span>
-                <span>{exp.period}</span>
+            <Reveal key={exp.company} delay={idx * 120}>
+              <div className="graphite-card">
+                <h3 className="exp-role">{exp.role}</h3>
+                <div className="exp-meta">
+                  <span>{exp.company}</span>
+                  <span>{exp.period}</span>
+                </div>
+                <ul className="exp-list">
+                  {exp.highlights.map((highlight) => (
+                    <li key={highlight}>{highlight}</li>
+                  ))}
+                </ul>
               </div>
-              <ul className="exp-list">
-                {exp.highlights.map((highlight, i) => (
-                  <li key={i}>{highlight}</li>
-                ))}
-              </ul>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="section-container" style={{ paddingTop: '0' }}>
-        <div className="section-header">
-          <h2 className="section-title">Key Initiatives</h2>
-        </div>
+      {/* Projects */}
+      <section id="projects" className="section-container" style={{ paddingTop: 0 }}>
+        <Reveal>
+          <div className="section-header">
+            <h2 className="section-title">Key Initiatives</h2>
+          </div>
+        </Reveal>
 
         <div className="grid-2">
-          {projects.map((proj) => (
-            <div 
-              key={proj.id} 
-              className="graphite-card" 
-              style={{ cursor: 'pointer' }}
-              onClick={() => setSelectedProject(proj)}
-            >
-              <div style={{ color: 'var(--color-slate)', fontSize: '14px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                {proj.category}
+          {projects.map((proj, idx) => (
+            <Reveal key={proj.id} delay={idx * 120}>
+              <div
+                className="graphite-card interactive"
+                onClick={() => setSelectedProject(proj)}
+              >
+                <div
+                  style={{
+                    color: 'var(--color-slate)',
+                    fontSize: '14px',
+                    marginBottom: '8px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  {proj.category}
+                </div>
+                <h3 className="exp-role">{proj.title}</h3>
+                <p
+                  style={{
+                    color: 'var(--color-ash)',
+                    fontSize: '16px',
+                    lineHeight: 1.5,
+                    marginTop: '12px',
+                  }}
+                >
+                  {proj.desc}
+                </p>
+                <div className="project-link">
+                  View details <ExternalLink size={14} />
+                </div>
               </div>
-              <h3 className="exp-role">{proj.title}</h3>
-              <p style={{ color: 'var(--color-ash)', fontSize: '16px', lineHeight: '1.5', marginTop: '12px' }}>
-                {proj.desc}
-              </p>
-              <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-cobalt)', fontWeight: '500', fontSize: '14px' }}>
-                View details <ExternalLink size={14} />
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Passions / About Section */}
-      <section id="about" className="section-container" style={{ paddingTop: '0' }}>
-        <div className="section-header">
-          <h2 className="section-title">Driving Principles</h2>
-          <p className="section-desc">The philosophies that influence my approach to complex project management.</p>
-        </div>
+      {/* About / Passions */}
+      <section id="about" className="section-container" style={{ paddingTop: 0 }}>
+        <Reveal>
+          <div className="section-header">
+            <h2 className="section-title">Driving Principles</h2>
+            <p className="section-desc">
+              The philosophies that influence my approach to complex project
+              management.
+            </p>
+          </div>
+        </Reveal>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {passions.map((passion) => {
+          {passions.map((passion, idx) => {
             const isOpen = expandedPassions.includes(passion.id);
             return (
-              <div key={passion.id} className="graphite-card">
-                <div className="dropbox-header" onClick={() => togglePassion(passion.id)}>
-                  <div>
-                    <h3 className="dropbox-title">{passion.title}</h3>
-                    <div className="dropbox-tagline">{passion.tagline}</div>
+              <Reveal key={passion.id} delay={idx * 90}>
+                <div className="graphite-card">
+                  <div
+                    className="dropbox-header"
+                    onClick={() => togglePassion(passion.id)}
+                  >
+                    <div>
+                      <h3 className="dropbox-title">{passion.title}</h3>
+                      <div className="dropbox-tagline">{passion.tagline}</div>
+                    </div>
+                    <ChevronDown
+                      size={24}
+                      className={`chevron ${isOpen ? 'open' : ''}`}
+                    />
                   </div>
-                  <div style={{ color: 'var(--color-slate)' }}>
-                    {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+
+                  <div className={`dropbox-content ${isOpen ? 'open' : ''}`}>
+                    <div className="dropbox-content-inner">
+                      <div>{passion.fullContent}</div>
+                    </div>
                   </div>
                 </div>
-                
-                {isOpen && (
-                  <div className="dropbox-content">
-                    {passion.fullContent}
-                  </div>
-                )}
-              </div>
-            )
+              </Reveal>
+            );
           })}
         </div>
       </section>
 
-      {/* Project Detail Modal */}
+      {/* Project Modal */}
       {selectedProject && (
         <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setSelectedProject(null)}>
+            <button
+              className="modal-close"
+              onClick={() => setSelectedProject(null)}
+              aria-label="Close"
+            >
               <X size={24} />
             </button>
-            <div style={{ color: 'var(--color-slate)', fontSize: '14px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div
+              style={{
+                color: 'var(--color-slate)',
+                fontSize: '14px',
+                marginBottom: '8px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
               {selectedProject.category}
             </div>
-            <h3 className="section-title" style={{ fontSize: '32px', marginBottom: '24px' }}>{selectedProject.title}</h3>
-            <p style={{ color: 'var(--color-ivory)', fontSize: '16px', lineHeight: '1.6' }}>
+            <h3
+              className="section-title"
+              style={{ fontSize: '32px', marginBottom: '24px' }}
+            >
+              {selectedProject.title}
+            </h3>
+            <p
+              style={{
+                color: 'var(--color-ivory)',
+                fontSize: '16px',
+                lineHeight: 1.6,
+              }}
+            >
               {selectedProject.details}
             </p>
           </div>
         </div>
       )}
 
-      {/* Footer */}
       <footer className="footer">
-        <p>© {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine banking aesthetics.</p>
+        <p>
+          © {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine banking
+          aesthetics.
+        </p>
       </footer>
     </div>
   );
