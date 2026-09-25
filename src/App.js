@@ -1,27 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Mail, 
-  MapPin, 
-  X, 
-  ChevronDown, 
-  ArrowRight, 
+import {
+  Mail,
+  MapPin,
+  X,
+  ChevronDown,
+  ArrowRight,
   ExternalLink,
-  Zap, 
-  TrendingUp, 
-  BarChart3, 
-  Target 
+  Download,
+  Zap,
+  TrendingUp,
+  BarChart3,
+  Target,
 } from 'lucide-react';
 import profilePic from './Profile.jpg';
 
 const LinkedinIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/>
+    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z" />
   </svg>
 );
 
 const GithubIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-    <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+    <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" />
   </svg>
 );
 
@@ -44,6 +45,7 @@ function Reveal({ children, delay = 0, className = '' }) {
     );
 
     observer.observe(el);
+
     return () => observer.disconnect();
   }, []);
 
@@ -64,18 +66,24 @@ const GlitchTrail = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     let animationFrameId;
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
+
     window.addEventListener('resize', resize);
     resize();
 
     const onMouseMove = (e) => {
       const numParticles = Math.floor(Math.random() * 2) + 2;
+
       for (let i = 0; i < numParticles; i++) {
         particles.current.push({
           x: e.clientX + (Math.random() - 0.5) * 30,
@@ -85,7 +93,7 @@ const GlitchTrail = () => {
           life: 1,
           decay: Math.random() * 0.05 + 0.02,
           color: Math.random() > 0.5 ? '#5266eb' : '#70707d',
-          shiftX: (Math.random() - 0.5) * 2
+          shiftX: (Math.random() - 0.5) * 2,
         });
       }
     };
@@ -113,12 +121,16 @@ const GlitchTrail = () => {
             ctx.shadowBlur = 0;
           }
 
-          const glitchSnap = Math.random() > 0.9 ? (Math.random() - 0.5) * 15 : 0;
+          const glitchSnap =
+            Math.random() > 0.9 ? (Math.random() - 0.5) * 15 : 0;
+
           ctx.fillRect(p.x + glitchSnap, p.y, p.width, p.height);
         }
       }
+
       animationFrameId = requestAnimationFrame(render);
     };
+
     render();
 
     return () => {
@@ -136,7 +148,7 @@ const GlitchTrail = () => {
         top: 0,
         left: 0,
         pointerEvents: 'none',
-        zIndex: 9999
+        zIndex: 9999,
       }}
     />
   );
@@ -151,12 +163,15 @@ const PageLoader = ({ isLoading }) => {
     if (!isLoading) return;
 
     let current = 0;
+
     const id = setInterval(() => {
       current += Math.random() * 12 + 4;
+
       if (current >= 90) {
         current = 90;
         clearInterval(id);
       }
+
       setProgress(Math.min(90, Math.floor(current)));
     }, 180);
 
@@ -167,6 +182,7 @@ const PageLoader = ({ isLoading }) => {
     if (isLoading) return;
 
     setProgress(100);
+
     const hideTimer = setTimeout(() => setHiding(true), 280);
     const goneTimer = setTimeout(() => setGone(true), 900);
 
@@ -182,9 +198,14 @@ const PageLoader = ({ isLoading }) => {
     <div className={`page-loader ${hiding ? 'page-loader-hide' : ''}`}>
       <div className="loader-inner">
         <div className="loader-mark">VB</div>
+
         <div className="loader-bar-track">
-          <div className="loader-bar-fill" style={{ width: `${progress}%` }} />
+          <div
+            className="loader-bar-fill"
+            style={{ width: `${progress}%` }}
+          />
         </div>
+
         <div className="loader-meta">
           <span className="loader-label">Loading systems</span>
           <span className="loader-pct">{progress}%</span>
@@ -208,12 +229,15 @@ const TechTicker = ({ items }) => {
   const measure = () => {
     const track = trackRef.current;
     if (!track) return;
+
     halfWidthRef.current = track.scrollWidth / 2;
   };
 
   useEffect(() => {
     measure();
+
     window.addEventListener('resize', measure);
+
     return () => window.removeEventListener('resize', measure);
   }, [items]);
 
@@ -221,7 +245,11 @@ const TechTicker = ({ items }) => {
     const SPEED = 0.45;
 
     const tick = () => {
-      if (!pausedRef.current && !draggingRef.current && halfWidthRef.current > 0) {
+      if (
+        !pausedRef.current &&
+        !draggingRef.current &&
+        halfWidthRef.current > 0
+      ) {
         offsetRef.current -= SPEED;
 
         if (Math.abs(offsetRef.current) >= halfWidthRef.current) {
@@ -232,18 +260,22 @@ const TechTicker = ({ items }) => {
           trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
         }
       }
+
       rafRef.current = requestAnimationFrame(tick);
     };
 
     rafRef.current = requestAnimationFrame(tick);
+
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
   const wrapOffset = (value) => {
     const half = halfWidthRef.current || 1;
     let next = value;
+
     while (next <= -half) next += half;
     while (next > 0) next -= half;
+
     return next;
   };
 
@@ -251,6 +283,7 @@ const TechTicker = ({ items }) => {
     draggingRef.current = true;
     pausedRef.current = true;
     setIsDragging(true);
+
     startXRef.current = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
     startOffsetRef.current = offsetRef.current;
 
@@ -261,8 +294,10 @@ const TechTicker = ({ items }) => {
 
   const onPointerMove = (e) => {
     if (!draggingRef.current) return;
+
     const clientX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
     const delta = clientX - startXRef.current;
+
     offsetRef.current = wrapOffset(startOffsetRef.current + delta);
 
     if (trackRef.current) {
@@ -273,6 +308,7 @@ const TechTicker = ({ items }) => {
   const onPointerUp = () => {
     draggingRef.current = false;
     setIsDragging(false);
+
     setTimeout(() => {
       if (!draggingRef.current) pausedRef.current = false;
     }, 900);
@@ -280,23 +316,33 @@ const TechTicker = ({ items }) => {
 
   const onKeyDown = (e) => {
     const step = 80;
+
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
       pausedRef.current = true;
       offsetRef.current = wrapOffset(offsetRef.current + step);
+
       if (trackRef.current) {
         trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
       }
-      setTimeout(() => { pausedRef.current = false; }, 900);
+
+      setTimeout(() => {
+        pausedRef.current = false;
+      }, 900);
     }
+
     if (e.key === 'ArrowRight') {
       e.preventDefault();
       pausedRef.current = true;
       offsetRef.current = wrapOffset(offsetRef.current - step);
+
       if (trackRef.current) {
         trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
       }
-      setTimeout(() => { pausedRef.current = false; }, 900);
+
+      setTimeout(() => {
+        pausedRef.current = false;
+      }, 900);
     }
   };
 
@@ -305,7 +351,9 @@ const TechTicker = ({ items }) => {
   return (
     <div
       className={`ticker-section ${isDragging ? 'is-dragging' : ''}`}
-      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseEnter={() => {
+        pausedRef.current = true;
+      }}
       onMouseLeave={() => {
         if (!draggingRef.current) pausedRef.current = false;
       }}
@@ -319,6 +367,7 @@ const TechTicker = ({ items }) => {
       tabIndex={0}
     >
       <div className="ticker-hint">Drag or swipe</div>
+
       <div className="ticker-fade ticker-fade-left" aria-hidden="true" />
       <div className="ticker-fade ticker-fade-right" aria-hidden="true" />
 
@@ -372,32 +421,35 @@ export default function App() {
     'Agile/Scrum',
   ];
 
-  // --- NEW: KPI DATA ARRAY ---
   const kpis = [
-    { 
-      label: "Efficiency Boost", 
-      value: "40%", 
+    {
+      label: 'Efficiency Boost',
+      value: '40%',
       icon: <Zap size={26} />,
-      description: "Operational throughput improvement via Lean & Kaizen frameworks."
+      description:
+        'Operational throughput improvement via Lean and Kaizen frameworks.',
     },
-    { 
-      label: "Fulfillment Growth", 
-      value: "66%", 
+    {
+      label: 'Fulfillment Growth',
+      value: '66%',
       icon: <TrendingUp size={26} />,
-      description: "Expansion in daily order capacity through warehouse automation."
+      description:
+        'Expansion in daily order capacity through inventory and fulfillment improvements.',
     },
-    { 
-      label: "Logistics Savings", 
-      value: "23%", 
+    {
+      label: 'Logistics Savings',
+      value: '23%',
       icon: <BarChart3 size={26} />,
-      description: "Direct logistics cost reduction from route & 3PL optimizations."
+      description:
+        'Logistics cost reduction through freight and vendor optimization.',
     },
-    { 
-      label: "Revenue Expansion", 
-      value: "30%", 
+    {
+      label: 'Revenue Expansion',
+      value: '30%',
       icon: <Target size={26} />,
-      description: "Regional commercial project volume growth managed directly."
-    }
+      description:
+        'Regional project-volume growth supported by improved resource allocation.',
+    },
   ];
 
   const education = [
@@ -496,13 +548,17 @@ export default function App() {
         resolve();
         return;
       }
+
       if (video.readyState >= 3) {
         resolve();
         return;
       }
+
       const done = () => resolve();
+
       video.addEventListener('canplaythrough', done, { once: true });
       video.addEventListener('loadeddata', done, { once: true });
+
       setTimeout(done, 4000);
     });
 
@@ -512,16 +568,20 @@ export default function App() {
     });
   }, []);
 
-  // Nav scroll state only — video stays fixed (no parallax)
+  // Nav scroll state only — video stays fixed, with no parallax.
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = selectedProject || isLoading ? 'hidden' : '';
+    document.body.style.overflow =
+      selectedProject || isLoading ? 'hidden' : '';
+
     return () => {
       document.body.style.overflow = '';
     };
@@ -529,7 +589,9 @@ export default function App() {
 
   const togglePassion = (id) => {
     setExpandedPassions((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id)
+        ? prev.filter((item) => item !== id)
+        : [...prev, id]
     );
   };
 
@@ -551,6 +613,7 @@ export default function App() {
         >
           <source src="/meditating-ninja-4k.mp4" type="video/mp4" />
         </video>
+
         <div className="page-video-overlay" />
       </div>
 
@@ -572,9 +635,14 @@ export default function App() {
           --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
 
-        body, html {
+        body,
+        html {
           background-color: var(--color-onyx);
           color: var(--color-ivory);
           font-family: var(--font-body);
@@ -625,8 +693,16 @@ export default function App() {
         }
 
         @keyframes loaderPulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.72; transform: scale(0.98); }
+          0%,
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+
+          50% {
+            opacity: 0.72;
+            transform: scale(0.98);
+          }
         }
 
         .loader-bar-track {
@@ -736,11 +812,25 @@ export default function App() {
           transform: translateY(0);
         }
 
-        .hero-item-0 { transition-delay: 0.02s; }
-        .hero-item-1 { transition-delay: 0.12s; }
-        .hero-item-2 { transition-delay: 0.24s; }
-        .hero-item-3 { transition-delay: 0.36s; }
-        .hero-item-4 { transition-delay: 0.48s; }
+        .hero-item-0 {
+          transition-delay: 0.02s;
+        }
+
+        .hero-item-1 {
+          transition-delay: 0.12s;
+        }
+
+        .hero-item-2 {
+          transition-delay: 0.24s;
+        }
+
+        .hero-item-3 {
+          transition-delay: 0.36s;
+        }
+
+        .hero-item-4 {
+          transition-delay: 0.48s;
+        }
 
         .hero {
           position: relative;
@@ -777,7 +867,9 @@ export default function App() {
           object-fit: cover;
           border: 2px solid var(--color-obsidian);
           box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-          transition: transform 0.35s var(--ease-out), border-color 0.35s ease;
+          transition:
+            transform 0.35s var(--ease-out),
+            border-color 0.35s ease;
         }
 
         .portrait-img:hover {
@@ -946,12 +1038,20 @@ export default function App() {
 
         .ticker-fade-left {
           left: 0;
-          background: linear-gradient(to right, rgba(23, 23, 33, 0.85), transparent);
+          background: linear-gradient(
+            to right,
+            rgba(23, 23, 33, 0.85),
+            transparent
+          );
         }
 
         .ticker-fade-right {
           right: 0;
-          background: linear-gradient(to left, rgba(23, 23, 33, 0.85), transparent);
+          background: linear-gradient(
+            to left,
+            rgba(23, 23, 33, 0.85),
+            transparent
+          );
         }
 
         .nav-bar {
@@ -988,7 +1088,10 @@ export default function App() {
           letter-spacing: -0.02em;
         }
 
-        .nav-links { display: flex; gap: 32px; }
+        .nav-links {
+          display: flex;
+          gap: 32px;
+        }
 
         .nav-link {
           color: var(--color-ivory);
@@ -1010,8 +1113,13 @@ export default function App() {
           transition: width 0.3s var(--ease-out);
         }
 
-        .nav-link:hover { color: var(--color-white); }
-        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover {
+          color: var(--color-white);
+        }
+
+        .nav-link:hover::after {
+          width: 100%;
+        }
 
         .section-container {
           max-width: 1200px;
@@ -1019,7 +1127,9 @@ export default function App() {
           padding: 56px 24px 112px 24px;
         }
 
-        .section-header { margin-bottom: 56px; }
+        .section-header {
+          margin-bottom: 56px;
+        }
 
         .section-title {
           font-family: var(--font-display);
@@ -1067,7 +1177,7 @@ export default function App() {
           gap: 24px;
         }
 
-        /* --- NEW: KPI GRID & CARDS CSS --- */
+        /* KPI Dashboard */
         .kpi-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1075,13 +1185,16 @@ export default function App() {
         }
 
         .kpi-card {
+          height: 100%;
           background-color: rgba(30, 30, 42, 0.88);
           backdrop-filter: blur(12px);
           border-radius: 12px;
           padding: 32px 24px;
           text-align: center;
           border: 1px solid transparent;
-          transition: transform 0.35s var(--ease-out), border-color 0.35s ease;
+          transition:
+            transform 0.35s var(--ease-out),
+            border-color 0.35s ease;
         }
 
         .kpi-card:hover {
@@ -1179,11 +1292,18 @@ export default function App() {
         }
 
         .dropbox-header {
+          width: 100%;
           display: flex;
           justify-content: space-between;
           align-items: center;
           cursor: pointer;
           gap: 16px;
+          padding: 0;
+          border: 0;
+          background: transparent;
+          color: inherit;
+          font: inherit;
+          text-align: left;
         }
 
         .dropbox-title {
@@ -1201,7 +1321,9 @@ export default function App() {
 
         .chevron {
           color: var(--color-slate);
-          transition: transform 0.35s var(--ease-out), color 0.25s ease;
+          transition:
+            transform 0.35s var(--ease-out),
+            color 0.25s ease;
           flex-shrink: 0;
         }
 
@@ -1268,13 +1390,25 @@ export default function App() {
         }
 
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+
+          to {
+            opacity: 1;
+          }
         }
 
         @keyframes modalIn {
-          from { opacity: 0; transform: translateY(16px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
+          from {
+            opacity: 0;
+            transform: translateY(16px) scale(0.98);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
 
         .modal-close {
@@ -1285,7 +1419,9 @@ export default function App() {
           border: none;
           color: var(--color-ash);
           cursor: pointer;
-          transition: color 0.2s ease, transform 0.2s ease;
+          transition:
+            color 0.2s ease,
+            transform 0.2s ease;
         }
 
         .modal-close:hover {
@@ -1304,30 +1440,88 @@ export default function App() {
         }
 
         @media (max-width: 768px) {
-          .nav-links { display: none; }
-          .hero-title { font-size: 42px; }
-          .section-container { padding: 72px 24px; }
-          .nav-bar, .nav-bar.scrolled { padding: 16px 20px; }
-          .ticker-hint { right: 12px; font-size: 10px; }
+          .nav-links {
+            display: none;
+          }
+
+          .hero-title {
+            font-size: 42px;
+          }
+
+          .section-container {
+            padding: 72px 24px;
+          }
+
+          .nav-bar,
+          .nav-bar.scrolled {
+            padding: 16px 20px;
+          }
+
+          .ticker-hint {
+            right: 12px;
+            font-size: 10px;
+          }
+
+          .kpi-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+          }
+
+          .kpi-card {
+            padding: 24px 16px;
+          }
+
+          .kpi-value {
+            font-size: 40px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .button-group {
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+          }
+
+          .button-group a {
+            justify-content: center;
+          }
+
+          .kpi-grid {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
 
       <div className="page-content">
         <nav className={`nav-bar ${scrolled ? 'scrolled' : ''}`}>
           <div className="nav-logo">Vaibhav Bector.</div>
+
           <div className="nav-links">
-            <a href="#impact" className="nav-link">Impact</a>
-            <a href="#experience" className="nav-link">Experience</a>
-            <a href="#projects" className="nav-link">Projects</a>
-            <a href="#education" className="nav-link">Education</a>
-            <a href="#about" className="nav-link">About</a>
+            <a href="#impact" className="nav-link">
+              Impact
+            </a>
+            <a href="#experience" className="nav-link">
+              Experience
+            </a>
+            <a href="#projects" className="nav-link">
+              Projects
+            </a>
+            <a href="#education" className="nav-link">
+              Education
+            </a>
+            <a href="#about" className="nav-link">
+              About
+            </a>
           </div>
+
           <a
             href={`mailto:${personalInfo.email}`}
             className="btn-ghost"
             style={{ padding: '8px 16px', fontSize: '14px' }}
           >
-            <Mail size={14} /> Contact
+            <Mail size={14} />
+            Contact
           </a>
         </nav>
 
@@ -1342,7 +1536,8 @@ export default function App() {
             </div>
 
             <div className="hero-badge hero-item hero-item-1">
-              <MapPin size={14} /> {personalInfo.location} — Operations & Strategy
+              <MapPin size={14} />
+              {personalInfo.location} — Operations & Strategy
             </div>
 
             <h1 className="hero-title hero-item hero-item-2">
@@ -1350,29 +1545,43 @@ export default function App() {
             </h1>
 
             <p className="hero-subtitle hero-item hero-item-3">
-              {personalInfo.tagline} Designed to eliminate operational bottlenecks
-              and architect predictable, high-growth delivery.
+              {personalInfo.tagline} Designed to eliminate operational
+              bottlenecks and architect predictable, high-growth delivery.
             </p>
 
             <div className="button-group hero-item hero-item-4">
               <a href="#projects" className="btn-primary">
-                View Initiatives <ArrowRight size={18} />
+                View Initiatives
+                <ArrowRight size={18} />
               </a>
+
+              <a
+                href="/Vaibhav_Bector_Resume.pdf"
+                download="Vaibhav_Bector_Resume.pdf"
+                className="btn-ghost"
+              >
+                <Download size={16} />
+                Download CV
+              </a>
+
               <a
                 href={personalInfo.linkedin}
                 target="_blank"
                 rel="noreferrer"
                 className="btn-ghost"
               >
-                <LinkedinIcon /> LinkedIn
+                <LinkedinIcon />
+                LinkedIn
               </a>
+
               <a
                 href={personalInfo.github}
                 target="_blank"
                 rel="noreferrer"
                 className="btn-ghost"
               >
-                <GithubIcon /> GitHub
+                <GithubIcon />
+                GitHub
               </a>
             </div>
           </div>
@@ -1382,13 +1591,18 @@ export default function App() {
           <TechTicker items={techStack} />
         </Reveal>
 
-        {/* --- NEW: KPI DASHBOARD SECTION --- */}
-        <section id="impact" className="section-container" style={{ paddingBottom: '32px' }}>
+        {/* KPI Dashboard */}
+        <section
+          id="impact"
+          className="section-container"
+          style={{ paddingBottom: '32px' }}
+        >
           <Reveal>
             <div className="section-header" style={{ marginBottom: '40px' }}>
               <h2 className="section-title">Strategic Impact</h2>
               <p className="section-desc">
-                Quantifiable track record of scaling operations and reducing inefficiencies.
+                Quantifiable results from scaling operations and reducing
+                inefficiencies.
               </p>
             </div>
           </Reveal>
@@ -1423,10 +1637,12 @@ export default function App() {
               <Reveal key={exp.company} delay={idx * 120}>
                 <div className="graphite-card">
                   <h3 className="exp-role">{exp.role}</h3>
+
                   <div className="exp-meta">
                     <span>{exp.company}</span>
                     <span>{exp.period}</span>
                   </div>
+
                   <ul className="exp-list">
                     {exp.highlights.map((highlight) => (
                       <li key={highlight}>{highlight}</li>
@@ -1438,7 +1654,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="projects" className="section-container" style={{ paddingTop: 0 }}>
+        <section
+          id="projects"
+          className="section-container"
+          style={{ paddingTop: 0 }}
+        >
           <Reveal>
             <div className="section-header">
               <h2 className="section-title">Key Initiatives</h2>
@@ -1450,7 +1670,16 @@ export default function App() {
               <Reveal key={proj.id} delay={idx * 120}>
                 <div
                   className="graphite-card interactive"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View details for ${proj.title}`}
                   onClick={() => setSelectedProject(proj)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setSelectedProject(proj);
+                    }
+                  }}
                 >
                   <div
                     style={{
@@ -1463,7 +1692,9 @@ export default function App() {
                   >
                     {proj.category}
                   </div>
+
                   <h3 className="exp-role">{proj.title}</h3>
+
                   <p
                     style={{
                       color: 'var(--color-ash)',
@@ -1474,8 +1705,10 @@ export default function App() {
                   >
                     {proj.desc}
                   </p>
+
                   <div className="project-link">
-                    View details <ExternalLink size={14} />
+                    View details
+                    <ExternalLink size={14} />
                   </div>
                 </div>
               </Reveal>
@@ -1483,7 +1716,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="education" className="section-container" style={{ paddingTop: 0 }}>
+        <section
+          id="education"
+          className="section-container"
+          style={{ paddingTop: 0 }}
+        >
           <Reveal>
             <div className="section-header">
               <h2 className="section-title">Education & Credentials</h2>
@@ -1498,13 +1735,15 @@ export default function App() {
               <Reveal key={edu.institution} delay={idx * 120}>
                 <div className="graphite-card">
                   <h3 className="exp-role">{edu.degree}</h3>
+
                   <div className="exp-meta">
                     <span>{edu.institution}</span>
                     <span>{edu.period}</span>
                   </div>
+
                   <ul className="exp-list">
-                    {edu.highlights.map((highlight, i) => (
-                      <li key={i}>{highlight}</li>
+                    {edu.highlights.map((highlight) => (
+                      <li key={highlight}>{highlight}</li>
                     ))}
                   </ul>
                 </div>
@@ -1513,7 +1752,11 @@ export default function App() {
           </div>
         </section>
 
-        <section id="about" className="section-container" style={{ paddingTop: 0 }}>
+        <section
+          id="about"
+          className="section-container"
+          style={{ paddingTop: 0 }}
+        >
           <Reveal>
             <div className="section-header">
               <h2 className="section-title">Driving Principles</h2>
@@ -1527,24 +1770,34 @@ export default function App() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {passions.map((passion, idx) => {
               const isOpen = expandedPassions.includes(passion.id);
+              const panelId = `passion-panel-${passion.id}`;
+
               return (
                 <Reveal key={passion.id} delay={idx * 90}>
                   <div className="graphite-card">
-                    <div
+                    <button
+                      type="button"
                       className="dropbox-header"
                       onClick={() => togglePassion(passion.id)}
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
                     >
                       <div>
                         <h3 className="dropbox-title">{passion.title}</h3>
                         <div className="dropbox-tagline">{passion.tagline}</div>
                       </div>
+
                       <ChevronDown
                         size={24}
                         className={`chevron ${isOpen ? 'open' : ''}`}
                       />
-                    </div>
+                    </button>
 
-                    <div className={`dropbox-content ${isOpen ? 'open' : ''}`}>
+                    <div
+                      id={panelId}
+                      className={`dropbox-content ${isOpen ? 'open' : ''}`}
+                      aria-hidden={!isOpen}
+                    >
                       <div className="dropbox-content-inner">
                         <div>{passion.fullContent}</div>
                       </div>
@@ -1557,8 +1810,14 @@ export default function App() {
         </section>
 
         {selectedProject && (
-          <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="modal-overlay"
+            onClick={() => setSelectedProject(null)}
+          >
+            <div
+              className="modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 className="modal-close"
                 onClick={() => setSelectedProject(null)}
@@ -1566,6 +1825,7 @@ export default function App() {
               >
                 <X size={24} />
               </button>
+
               <div
                 style={{
                   color: 'var(--color-slate)',
@@ -1577,12 +1837,14 @@ export default function App() {
               >
                 {selectedProject.category}
               </div>
+
               <h3
                 className="section-title"
                 style={{ fontSize: '32px', marginBottom: '24px' }}
               >
                 {selectedProject.title}
               </h3>
+
               <p
                 style={{
                   color: 'var(--color-ivory)',
@@ -1598,8 +1860,8 @@ export default function App() {
 
         <footer className="footer">
           <p>
-            © {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine banking
-            aesthetics.
+            © {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine
+            banking aesthetics.
           </p>
         </footer>
       </div>
