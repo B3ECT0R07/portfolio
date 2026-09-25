@@ -174,14 +174,164 @@ const PageLoader = ({ isLoading }) => {
       <div className="loader-inner">
         <div className="loader-mark">VB</div>
         <div className="loader-bar-track">
-          <div
-            className="loader-bar-fill"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="loader-bar-fill" style={{ width: `${progress}%` }} />
         </div>
         <div className="loader-meta">
           <span className="loader-label">Loading systems</span>
           <span className="loader-pct">{progress}%</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- SWIPEABLE TECH TICKER ---
+const TechTicker = ({ items }) => {
+  const trackRef = useRef(null);
+  const offsetRef = useRef(0);
+  const draggingRef = useRef(false);
+  const pausedRef = useRef(false);
+  const startXRef = useRef(0);
+  const startOffsetRef = useRef(0);
+  const halfWidthRef = useRef(0);
+  const rafRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Measure one full set width (half of duplicated track)
+  const measure = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    halfWidthRef.current = track.scrollWidth / 2;
+  };
+
+  useEffect(() => {
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [items]);
+
+  // Auto-scroll loop + wrap for infinite feel
+  useEffect(() => {
+    const SPEED = 0.45; // px per frame ~ slow cruise
+
+    const tick = () => {
+      if (!pausedRef.current && !draggingRef.current && halfWidthRef.current > 0) {
+        offsetRef.current -= SPEED;
+
+        // Wrap seamlessly when one full set has scrolled past
+        if (Math.abs(offsetRef.current) >= halfWidthRef.current) {
+          offsetRef.current += halfWidthRef.current;
+        }
+
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const wrapOffset = (value) => {
+    const half = halfWidthRef.current || 1;
+    let next = value;
+    // Keep offset within [-half, 0] range
+    while (next <= -half) next += half;
+    while (next > 0) next -= half;
+    return next;
+  };
+
+  const onPointerDown = (e) => {
+    draggingRef.current = true;
+    pausedRef.current = true;
+    setIsDragging(true);
+    startXRef.current = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    startOffsetRef.current = offsetRef.current;
+
+    // Pointer capture for smooth drag outside the element
+    if (e.currentTarget.setPointerCapture && e.pointerId != null) {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+  };
+
+  const onPointerMove = (e) => {
+    if (!draggingRef.current) return;
+    const clientX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    const delta = clientX - startXRef.current;
+    offsetRef.current = wrapOffset(startOffsetRef.current + delta);
+
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+    }
+  };
+
+  const onPointerUp = () => {
+    draggingRef.current = false;
+    setIsDragging(false);
+    // Short pause after release, then resume auto-scroll
+    setTimeout(() => {
+      if (!draggingRef.current) pausedRef.current = false;
+    }, 900);
+  };
+
+  const onKeyDown = (e) => {
+    const step = 80;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      pausedRef.current = true;
+      offsetRef.current = wrapOffset(offsetRef.current + step);
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      }
+      setTimeout(() => { pausedRef.current = false; }, 900);
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      pausedRef.current = true;
+      offsetRef.current = wrapOffset(offsetRef.current - step);
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      }
+      setTimeout(() => { pausedRef.current = false; }, 900);
+    }
+  };
+
+  // Duplicate items for seamless loop
+  const loopItems = [...items, ...items];
+
+  return (
+    <div
+      className={`ticker-section ${isDragging ? 'is-dragging' : ''}`}
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => {
+        if (!draggingRef.current) pausedRef.current = false;
+      }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onKeyDown={onKeyDown}
+      role="region"
+      aria-label="Tools and tech stack — drag or swipe to browse"
+      tabIndex={0}
+    >
+      <div className="ticker-hint">Drag or swipe</div>
+      <div className="ticker-fade ticker-fade-left" aria-hidden="true" />
+      <div className="ticker-fade ticker-fade-right" aria-hidden="true" />
+
+      <div className="ticker-window">
+        <div className="ticker-track" ref={trackRef}>
+          {loopItems.map((tech, idx) => (
+            <div
+              key={`${tech}-${idx}`}
+              className="ticker-pill"
+              aria-hidden={idx >= items.length ? true : undefined}
+            >
+              {tech}
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -206,10 +356,19 @@ export default function App() {
   };
 
   const techStack = [
-    "Lean Operations", "Critical Path Method (CPM)", "Kaizen", 
-    "Supply Chain Logistics", "ERP Systems", "MS Project", 
-    "AutoCAD", "Tableau", "PowerBI", "Inventory Analytics", 
-    "Fulfillment Scaling", "Vendor Management", "Agile/Scrum"
+    'Lean Operations',
+    'Critical Path Method (CPM)',
+    'Kaizen',
+    'Supply Chain Logistics',
+    'ERP Systems',
+    'MS Project',
+    'AutoCAD',
+    'Tableau',
+    'PowerBI',
+    'Inventory Analytics',
+    'Fulfillment Scaling',
+    'Vendor Management',
+    'Agile/Scrum',
   ];
 
   const education = [
@@ -219,7 +378,7 @@ export default function App() {
       period: '2023',
       highlights: [
         'Core focus on Operations Management and Strategic Planning.',
-        'Developed foundational frameworks for scalable business models.'
+        'Developed foundational frameworks for scalable business models.',
       ],
     },
     {
@@ -228,7 +387,7 @@ export default function App() {
       period: '2023',
       highlights: [
         'Specialized in global supply chain logistics and cross-border trade.',
-        'Studied emerging market dynamics and international negotiation.'
+        'Studied emerging market dynamics and international negotiation.',
       ],
     },
   ];
@@ -357,7 +516,6 @@ export default function App() {
       <PageLoader isLoading={isLoading} />
       <GlitchTrail />
 
-      {/* FULL-SITE fixed video */}
       <div className="page-video-bg" aria-hidden="true">
         <video
           ref={videoRef}
@@ -488,7 +646,6 @@ export default function App() {
           font-variant-numeric: tabular-nums;
         }
 
-        /* Fixed full-viewport video background */
         .page-video-bg {
           position: fixed;
           inset: 0;
@@ -686,9 +843,9 @@ export default function App() {
           justify-content: center;
         }
 
-        /* ========== TICKER SECTION ========== */
+        /* ========== SWIPEABLE TICKER ========== */
         .ticker-section {
-          padding: 32px 0;
+          padding: 36px 0 28px;
           background: rgba(23, 23, 33, 0.45);
           backdrop-filter: blur(8px);
           border-top: 1px solid rgba(39, 39, 53, 0.6);
@@ -696,24 +853,46 @@ export default function App() {
           overflow: hidden;
           margin-bottom: 72px;
           position: relative;
+          cursor: grab;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: pan-y;
+          outline: none;
         }
-        
-        .ticker-wrapper {
-          display: flex;
-          width: max-content;
-          animation: tickerScroll 40s linear infinite;
+
+        .ticker-section.is-dragging {
+          cursor: grabbing;
         }
-        
-        .ticker-wrapper:hover {
-          animation-play-state: paused;
+
+        .ticker-section:focus-visible {
+          box-shadow: inset 0 0 0 1px rgba(82, 102, 235, 0.45);
         }
-        
-        .ticker-group {
+
+        .ticker-hint {
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--color-slate);
+          pointer-events: none;
+          z-index: 3;
+        }
+
+        .ticker-window {
+          overflow: hidden;
+          width: 100%;
+        }
+
+        .ticker-track {
           display: flex;
           gap: 16px;
-          padding-right: 16px;
+          width: max-content;
+          will-change: transform;
+          padding: 8px 0;
         }
-        
+
         .ticker-pill {
           background: rgba(30, 30, 42, 0.88);
           border: 1px solid var(--color-obsidian);
@@ -723,16 +902,28 @@ export default function App() {
           font-family: var(--font-display);
           font-size: 14px;
           white-space: nowrap;
+          flex-shrink: 0;
+          pointer-events: none;
           transition: border-color 0.3s ease, color 0.3s ease;
         }
-        
-        .ticker-pill:hover {
-          border-color: var(--color-cobalt);
-          color: var(--color-white);
+
+        .ticker-fade {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 64px;
+          z-index: 2;
+          pointer-events: none;
         }
-        
-        @keyframes tickerScroll {
-          to { transform: translateX(-50%); }
+
+        .ticker-fade-left {
+          left: 0;
+          background: linear-gradient(to right, rgba(23, 23, 33, 0.85), transparent);
+        }
+
+        .ticker-fade-right {
+          right: 0;
+          background: linear-gradient(to left, rgba(23, 23, 33, 0.85), transparent);
         }
 
         .nav-bar {
@@ -1037,6 +1228,7 @@ export default function App() {
           .hero-title { font-size: 42px; }
           .section-container { padding: 72px 24px; }
           .nav-bar, .nav-bar.scrolled { padding: 16px 20px; }
+          .ticker-hint { right: 12px; font-size: 10px; }
         }
       `}</style>
 
@@ -1105,27 +1297,9 @@ export default function App() {
           </div>
         </header>
 
-        {/* ========== INFINITE SCROLL TICKER ========== */}
+        {/* Swipeable infinite tech ticker */}
         <Reveal>
-          <div className="ticker-section">
-            <div className="ticker-wrapper">
-              <div className="ticker-group">
-                {techStack.map((tech, idx) => (
-                  <div key={`set1-${idx}`} className="ticker-pill">
-                    {tech}
-                  </div>
-                ))}
-              </div>
-              {/* Duplicate array for seamless infinite scroll */}
-              <div className="ticker-group" aria-hidden="true">
-                {techStack.map((tech, idx) => (
-                  <div key={`set2-${idx}`} className="ticker-pill">
-                    {tech}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <TechTicker items={techStack} />
         </Reveal>
 
         <section id="experience" className="section-container">
