@@ -1,758 +1,681 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Mail,
-  ExternalLink, 
+  Mail, 
+  MapPin, 
+  X, 
   ChevronDown, 
-  Cpu, 
-  Globe, 
+  ArrowRight, 
+  ExternalLink,
+  Zap, 
   TrendingUp, 
-  Box, 
-  Download,
-  Zap,
-  Target,
-  BarChart3,
-  CheckCircle2
+  BarChart3, 
+  Target 
 } from 'lucide-react';
 import profilePic from './Profile.jpg';
 
-// --- INLINE SVG BRAND ICONS (FIXES LUCIDE BUILD ISSUES) ---
-const GithubIcon = ({ size = 20, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-    <path d="M9 18c-4.51 2-5-2-7-2" />
+const LinkedinIcon = () => (
+  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/>
   </svg>
 );
 
-const LinkedinIcon = ({ size = 20, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-    <rect width="4" height="12" x="2" y="9" />
-    <circle cx="4" cy="4" r="2" />
+const GithubIcon = () => (
+  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+    <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
   </svg>
 );
 
-// ============================================================================
-// 1. GLITCH TRAIL CURSOR COMPONENT (FIDDLE DIGITAL INSPIRATION)
-// ============================================================================
+function Reveal({ children, delay = 0, className = '' }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? 'reveal-in' : ''} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
 const GlitchTrail = () => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let animationFrame;
+    let animationFrameId;
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-
     window.addEventListener('resize', resize);
     resize();
 
-    const createParticle = (x, y) => {
-      for (let i = 0; i < 2; i++) {
+    const onMouseMove = (e) => {
+      const numParticles = Math.floor(Math.random() * 2) + 2;
+      for (let i = 0; i < numParticles; i++) {
         particles.current.push({
-          x: x,
-          y: y,
-          width: Math.random() * 45 + 12,
-          height: Math.random() * 5 + 1,
+          x: e.clientX + (Math.random() - 0.5) * 30,
+          y: e.clientY + (Math.random() - 0.5) * 30,
+          width: Math.random() * 20 + 5,
+          height: Math.random() * 3 + 1,
+          life: 1,
+          decay: Math.random() * 0.05 + 0.02,
           color: Math.random() > 0.5 ? '#5266eb' : '#70707d',
-          life: 1.0,
-          decay: Math.random() * 0.04 + 0.02,
-          offset: (Math.random() - 0.5) * 22
+          shiftX: (Math.random() - 0.5) * 2
         });
       }
     };
 
-    const handleMouseMove = (e) => {
-      createParticle(e.clientX, e.clientY);
-    };
+    window.addEventListener('mousemove', onMouseMove);
 
-    window.addEventListener('mousemove', handleMouseMove);
-
-    const animate = () => {
+    const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       for (let i = particles.current.length - 1; i >= 0; i--) {
         const p = particles.current[i];
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.life;
-        
-        // Horizontal glitch shift artifact
-        const glitchX = Math.random() > 0.88 ? (Math.random() - 0.5) * 18 : 0;
-        ctx.fillRect(p.x - p.width / 2 + glitchX, p.y + p.offset, p.width, p.height);
-        
         p.life -= p.decay;
+        p.x += p.shiftX;
+
         if (p.life <= 0) {
           particles.current.splice(i, 1);
+        } else {
+          ctx.globalAlpha = p.life;
+          ctx.fillStyle = p.color;
+
+          if (p.color === '#5266eb') {
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#5266eb';
+          } else {
+            ctx.shadowBlur = 0;
+          }
+
+          const glitchSnap = Math.random() > 0.9 ? (Math.random() - 0.5) * 15 : 0;
+          ctx.fillRect(p.x + glitchSnap, p.y, p.width, p.height);
         }
       }
-      
-      animationFrame = requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(render);
     };
-
-    animate();
+    render();
 
     return () => {
       window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrame);
+      window.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
-    <canvas 
-      ref={canvasRef} 
+    <canvas
+      ref={canvasRef}
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         pointerEvents: 'none',
-        zIndex: 9999,
-        mixBlendMode: 'screen'
+        zIndex: 9999
       }}
     />
   );
 };
 
-// ============================================================================
-// 2. PAGE LOADER COMPONENT
-// ============================================================================
-const PageLoader = ({ isLoaded }) => {
+const PageLoader = ({ isLoading }) => {
   const [progress, setProgress] = useState(0);
+  const [hiding, setHiding] = useState(false);
+  const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    if (progress < 100) {
-      const timer = setInterval(() => {
-        setProgress((prev) => Math.min(prev + Math.random() * 16, 100));
-      }, 80);
-      return () => clearInterval(timer);
-    }
-  }, [progress]);
+    if (!isLoading) return;
+
+    let current = 0;
+    const id = setInterval(() => {
+      current += Math.random() * 12 + 4;
+      if (current >= 90) {
+        current = 90;
+        clearInterval(id);
+      }
+      setProgress(Math.min(90, Math.floor(current)));
+    }, 180);
+
+    return () => clearInterval(id);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    setProgress(100);
+    const hideTimer = setTimeout(() => setHiding(true), 280);
+    const goneTimer = setTimeout(() => setGone(true), 900);
+
+    return () => {
+      clearTimeout(hideTimer);
+      clearTimeout(goneTimer);
+    };
+  }, [isLoading]);
+
+  if (gone) return null;
 
   return (
-    <div className={`loader-overlay ${isLoaded ? 'fade-out' : ''}`}>
-      <div className="loader-content">
-        <div className="loader-logo">VB</div>
-        <div className="loader-bar-container">
-          <div 
-            className="loader-bar" 
-            style={{ width: `${progress}%` }} 
-          />
+    <div className={`page-loader ${hiding ? 'page-loader-hide' : ''}`}>
+      <div className="loader-inner">
+        <div className="loader-mark">VB</div>
+        <div className="loader-bar-track">
+          <div className="loader-bar-fill" style={{ width: `${progress}%` }} />
         </div>
-        <div className="loader-text">
-          INITIALIZING SYSTEMS... {Math.round(progress)}%
+        <div className="loader-meta">
+          <span className="loader-label">Loading systems</span>
+          <span className="loader-pct">{progress}%</span>
         </div>
       </div>
     </div>
   );
 };
 
-// ============================================================================
-// 3. TECH TICKER COMPONENT (SWIPEABLE / DRAGGABLE / AUTO-SCROLL)
-// ============================================================================
-const TechTicker = () => {
-  const scrollRef = useRef(null);
+const TechTicker = ({ items }) => {
+  const trackRef = useRef(null);
+  const offsetRef = useRef(0);
+  const draggingRef = useRef(false);
+  const pausedRef = useRef(false);
+  const startXRef = useRef(0);
+  const startOffsetRef = useRef(0);
+  const halfWidthRef = useRef(0);
+  const rafRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
 
-  const techStack = [
-    "Lean Operations", 
-    "Critical Path Method (CPM)", 
-    "Kaizen Frameworks", 
-    "Supply Chain Logistics", 
-    "ERP Systems", 
-    "MS Project", 
-    "AutoCAD", 
-    "Tableau", 
-    "PowerBI", 
-    "Inventory Analytics", 
-    "Fulfillment Scaling", 
-    "Vendor Management", 
-    "Agile & Scrum"
-  ];
+  const measure = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    halfWidthRef.current = track.scrollWidth / 2;
+  };
 
-  const items = useMemo(() => [
-    ...techStack, 
-    ...techStack, 
-    ...techStack
-  ], []);
+  useEffect(() => {
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [items]);
 
-  const handleMouseDown = (e) => {
+  useEffect(() => {
+    const SPEED = 0.45;
+
+    const tick = () => {
+      if (!pausedRef.current && !draggingRef.current && halfWidthRef.current > 0) {
+        offsetRef.current -= SPEED;
+
+        if (Math.abs(offsetRef.current) >= halfWidthRef.current) {
+          offsetRef.current += halfWidthRef.current;
+        }
+
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const wrapOffset = (value) => {
+    const half = halfWidthRef.current || 1;
+    let next = value;
+    while (next <= -half) next += half;
+    while (next > 0) next -= half;
+    return next;
+  };
+
+  const onPointerDown = (e) => {
+    draggingRef.current = true;
+    pausedRef.current = true;
     setIsDragging(true);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
+    startXRef.current = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    startOffsetRef.current = offsetRef.current;
+
+    if (e.currentTarget.setPointerCapture && e.pointerId != null) {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
   };
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
+  const onPointerMove = (e) => {
+    if (!draggingRef.current) return;
+    const clientX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    const delta = clientX - startXRef.current;
+    offsetRef.current = wrapOffset(startOffsetRef.current + delta);
+
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+    }
   };
 
-  const handleMouseUp = () => {
+  const onPointerUp = () => {
+    draggingRef.current = false;
     setIsDragging(false);
+    setTimeout(() => {
+      if (!draggingRef.current) pausedRef.current = false;
+    }, 900);
   };
-  
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollRef.current.scrollLeft = scrollLeft - walk;
+
+  const onKeyDown = (e) => {
+    const step = 80;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      pausedRef.current = true;
+      offsetRef.current = wrapOffset(offsetRef.current + step);
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      }
+      setTimeout(() => { pausedRef.current = false; }, 900);
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      pausedRef.current = true;
+      offsetRef.current = wrapOffset(offsetRef.current - step);
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      }
+      setTimeout(() => { pausedRef.current = false; }, 900);
+    }
   };
+
+  const loopItems = [...items, ...items];
 
   return (
-    <div className="ticker-wrapper">
-      <div className="ticker-label">
-        Tech & Methodology Stack
-      </div>
-      <div 
-        className="ticker-container"
-        ref={scrollRef}
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-      >
-        <div className="ticker-track">
-          {items.map((item, idx) => (
-            <div key={idx} className="ticker-item">
-              <Zap size={14} className="ticker-icon" />
-              <span>{item}</span>
+    <div
+      className={`ticker-section ${isDragging ? 'is-dragging' : ''}`}
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => {
+        if (!draggingRef.current) pausedRef.current = false;
+      }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onKeyDown={onKeyDown}
+      role="region"
+      aria-label="Tools and tech stack — drag or swipe to browse"
+      tabIndex={0}
+    >
+      <div className="ticker-hint">Drag or swipe</div>
+      <div className="ticker-fade ticker-fade-left" aria-hidden="true" />
+      <div className="ticker-fade ticker-fade-right" aria-hidden="true" />
+
+      <div className="ticker-window">
+        <div className="ticker-track" ref={trackRef}>
+          {loopItems.map((tech, idx) => (
+            <div
+              key={`${tech}-${idx}`}
+              className="ticker-pill"
+              aria-hidden={idx >= items.length ? true : undefined}
+            >
+              {tech}
             </div>
           ))}
         </div>
       </div>
-      <div className="ticker-hint">
-        DRAG OR SWIPE TO EXPLORE STACK
-      </div>
     </div>
   );
 };
 
-// ============================================================================
-// 4. PORTFOLIO DATA STRUCTURES
-// ============================================================================
-const EXPERIENCES = [
-  {
-    company: "TORMAX Canada",
-    role: "Project Manager / Installation Coordinator",
-    period: "July 2024 – Present",
-    location: "Vancouver, BC",
-    points: [
-      "Streamlined installation schedules across Western Canada using Critical Path Method (CPM), improving operational delivery efficiency by 40%.",
-      "Managing $1.5M+ in regional commercial installation revenue, driving a 30% expansion in active quarterly project volume.",
-      "Applied Lean and Kaizen frameworks to field workflows, reducing technician downtime and site coordination errors.",
-      "Coordinated cross-functional teams including site managers, sub-contractors, and architects to ensure full building code compliance."
-    ]
-  },
-  {
-    company: "Wellness Extract",
-    role: "Supply Chain Manager",
-    period: "August 2023 – July 2024",
-    location: "Vancouver, BC",
-    points: [
-      "Engineered multi-channel order fulfillment workflows, resulting in a 66% growth in daily order capacity without adding overhead.",
-      "Reduced international freight and 3PL logistics expenditure by 23% through strategic vendor negotiation and route consolidation.",
-      "Implemented automated inventory control systems and safety-stock thresholds across three international distribution nodes.",
-      "Orchestrated end-to-end supply chain visibility from raw material sourcing to direct-to-consumer delivery."
-    ]
-  }
-];
-
-const PROJECTS = [
-  {
-    title: "Lean Project Delivery Engine",
-    category: "Operations Architecture",
-    metric: "40% Efficiency Gain",
-    summary: "Built a CPM-driven resource scheduling system for commercial automatic door installations.",
-    description: "Architected a custom resource tracking dashboard and Critical Path Method (CPM) workflow engine for TORMAX Canada. The system eliminated resource bottlenecks, streamlined technician dispatch, and boosted overall installation project efficiency by 40%.",
-    tech: ["Lean Frameworks", "Kaizen", "MS Project", "CPM Scheduling", "AutoCAD"]
-  },
-  {
-    title: "Global Fulfillment Optimizer",
-    category: "Supply Chain Engineering",
-    metric: "66% Capacity Expansion",
-    summary: "Re-engineered warehouse routing and automated inventory synchronization across 3 fulfillment hubs.",
-    description: "Redesigned the entire inventory management infrastructure at Wellness Extract. By integrating automated stock synchronization algorithms and optimizing warehouse pick-and-pack routing, daily order fulfillment volume scaled by 66% while cutting freight costs by 23%.",
-    tech: ["ERP Systems", "Inventory Analytics", "Tableau", "3PL Management", "Logistics"]
-  }
-];
-
-const KPIS = [
-  { 
-    label: "Efficiency Boost", 
-    value: "40%", 
-    icon: <Zap size={26} />,
-    description: "Operational throughput improvement via Lean & Kaizen frameworks."
-  },
-  { 
-    label: "Fulfillment Growth", 
-    value: "66%", 
-    icon: <TrendingUp size={26} />,
-    description: "Expansion in daily order capacity through warehouse automation."
-  },
-  { 
-    label: "Logistics Savings", 
-    value: "23%", 
-    icon: <BarChart3 size={26} />,
-    description: "Direct logistics cost reduction from route & 3PL optimizations."
-  },
-  { 
-    label: "Revenue Expansion", 
-    value: "30%", 
-    icon: <Target size={26} />,
-    description: "Regional commercial project volume growth managed directly."
-  }
-];
-
-const PASSIONS = [
-  { 
-    title: "Real Madrid & Football Tactics", 
-    desc: "Analyzing space creation, transition fluidities, press-resistant buildup, and squad optimization techniques in elite sports. Applying tactical versatility from the pitch directly to high-pressure business operational strategy.",
-    icon: <Globe />
-  },
-  { 
-    title: "Hydroponics / Vertical Farming", 
-    desc: "Exploring precision agriculture, closed-loop nutrient delivery systems, and controlled environment agriculture (CEA). Translating supply chain engineering to sustainable urban food systems and local supply resilience.",
-    icon: <Box />
-  },
-  { 
-    title: "Lean Entrepreneurship", 
-    desc: "Architecting minimalist operating models based on continuous build-measure-learn loops. Systematic elimination of operational waste (Muda) to maximize enterprise value creation per capital unit spent.",
-    icon: <Cpu />
-  }
-];
-
-const EDUCATION = [
-  {
-    degree: "Bachelor of Business Administration (BBA)",
-    institution: "University of the Fraser Valley",
-    year: "Class of 2023",
-    location: "Abbotsford, BC",
-    details: "Focus on Strategic Management, Operations, and Business Analytics."
-  },
-  {
-    degree: "Diploma in International Business",
-    institution: "Universidad del Rosario",
-    year: "2023",
-    location: "Bogotá, Colombia",
-    details: "Global supply chains, cross-border trade mechanics, and international market strategy."
-  }
-];
-
-// ============================================================================
-// 5. MAIN APPLICATION COMPONENT
-// ============================================================================
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeAccordion, setActiveAccordion] = useState(0);
+  const [heroReady, setHeroReady] = useState(false);
+  const [expandedPassions, setExpandedPassions] = useState(['football']);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
 
+  const personalInfo = {
+    name: 'Vaibhav Bector',
+    location: 'Vancouver, BC',
+    email: 'bector2001@gmail.com',
+    tagline: 'I build lean operations and scalable supply chains.',
+    linkedin: 'https://ca.linkedin.com/in/vaibhavbector',
+    github: 'https://github.com/B3ECT0R07',
+  };
+
+  const techStack = [
+    'Lean Operations',
+    'Critical Path Method (CPM)',
+    'Kaizen',
+    'Supply Chain Logistics',
+    'ERP Systems',
+    'MS Project',
+    'AutoCAD',
+    'Tableau',
+    'PowerBI',
+    'Inventory Analytics',
+    'Fulfillment Scaling',
+    'Vendor Management',
+    'Agile/Scrum',
+  ];
+
+  // --- NEW: KPI DATA ARRAY ---
+  const kpis = [
+    { 
+      label: "Efficiency Boost", 
+      value: "40%", 
+      icon: <Zap size={26} />,
+      description: "Operational throughput improvement via Lean & Kaizen frameworks."
+    },
+    { 
+      label: "Fulfillment Growth", 
+      value: "66%", 
+      icon: <TrendingUp size={26} />,
+      description: "Expansion in daily order capacity through warehouse automation."
+    },
+    { 
+      label: "Logistics Savings", 
+      value: "23%", 
+      icon: <BarChart3 size={26} />,
+      description: "Direct logistics cost reduction from route & 3PL optimizations."
+    },
+    { 
+      label: "Revenue Expansion", 
+      value: "30%", 
+      icon: <Target size={26} />,
+      description: "Regional commercial project volume growth managed directly."
+    }
+  ];
+
+  const education = [
+    {
+      degree: 'Bachelor of Business Administration',
+      institution: 'University of the Fraser Valley',
+      period: '2023',
+      highlights: [
+        'Core focus on Operations Management and Strategic Planning.',
+        'Developed foundational frameworks for scalable business models.',
+      ],
+    },
+    {
+      degree: 'Diploma in International Business',
+      institution: 'Universidad del Rosario',
+      period: '2023',
+      highlights: [
+        'Specialized in global supply chain logistics and cross-border trade.',
+        'Studied emerging market dynamics and international negotiation.',
+      ],
+    },
+  ];
+
+  const experiences = [
+    {
+      company: 'TORMAX Canada',
+      role: 'Project Manager / Installation Coordinator',
+      period: 'July 2024 – Present',
+      highlights: [
+        'Boosted operational project delivery efficiency by 40% using Lean and Kaizen frameworks.',
+        'Supported 30% regional revenue growth through precise resource allocation.',
+        'Managed Critical Path Method (CPM) scheduling for commercial architectural installations.',
+      ],
+    },
+    {
+      company: 'Wellness Extract',
+      role: 'Supply Chain Manager',
+      period: 'August 2023 – July 2024',
+      highlights: [
+        'Scaled order fulfillment capacity by 66% through automated multi-channel inventory control.',
+        'Reduced logistics operational costs by 23% by renegotiating freight and vendor contracts.',
+        'Managed end-to-end supply chain pipelines across North American fulfillment hubs.',
+      ],
+    },
+  ];
+
+  const projects = [
+    {
+      id: 'tormax-tracker',
+      title: 'Lean Project Delivery Engine',
+      category: 'Operations & Project Management',
+      desc: 'Built resource planning matrices that cut project delays by 40% and aligned installation teams.',
+      details:
+        'By combining Critical Path Method (CPM) scheduling with agile tracking, this system improved site installation flow, aligned technicians with supply hubs, and drove regional growth.',
+    },
+    {
+      id: 'supply-chain-hub',
+      title: 'Fulfillment Optimizer',
+      category: 'Supply Chain & Logistics',
+      desc: 'Architected end-to-end inventory workflows supporting a 66% order volume increase.',
+      details:
+        'Leveraged inventory analytics to optimize stock levels, prevent stockouts, and reduce overall freight expenditure by 23% across North American distribution channels.',
+    },
+  ];
+
+  const passions = [
+    {
+      id: 'football',
+      title: 'Tactical Execution',
+      tagline: 'Strategy & Leadership — Hala Madrid',
+      fullContent:
+        'Football is a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: relentless growth, clutch performance under pressure, and unyielding ambition. I apply this exact framework to coordinating complex project timelines.',
+    },
+    {
+      id: 'hydroponics',
+      title: 'Sustainable Systems',
+      tagline: 'Vertical farming & bio-tech',
+      fullContent:
+        'Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around automated nutrient recirculating systems and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.',
+    },
+    {
+      id: 'entrepreneurship',
+      title: 'Lean Operations',
+      tagline: 'Supply chain & problem solving',
+      fullContent:
+        'Building scalable systems is at the heart of everything I do. My track record in supply chain management and installation coordination stems from an entrepreneurial drive to eliminate bottlenecks and build predictable success.',
+    },
+  ];
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+    const minTime = new Promise((resolve) => setTimeout(resolve, 1200));
+    const video = videoRef.current;
+
+    const videoReady = new Promise((resolve) => {
+      if (!video) {
+        resolve();
+        return;
       }
-    };
+      if (video.readyState >= 3) {
+        resolve();
+        return;
+      }
+      const done = () => resolve();
+      video.addEventListener('canplaythrough', done, { once: true });
+      video.addEventListener('loadeddata', done, { once: true });
+      setTimeout(done, 4000);
+    });
 
-    window.addEventListener('scroll', handleScroll);
-    
-    // Page load delay simulation / video buffer sync
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 2200);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(timer);
-    };
+    Promise.all([minTime, videoReady]).then(() => {
+      setIsLoading(false);
+      setTimeout(() => setHeroReady(true), 200);
+    });
   }, []);
 
+  // Nav scroll state only — video stays fixed (no parallax)
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = selectedProject || isLoading ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject, isLoading]);
+
+  const togglePassion = (id) => {
+    setExpandedPassions((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
   return (
-    <div className="portfolio-root">
-      {/* Interactive Glitch Trail Cursor Canvas */}
+    <div className="mercury-app">
+      <PageLoader isLoading={isLoading} />
       <GlitchTrail />
 
-      {/* Page Loading Screen */}
-      <PageLoader isLoaded={isLoaded} />
-
-      {/* FIXED FULL-VIEWPORT VIDEO BACKGROUND (NO PARALLAX TO PREVENT BLANK TOPS) */}
-      <div className="page-video-bg">
-        <video 
+      {/* Fixed full-viewport background — never moves with scroll */}
+      <div className="page-video-bg" aria-hidden="true">
+        <video
           ref={videoRef}
-          autoPlay 
-          muted 
-          loop 
-          playsInline
           className="page-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
         >
           <source src="/meditating-ninja-4k.mp4" type="video/mp4" />
         </video>
-        <div className="video-overlay" />
+        <div className="page-video-overlay" />
       </div>
 
-      {/* NAVIGATION BAR */}
-      <nav className={`nav-container ${scrolled ? 'nav-scrolled' : ''}`}>
-        <div className="nav-content">
-          <a href="#" className="nav-logo">VB</a>
-          <div className="nav-links">
-            <a href="#impact">Impact</a>
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#principles">Principles</a>
-            <a href="#education">Education</a>
-            <a href="mailto:bector2001@gmail.com" className="nav-cta">
-              <Mail size={14} style={{ marginRight: '6px' }} />
-              Contact
-            </a>
-          </div>
-        </div>
-      </nav>
-
-      {/* HERO SECTION */}
-      <section className="hero-section">
-        <div className="hero-grid">
-          <div className="hero-text-block">
-            <div className="hero-badge">
-              VANCOUVER, BC • SUPPLY CHAIN & OPERATIONS
-            </div>
-            <h1 className="hero-title">
-              Vaibhav <span className="text-accent">Bector</span>
-            </h1>
-            <p className="hero-subtitle">
-              Building lean operations and scalable supply chains through data, Kaizen frameworks, and creative tactics.
-            </p>
-            <div className="hero-actions">
-              <a href="mailto:bector2001@gmail.com" className="btn-primary">
-                Get in Touch
-              </a>
-              <a 
-                href="/Vaibhav_Bector_Resume.pdf" 
-                download 
-                className="btn-secondary"
-              >
-                <Download size={18} style={{ marginRight: '8px' }} />
-                Download CV
-              </a>
-              <div className="hero-socials">
-                <a 
-                  href="https://github.com/B3ECT0R07" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  title="GitHub Profile"
-                >
-                  <GithubIcon size={20} />
-                </a>
-                <a 
-                  href="https://ca.linkedin.com/in/vaibhavbector" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  title="LinkedIn Profile"
-                >
-                  <LinkedinIcon size={20} />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="hero-image-block">
-            <div className="portrait-container">
-              <img 
-                src={profilePic} 
-                alt="Vaibhav Bector" 
-                className="portrait-img" 
-              />
-              <div className="portrait-frame" />
-            </div>
-          </div>
-        </div>
-        <div className="hero-scroll-indicator">
-          <ChevronDown className="bounce" size={28} />
-        </div>
-      </section>
-
-      {/* TECH & METHODOLOGY TICKER */}
-      <TechTicker />
-
-      {/* STRATEGIC IMPACT DASHBOARD */}
-      <section className="section-padding" id="impact">
-        <div className="content-container">
-          <div className="section-header-block">
-            <span className="section-kicker">Quantifiable Track Record</span>
-            <h2 className="section-title">Strategic Impact</h2>
-          </div>
-          <div className="kpi-grid">
-            {KPIS.map((kpi, idx) => (
-              <div key={idx} className="kpi-card">
-                <div className="kpi-icon-wrapper">
-                  {kpi.icon}
-                </div>
-                <div className="kpi-value">
-                  {kpi.value}
-                </div>
-                <div className="kpi-label">
-                  {kpi.label}
-                </div>
-                <div className="kpi-desc">
-                  {kpi.description}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* WORK EXPERIENCE SECTION */}
-      <section className="section-padding" id="experience">
-        <div className="content-container">
-          <div className="section-header-block">
-            <span className="section-kicker">Career Path</span>
-            <h2 className="section-title">Work Experience</h2>
-          </div>
-          <div className="exp-list">
-            {EXPERIENCES.map((exp, idx) => (
-              <div key={idx} className="exp-card">
-                <div className="exp-header">
-                  <div>
-                    <h3 className="exp-role">{exp.role}</h3>
-                    <p className="exp-company">
-                      {exp.company} <span className="exp-divider">•</span> {exp.location}
-                    </p>
-                  </div>
-                  <span className="exp-period-badge">{exp.period}</span>
-                </div>
-                <ul className="exp-points">
-                  {exp.points.map((p, i) => (
-                    <li key={i}>{p}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SELECT PROJECTS SECTION */}
-      <section className="section-padding" id="projects">
-        <div className="content-container">
-          <div className="section-header-block">
-            <span className="section-kicker">Case Studies</span>
-            <h2 className="section-title">Select Projects</h2>
-            <p className="section-tagline">
-              Systems and architectures engineered for scale and waste reduction.
-            </p>
-          </div>
-          <div className="projects-grid">
-            {PROJECTS.map((project, idx) => (
-              <div 
-                key={idx} 
-                className="project-card"
-                onClick={() => setSelectedProject(project)}
-              >
-                <div className="project-cat">{project.category}</div>
-                <h3 className="project-name">{project.title}</h3>
-                <p className="project-summary">{project.summary}</p>
-                <div className="project-stat">{project.metric}</div>
-                <div className="project-link">
-                  View Full Case Study <ExternalLink size={14} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* DRIVING PRINCIPLES ACCORDIONS */}
-      <section className="section-padding" id="principles">
-        <div className="content-container">
-          <div className="section-header-block">
-            <span className="section-kicker">Mindset & Method</span>
-            <h2 className="section-title">Driving Principles</h2>
-          </div>
-          <div className="accordion-container">
-            {PASSIONS.map((item, idx) => (
-              <div 
-                key={idx} 
-                className={`accordion-item ${activeAccordion === idx ? 'active' : ''}`}
-                onClick={() => setActiveAccordion(idx)}
-              >
-                <div className="accordion-header">
-                  <div className="accordion-title-group">
-                    <span className="accordion-icon">{item.icon}</span>
-                    <h3>{item.title}</h3>
-                  </div>
-                  <ChevronDown className="accordion-arrow" />
-                </div>
-                {activeAccordion === idx && (
-                  <div className="accordion-content">
-                    <p>{item.desc}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* EDUCATION SECTION */}
-      <section className="section-padding" id="education">
-        <div className="content-container">
-          <div className="section-header-block">
-            <span className="section-kicker">Academic Background</span>
-            <h2 className="section-title">Education</h2>
-          </div>
-          <div className="edu-grid">
-            {EDUCATION.map((edu, idx) => (
-              <div key={idx} className="edu-card">
-                <div className="edu-header">
-                  <h3 className="edu-degree">{edu.degree}</h3>
-                  <span className="edu-year">{edu.year}</span>
-                </div>
-                <p className="edu-institution">
-                  {edu.institution} • {edu.location}
-                </p>
-                <p className="edu-details">{edu.details}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <div className="content-container">
-          <div className="footer-flex">
-            <div>
-              <p className="footer-brand">VAIBHAV BECTOR</p>
-              <p className="footer-sub">Lean Operations & Supply Chain Engineering</p>
-            </div>
-            <div className="footer-links">
-              <a href="https://github.com/B3ECT0R07" target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              <a href="https://ca.linkedin.com/in/vaibhavbector" target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-              <a href="mailto:bector2001@gmail.com">
-                Email
-              </a>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>© {new Date().getFullYear()} Vaibhav Bector. All rights reserved.</p>
-            <p>Styled with Mercury Alpine Design System</p>
-          </div>
-        </div>
-      </footer>
-
-      {/* INTERACTIVE PROJECT MODAL */}
-      {selectedProject && (
-        <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="modal-close" 
-              onClick={() => setSelectedProject(null)}
-              aria-label="Close modal"
-            >
-              ✕
-            </button>
-            <div className="project-cat">{selectedProject.category}</div>
-            <h2 className="modal-title">{selectedProject.title}</h2>
-            <div className="modal-metric-badge">{selectedProject.metric}</div>
-            <p className="modal-desc">{selectedProject.description}</p>
-            
-            <div className="modal-tech-header">Tools & Methodologies Applied:</div>
-            <div className="modal-tech-list">
-              {selectedProject.tech.map((t) => (
-                <span key={t} className="tech-tag">
-                  <CheckCircle2 size={12} style={{ marginRight: '6px', color: '#5266eb' }} />
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ==================================================================== */}
-      {/* 6. MERCURY ALPINE DESIGN SYSTEM STYLESHEET                          */}
-      {/* ==================================================================== */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap');
 
         :root {
-          --onyx: #171721;
-          --graphite: #1e1e2a;
-          --obsidian: #272735;
-          --cobalt: #5266eb;
-          --slate: #70707d;
-          --mist: #e2e3ed;
-          --white: #ffffff;
+          --color-onyx: #171721;
+          --color-graphite: #1e1e2a;
+          --color-obsidian: #272735;
+          --color-slate: #70707d;
+          --color-mist: #e2e3ed;
+          --color-ash: #c3c3cc;
+          --color-ivory: #ededf3;
+          --color-cobalt: #5266eb;
+          --color-white: #ffffff;
+          --font-body: 'Inter', sans-serif;
+          --font-display: 'Space Grotesk', sans-serif;
+          --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        html {
+        body, html {
+          background-color: var(--color-onyx);
+          color: var(--color-ivory);
+          font-family: var(--font-body);
+          -webkit-font-smoothing: antialiased;
+          overflow-x: hidden;
           scroll-behavior: smooth;
         }
 
-        body {
-          background-color: var(--onyx);
-          color: var(--white);
-          font-family: 'Inter', sans-serif;
-          overflow-x: hidden;
-          -webkit-font-smoothing: antialiased;
-        }
-
-        h1, h2, h3, h4, .nav-logo, .loader-logo, .kpi-value {
-          font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .portfolio-root {
+        .mercury-app {
           position: relative;
-          width: 100%;
+          isolation: isolate;
         }
 
-        /* ------------------------------------------------------------------ */
-        /* FIXED VIDEO BACKGROUND SYSTEM                                       */
-        /* ------------------------------------------------------------------ */
+        .page-loader {
+          position: fixed;
+          inset: 0;
+          z-index: 10000;
+          background: var(--color-onyx);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition:
+            opacity 0.55s var(--ease-out),
+            visibility 0.55s var(--ease-out);
+        }
+
+        .page-loader-hide {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+
+        .loader-inner {
+          width: min(280px, 70vw);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 28px;
+        }
+
+        .loader-mark {
+          font-family: var(--font-display);
+          font-size: 42px;
+          font-weight: 500;
+          letter-spacing: -0.03em;
+          color: var(--color-white);
+          animation: loaderPulse 1.6s var(--ease-out) infinite;
+        }
+
+        @keyframes loaderPulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.72; transform: scale(0.98); }
+        }
+
+        .loader-bar-track {
+          width: 100%;
+          height: 2px;
+          background: var(--color-obsidian);
+          border-radius: 2px;
+          overflow: hidden;
+        }
+
+        .loader-bar-fill {
+          height: 100%;
+          background: var(--color-cobalt);
+          border-radius: 2px;
+          box-shadow: 0 0 12px rgba(82, 102, 235, 0.55);
+          transition: width 0.35s var(--ease-out);
+        }
+
+        .loader-meta {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .loader-label {
+          font-size: 12px;
+          font-weight: 400;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--color-slate);
+        }
+
+        .loader-pct {
+          font-family: var(--font-display);
+          font-size: 12px;
+          font-weight: 500;
+          color: var(--color-ash);
+          font-variant-numeric: tabular-nums;
+        }
+
+        /* Fixed background — pinned to viewport at all times */
         .page-video-bg {
           position: fixed;
           top: 0;
           left: 0;
           width: 100vw;
           height: 100vh;
+          height: 100dvh;
           z-index: 0;
           overflow: hidden;
           pointer-events: none;
@@ -765,927 +688,921 @@ export default function App() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transform: none !important;
+          object-position: center center;
+          transform: none;
+          pointer-events: none;
         }
 
-        .video-overlay {
+        .page-video-overlay {
           position: absolute;
           inset: 0;
-          background: radial-gradient(
-            circle at center, 
-            rgba(23, 23, 33, 0.35) 0%, 
+          background: linear-gradient(
+            to bottom,
+            rgba(23, 23, 33, 0.55) 0%,
+            rgba(23, 23, 33, 0.78) 45%,
             rgba(23, 23, 33, 0.92) 100%
           );
         }
 
-        /* ------------------------------------------------------------------ */
-        /* PAGE LOADER                                                        */
-        /* ------------------------------------------------------------------ */
-        .loader-overlay {
-          position: fixed;
-          inset: 0;
-          background: var(--onyx);
-          z-index: 10000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: opacity 0.8s ease, visibility 0.8s;
-        }
-
-        .loader-overlay.fade-out {
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: none;
-        }
-
-        .loader-content {
-          text-align: center;
-          width: 280px;
-        }
-
-        .loader-logo {
-          font-size: 3.5rem;
-          font-weight: 700;
-          margin-bottom: 2rem;
-          color: var(--cobalt);
-          letter-spacing: -2px;
-        }
-
-        .loader-bar-container {
-          height: 2px;
-          width: 100%;
-          background: var(--obsidian);
-          margin-bottom: 1.25rem;
-          overflow: hidden;
-          border-radius: 2px;
-        }
-
-        .loader-bar {
-          height: 100%;
-          background: var(--cobalt);
-          transition: width 0.2s ease-out;
-        }
-
-        .loader-text {
-          font-size: 0.7rem;
-          letter-spacing: 0.25rem;
-          color: var(--slate);
-          font-weight: 600;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* NAVIGATION BAR                                                     */
-        /* ------------------------------------------------------------------ */
-        .nav-container {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          z-index: 1000;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          padding: 1.75rem 0;
-        }
-
-        .nav-scrolled {
-          background: rgba(23, 23, 33, 0.88);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          padding: 1rem 0;
-          border-bottom: 1px solid var(--obsidian);
-        }
-
-        .nav-content {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 2rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .nav-logo {
-          font-size: 1.5rem;
-          font-weight: 700;
-          letter-spacing: -1px;
-          color: var(--white);
-          text-decoration: none;
-        }
-
-        .nav-links {
-          display: flex;
-          gap: 2.25rem;
-          align-items: center;
-        }
-
-        .nav-links a {
-          text-decoration: none;
-          color: var(--slate);
-          font-size: 0.88rem;
-          font-weight: 500;
-          transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-          color: var(--white);
-        }
-
-        .nav-cta {
-          padding: 0.6rem 1.25rem;
-          background: var(--obsidian);
-          color: var(--white) !important;
-          border-radius: 40px;
-          display: flex;
-          align-items: center;
-          transition: background 0.3s ease;
-        }
-
-        .nav-cta:hover {
-          background: var(--graphite);
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* HERO SECTION                                                       */
-        /* ------------------------------------------------------------------ */
-        .hero-section {
+        .page-content {
           position: relative;
-          height: 100vh;
-          min-height: 700px;
-          display: flex;
-          align-items: center;
-          padding: 0 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
           z-index: 1;
         }
 
-        .hero-grid {
-          display: grid;
-          grid-template-columns: 1.2fr 0.8fr;
-          gap: 4rem;
-          align-items: center;
-          width: 100%;
+        .reveal {
+          opacity: 0;
+          transform: translateY(28px);
+          transition:
+            opacity 0.8s var(--ease-out),
+            transform 0.8s var(--ease-out);
+          will-change: opacity, transform;
         }
 
-        .hero-badge {
-          display: inline-block;
-          padding: 0.5rem 1rem;
-          background: var(--obsidian);
-          border-radius: 40px;
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 1.5px;
-          margin-bottom: 1.75rem;
-          color: var(--slate);
-          text-transform: uppercase;
+        .reveal.reveal-in {
+          opacity: 1;
+          transform: translateY(0);
         }
 
-        .hero-title {
-          font-size: 5.25rem;
-          line-height: 0.95;
-          margin-bottom: 2rem;
-          letter-spacing: -2px;
+        .hero-item {
+          opacity: 0;
+          transform: translateY(20px);
+          transition:
+            opacity 0.9s var(--ease-out),
+            transform 0.9s var(--ease-out);
         }
 
-        .text-accent {
-          color: var(--cobalt);
+        .hero-ready .hero-item {
+          opacity: 1;
+          transform: translateY(0);
         }
 
-        .hero-subtitle {
-          font-size: 1.25rem;
-          color: var(--slate);
-          line-height: 1.6;
-          margin-bottom: 3rem;
-          max-width: 520px;
-        }
+        .hero-item-0 { transition-delay: 0.02s; }
+        .hero-item-1 { transition-delay: 0.12s; }
+        .hero-item-2 { transition-delay: 0.24s; }
+        .hero-item-3 { transition-delay: 0.36s; }
+        .hero-item-4 { transition-delay: 0.48s; }
 
-        .hero-actions {
+        .hero {
+          position: relative;
+          min-height: 100vh;
+          min-height: 100dvh;
           display: flex;
+          flex-direction: column;
           align-items: center;
-          gap: 1.25rem;
-          flex-wrap: wrap;
+          justify-content: center;
+          text-align: center;
+          padding: 80px 24px 40px;
+          background-color: transparent;
+          overflow: hidden;
         }
 
-        .btn-primary {
-          background: var(--cobalt);
-          color: var(--white);
-          text-decoration: none;
-          padding: 0.95rem 2rem;
-          border-radius: 40px;
-          font-weight: 600;
-          font-size: 0.95rem;
-          transition: transform 0.3s, box-shadow 0.3s;
-          display: inline-flex;
-          align-items: center;
-        }
-
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 25px rgba(82, 102, 235, 0.35);
-        }
-
-        .btn-secondary {
-          background: var(--obsidian);
-          color: var(--white);
-          text-decoration: none;
-          padding: 0.95rem 2rem;
-          border-radius: 40px;
-          font-weight: 600;
-          font-size: 0.95rem;
-          display: inline-flex;
-          align-items: center;
-          transition: background 0.3s, transform 0.3s;
-        }
-
-        .btn-secondary:hover {
-          background: var(--graphite);
-          transform: translateY(-2px);
-        }
-
-        .hero-socials {
+        .hero-content {
+          position: relative;
+          z-index: 2;
+          max-width: 680px;
           display: flex;
-          gap: 1.25rem;
-          margin-left: 0.5rem;
-        }
-
-        .hero-socials a {
-          color: var(--slate);
-          transition: color 0.3s;
-          display: flex;
+          flex-direction: column;
           align-items: center;
-        }
-
-        .hero-socials a:hover {
-          color: var(--white);
         }
 
         .portrait-container {
+          margin-bottom: 24px;
           position: relative;
-          width: 100%;
-          max-width: 380px;
-          aspect-ratio: 1;
-          margin: 0 auto;
         }
 
         .portrait-img {
-          width: 100%;
-          height: 100%;
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
           object-fit: cover;
-          border-radius: 12px;
-          position: relative;
-          z-index: 2;
-          filter: grayscale(10%);
+          border: 2px solid var(--color-obsidian);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+          transition: transform 0.35s var(--ease-out), border-color 0.35s ease;
         }
 
-        .portrait-frame {
-          position: absolute;
-          inset: 18px -18px -18px 18px;
-          border: 2px solid var(--cobalt);
-          border-radius: 12px;
-          z-index: 1;
+        .portrait-img:hover {
+          transform: scale(1.05);
+          border-color: var(--color-cobalt);
         }
 
-        .hero-scroll-indicator {
-          position: absolute;
-          bottom: 2.5rem;
-          left: 50%;
-          transform: translateX(-50%);
-          color: var(--slate);
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* TECH TICKER                                                        */
-        /* ------------------------------------------------------------------ */
-        .ticker-wrapper {
-          background: var(--graphite);
-          padding: 2.25rem 0;
-          border-top: 1px solid var(--obsidian);
-          border-bottom: 1px solid var(--obsidian);
-          position: relative;
-          z-index: 1;
-          overflow: hidden;
-        }
-
-        .ticker-label {
-          text-align: center;
-          font-size: 0.7rem;
-          color: var(--slate);
+        .hero-badge {
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--color-ash);
+          border: 1px solid var(--color-slate);
+          padding: 8px 16px;
+          border-radius: 40px;
+          margin-bottom: 28px;
+          letter-spacing: 0.05em;
           text-transform: uppercase;
-          letter-spacing: 2px;
-          margin-bottom: 1.5rem;
-          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(23, 23, 33, 0.35);
+          backdrop-filter: blur(8px);
         }
 
-        .ticker-container {
+        .hero-title {
+          font-family: var(--font-display);
+          font-size: clamp(42px, 6vw, 65px);
+          font-weight: 500;
+          line-height: 1.1;
+          letter-spacing: -0.01em;
+          color: var(--color-white);
+          margin-bottom: 24px;
+        }
+
+        .hero-subtitle {
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 1.5;
+          color: var(--color-ivory);
+          margin-bottom: 40px;
+          max-width: 540px;
+        }
+
+        .btn-primary,
+        .btn-ghost {
+          border-radius: 32px;
+          font-family: var(--font-body);
+          font-size: 16px;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          transition:
+            background-color 0.25s ease,
+            border-color 0.25s ease,
+            transform 0.25s var(--ease-out),
+            box-shadow 0.25s ease;
+        }
+
+        .btn-primary {
+          background-color: var(--color-cobalt);
+          color: var(--color-white);
+          border: none;
+          padding: 14px 24px;
+          font-weight: 500;
+        }
+
+        .btn-primary:hover {
+          background-color: #4255d6;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 28px rgba(82, 102, 235, 0.28);
+        }
+
+        .btn-ghost {
+          background-color: rgba(23, 23, 33, 0.4);
+          color: var(--color-ivory);
+          border: 1px solid var(--color-slate);
+          padding: 14px 24px;
+          font-weight: 400;
+          backdrop-filter: blur(8px);
+        }
+
+        .btn-ghost:hover {
+          border-color: var(--color-mist);
+          transform: translateY(-2px);
+        }
+
+        .button-group {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .ticker-section {
+          padding: 36px 0 28px;
+          background: rgba(23, 23, 33, 0.45);
+          backdrop-filter: blur(8px);
+          border-top: 1px solid rgba(39, 39, 53, 0.6);
+          border-bottom: 1px solid rgba(39, 39, 53, 0.6);
           overflow: hidden;
+          margin-bottom: 72px;
+          position: relative;
           cursor: grab;
           user-select: none;
+          -webkit-user-select: none;
+          touch-action: pan-y;
+          outline: none;
         }
 
-        .ticker-container:active {
+        .ticker-section.is-dragging {
           cursor: grabbing;
+        }
+
+        .ticker-section:focus-visible {
+          box-shadow: inset 0 0 0 1px rgba(82, 102, 235, 0.45);
+        }
+
+        .ticker-hint {
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--color-slate);
+          pointer-events: none;
+          z-index: 3;
+        }
+
+        .ticker-window {
+          overflow: hidden;
+          width: 100%;
         }
 
         .ticker-track {
           display: flex;
-          gap: 3.5rem;
+          gap: 16px;
           width: max-content;
-          animation: scroll 38s linear infinite;
+          will-change: transform;
+          padding: 8px 0;
         }
 
-        .ticker-container:hover .ticker-track {
-          animation-play-state: paused;
-        }
-
-        .ticker-item {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 1.4rem;
-          color: var(--mist);
+        .ticker-pill {
+          background: rgba(30, 30, 42, 0.88);
+          border: 1px solid var(--color-obsidian);
+          padding: 10px 24px;
+          border-radius: 40px;
+          color: var(--color-ivory);
+          font-family: var(--font-display);
+          font-size: 14px;
           white-space: nowrap;
+          flex-shrink: 0;
+          pointer-events: none;
+        }
+
+        .ticker-fade {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 64px;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .ticker-fade-left {
+          left: 0;
+          background: linear-gradient(to right, rgba(23, 23, 33, 0.85), transparent);
+        }
+
+        .ticker-fade-right {
+          right: 0;
+          background: linear-gradient(to left, rgba(23, 23, 33, 0.85), transparent);
+        }
+
+        .nav-bar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          padding: 20px 40px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          z-index: 100;
+          transition:
+            background 0.35s ease,
+            border-color 0.35s ease,
+            backdrop-filter 0.35s ease,
+            padding 0.35s ease;
+          background: transparent;
+          border-bottom: 1px solid transparent;
+        }
+
+        .nav-bar.scrolled {
+          background: rgba(23, 23, 33, 0.85);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--color-obsidian);
+          padding: 16px 40px;
+        }
+
+        .nav-logo {
+          font-family: var(--font-display);
+          font-size: 20px;
           font-weight: 500;
+          color: var(--color-ivory);
+          letter-spacing: -0.02em;
         }
 
-        .ticker-icon {
-          color: var(--cobalt);
-        }
+        .nav-links { display: flex; gap: 32px; }
 
-        .ticker-hint {
-          text-align: center;
-          font-size: 0.65rem;
-          color: var(--slate);
-          margin-top: 1.25rem;
-          letter-spacing: 1.5px;
-          opacity: 0.6;
-          font-weight: 600;
-        }
-
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-33.33%);
-          }
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* SECTION HEADERS & UTILITIES                                        */
-        /* ------------------------------------------------------------------ */
-        .section-padding {
-          padding: 8.5rem 2rem;
+        .nav-link {
+          color: var(--color-ivory);
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 400;
           position: relative;
-          z-index: 1;
+          transition: color 0.2s ease;
         }
 
-        .content-container {
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -4px;
+          width: 0;
+          height: 1px;
+          background: var(--color-ivory);
+          transition: width 0.3s var(--ease-out);
+        }
+
+        .nav-link:hover { color: var(--color-white); }
+        .nav-link:hover::after { width: 100%; }
+
+        .section-container {
           max-width: 1200px;
           margin: 0 auto;
+          padding: 56px 24px 112px 24px;
         }
 
-        .section-header-block {
-          margin-bottom: 4rem;
-        }
-
-        .section-kicker {
-          display: inline-block;
-          font-size: 0.75rem;
-          color: var(--cobalt);
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          font-weight: 700;
-          margin-bottom: 0.75rem;
-        }
+        .section-header { margin-bottom: 56px; }
 
         .section-title {
-          font-size: 3.25rem;
-          letter-spacing: -1px;
+          font-family: var(--font-display);
+          font-size: 42px;
+          font-weight: 500;
+          line-height: 1.15;
+          letter-spacing: -0.01em;
+          color: var(--color-white);
+          margin-bottom: 16px;
         }
 
-        .section-tagline {
-          color: var(--slate);
-          font-size: 1.1rem;
-          margin-top: 0.5rem;
+        .section-desc {
+          font-size: 18px;
+          color: var(--color-ash);
+          max-width: 600px;
+          line-height: 1.5;
         }
 
-        /* ------------------------------------------------------------------ */
-        /* STRATEGIC IMPACT DASHBOARD (KPIs)                                  */
-        /* ------------------------------------------------------------------ */
+        .graphite-card {
+          background-color: rgba(30, 30, 42, 0.88);
+          backdrop-filter: blur(12px);
+          border-radius: 12px;
+          padding: 32px;
+          border: 1px solid transparent;
+          box-shadow: none;
+          transition:
+            transform 0.35s var(--ease-out),
+            border-color 0.35s ease,
+            background-color 0.35s ease;
+        }
+
+        .graphite-card.interactive {
+          cursor: pointer;
+        }
+
+        .graphite-card.interactive:hover {
+          transform: translateY(-6px);
+          border-color: rgba(82, 102, 235, 0.25);
+          background-color: rgba(33, 33, 47, 0.94);
+        }
+
+        .grid-2 {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+          gap: 24px;
+        }
+
+        /* --- NEW: KPI GRID & CARDS CSS --- */
         .kpi-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-          gap: 1.75rem;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 24px;
         }
 
         .kpi-card {
-          background: var(--graphite);
-          padding: 2.75rem 2rem;
+          background-color: rgba(30, 30, 42, 0.88);
+          backdrop-filter: blur(12px);
           border-radius: 12px;
+          padding: 32px 24px;
           text-align: center;
-          transition: transform 0.3s ease;
+          border: 1px solid transparent;
+          transition: transform 0.35s var(--ease-out), border-color 0.35s ease;
         }
 
         .kpi-card:hover {
           transform: translateY(-6px);
+          border-color: rgba(82, 102, 235, 0.25);
         }
 
         .kpi-icon-wrapper {
-          color: var(--cobalt);
-          margin-bottom: 1.25rem;
+          color: var(--color-cobalt);
+          margin-bottom: 20px;
           display: flex;
           justify-content: center;
         }
 
         .kpi-value {
-          font-size: 3.5rem;
-          font-weight: 700;
-          color: var(--white);
-          margin-bottom: 0.5rem;
+          font-family: var(--font-display);
+          font-size: 48px;
+          font-weight: 500;
+          color: var(--color-white);
+          margin-bottom: 8px;
           line-height: 1;
         }
 
         .kpi-label {
-          color: var(--white);
-          font-size: 0.95rem;
-          font-weight: 600;
-          margin-bottom: 0.75rem;
+          color: var(--color-ivory);
+          font-size: 15px;
+          font-weight: 500;
+          margin-bottom: 12px;
+          letter-spacing: 0.02em;
         }
 
         .kpi-desc {
-          color: var(--slate);
-          font-size: 0.82rem;
+          color: var(--color-ash);
+          font-size: 14px;
           line-height: 1.5;
         }
 
-        /* ------------------------------------------------------------------ */
-        /* EXPERIENCE SECTION                                                 */
-        /* ------------------------------------------------------------------ */
-        .exp-list {
-          display: flex;
-          flex-direction: column;
-          gap: 2.25rem;
+        .exp-role {
+          font-family: var(--font-display);
+          font-size: 24px;
+          font-weight: 500;
+          color: var(--color-white);
+          margin-bottom: 8px;
         }
 
-        .exp-card {
-          background: var(--graphite);
-          padding: 3.25rem;
-          border-radius: 12px;
-        }
-
-        .exp-header {
+        .exp-meta {
+          font-size: 16px;
+          color: var(--color-ash);
+          margin-bottom: 24px;
           display: flex;
           justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 2rem;
+          gap: 12px;
           flex-wrap: wrap;
-          gap: 1rem;
+          border-bottom: 1px solid var(--color-obsidian);
+          padding-bottom: 16px;
         }
 
-        .exp-role {
-          font-size: 1.6rem;
-          margin-bottom: 0.5rem;
-        }
-
-        .exp-company {
-          color: var(--cobalt);
-          font-weight: 600;
-          font-size: 1.05rem;
-        }
-
-        .exp-divider {
-          color: var(--slate);
-          margin: 0 0.4rem;
-        }
-
-        .exp-period-badge {
-          background: var(--obsidian);
-          padding: 0.5rem 1rem;
-          border-radius: 40px;
-          color: var(--slate);
-          font-size: 0.85rem;
-          font-weight: 500;
-        }
-
-        .exp-points {
+        .exp-list {
           list-style: none;
+          color: var(--color-ivory);
+          font-size: 16px;
+          line-height: 1.6;
         }
 
-        .exp-points li {
+        .exp-list li {
           position: relative;
-          padding-left: 1.75rem;
-          margin-bottom: 1.1rem;
-          color: var(--mist);
-          line-height: 1.65;
-          font-size: 1rem;
+          padding-left: 20px;
+          margin-bottom: 12px;
         }
 
-        .exp-points li::before {
-          content: "";
+        .exp-list li::before {
+          content: '';
           position: absolute;
           left: 0;
-          top: 0.65rem;
-          width: 6px;
-          height: 6px;
-          background: var(--cobalt);
+          top: 10px;
+          width: 4px;
+          height: 4px;
           border-radius: 50%;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* PROJECTS SECTION                                                   */
-        /* ------------------------------------------------------------------ */
-        .projects-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2.25rem;
-        }
-
-        .project-card {
-          background: var(--graphite);
-          padding: 3.25rem;
-          border-radius: 12px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          border: 1px solid transparent;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .project-card:hover {
-          border-color: var(--cobalt);
-          transform: translateY(-5px);
-        }
-
-        .project-cat {
-          font-size: 0.72rem;
-          color: var(--slate);
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          margin-bottom: 1rem;
-          font-weight: 600;
-        }
-
-        .project-name {
-          font-size: 2.1rem;
-          margin-bottom: 1rem;
-        }
-
-        .project-summary {
-          color: var(--slate);
-          font-size: 0.98rem;
-          line-height: 1.6;
-          margin-bottom: 2rem;
-          flex-grow: 1;
-        }
-
-        .project-stat {
-          font-size: 1.35rem;
-          color: var(--cobalt);
-          font-weight: 700;
-          margin-bottom: 2rem;
-          font-family: 'Space Grotesk', sans-serif;
+          background-color: var(--color-slate);
         }
 
         .project-link {
+          margin-top: 24px;
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          font-size: 0.9rem;
-          font-weight: 600;
-          color: var(--white);
+          gap: 8px;
+          color: var(--color-cobalt);
+          font-weight: 500;
+          font-size: 14px;
+          transition: gap 0.25s var(--ease-out);
         }
 
-        /* ------------------------------------------------------------------ */
-        /* PRINCIPLES ACCORDION                                               */
-        /* ------------------------------------------------------------------ */
-        .accordion-container {
+        .graphite-card.interactive:hover .project-link {
+          gap: 12px;
+        }
+
+        .dropbox-header {
           display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-        }
-
-        .accordion-item {
-          background: var(--graphite);
-          border-radius: 12px;
-          overflow: hidden;
+          justify-content: space-between;
+          align-items: center;
           cursor: pointer;
-          transition: background 0.3s;
+          gap: 16px;
         }
 
-        .accordion-header {
-          padding: 2.25rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+        .dropbox-title {
+          font-family: var(--font-display);
+          font-size: 21px;
+          font-weight: 500;
+          color: var(--color-white);
         }
 
-        .accordion-title-group {
-          display: flex;
-          align-items: center;
-          gap: 1.5rem;
+        .dropbox-tagline {
+          font-size: 14px;
+          color: var(--color-ash);
+          margin-top: 4px;
         }
 
-        .accordion-icon {
-          color: var(--cobalt);
-          display: flex;
+        .chevron {
+          color: var(--color-slate);
+          transition: transform 0.35s var(--ease-out), color 0.25s ease;
+          flex-shrink: 0;
         }
 
-        .accordion-arrow {
-          transition: transform 0.3s ease;
-          color: var(--slate);
-        }
-
-        .accordion-item.active .accordion-arrow {
+        .chevron.open {
           transform: rotate(180deg);
+          color: var(--color-ivory);
         }
 
-        .accordion-content {
-          padding: 0 2.25rem 2.25rem 5rem;
-          color: var(--slate);
-          line-height: 1.7;
-          font-size: 1.02rem;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* EDUCATION SECTION                                                  */
-        /* ------------------------------------------------------------------ */
-        .edu-grid {
+        .dropbox-content {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2.25rem;
+          grid-template-rows: 0fr;
+          transition: grid-template-rows 0.4s var(--ease-out);
         }
 
-        .edu-card {
-          background: var(--graphite);
-          padding: 3rem;
-          border-radius: 12px;
+        .dropbox-content.open {
+          grid-template-rows: 1fr;
         }
 
-        .edu-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 1rem;
-          gap: 1rem;
+        .dropbox-content-inner {
+          overflow: hidden;
         }
 
-        .edu-degree {
-          font-size: 1.4rem;
-          line-height: 1.3;
-        }
-
-        .edu-year {
-          background: var(--obsidian);
-          padding: 0.4rem 0.9rem;
-          border-radius: 40px;
-          color: var(--slate);
-          font-size: 0.8rem;
-          white-space: nowrap;
-        }
-
-        .edu-institution {
-          color: var(--cobalt);
-          font-weight: 600;
-          margin-bottom: 1rem;
-        }
-
-        .edu-details {
-          color: var(--slate);
-          font-size: 0.95rem;
+        .dropbox-content-inner > div {
+          margin-top: 24px;
+          padding-top: 24px;
+          border-top: 1px solid var(--color-obsidian);
+          color: var(--color-ivory);
           line-height: 1.6;
+          font-size: 16px;
+          opacity: 0;
+          transform: translateY(-6px);
+          transition:
+            opacity 0.35s ease 0.05s,
+            transform 0.35s var(--ease-out) 0.05s;
         }
 
-        /* ------------------------------------------------------------------ */
-        /* MODAL OVERLAY                                                      */
-        /* ------------------------------------------------------------------ */
+        .dropbox-content.open .dropbox-content-inner > div {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(10, 10, 15, 0.92);
+          background: rgba(23, 23, 33, 0.92);
           backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          z-index: 2000;
+          z-index: 200;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 2rem;
+          padding: 24px;
+          animation: fadeIn 0.25s ease;
         }
 
-        .modal-card {
-          background: var(--graphite);
-          padding: 4rem;
-          border-radius: 20px;
-          max-width: 680px;
+        .modal-content {
+          background-color: var(--color-graphite);
+          border-radius: 12px;
+          padding: 40px;
+          max-width: 600px;
           width: 100%;
           position: relative;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+          border: 1px solid var(--color-obsidian);
+          animation: modalIn 0.4s var(--ease-out);
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes modalIn {
+          from { opacity: 0; transform: translateY(16px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .modal-close {
           position: absolute;
-          top: 2rem;
-          right: 2rem;
-          background: var(--obsidian);
+          top: 24px;
+          right: 24px;
+          background: transparent;
           border: none;
-          color: var(--slate);
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          font-size: 1.1rem;
+          color: var(--color-ash);
           cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: color 0.3s;
+          transition: color 0.2s ease, transform 0.2s ease;
         }
 
         .modal-close:hover {
-          color: var(--white);
+          color: var(--color-white);
+          transform: rotate(90deg);
         }
 
-        .modal-title {
-          font-size: 2.5rem;
-          margin-bottom: 1.25rem;
-        }
-
-        .modal-metric-badge {
-          display: inline-block;
-          padding: 0.5rem 1.25rem;
-          background: var(--cobalt);
-          border-radius: 40px;
-          margin-bottom: 2rem;
-          font-weight: 700;
-          font-size: 0.95rem;
-        }
-
-        .modal-desc {
-          font-size: 1.1rem;
-          line-height: 1.75;
-          color: var(--mist);
-          margin-bottom: 2.5rem;
-        }
-
-        .modal-tech-header {
-          font-size: 0.8rem;
-          color: var(--slate);
-          text-transform: uppercase;
-          letter-spacing: 1.5px;
-          margin-bottom: 1rem;
-          font-weight: 600;
-        }
-
-        .modal-tech-list {
-          display: flex;
-          gap: 0.75rem;
-          flex-wrap: wrap;
-        }
-
-        .tech-tag {
-          padding: 0.5rem 1.1rem;
-          background: var(--obsidian);
-          border-radius: 40px;
-          font-size: 0.85rem;
-          color: var(--white);
-          display: flex;
-          align-items: center;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* FOOTER                                                             */
-        /* ------------------------------------------------------------------ */
         .footer {
-          padding: 5rem 2rem 3rem;
-          border-top: 1px solid var(--obsidian);
-          background: var(--onyx);
-          position: relative;
-          z-index: 1;
+          border-top: 1px solid var(--color-obsidian);
+          padding: 40px 24px;
+          text-align: center;
+          font-size: 14px;
+          color: var(--color-ash);
+          background: rgba(23, 23, 33, 0.55);
+          backdrop-filter: blur(8px);
         }
 
-        .footer-flex {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 4rem;
-          flex-wrap: wrap;
-          gap: 2rem;
-        }
-
-        .footer-brand {
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 1.5rem;
-          font-weight: 700;
-          letter-spacing: -1px;
-          margin-bottom: 0.5rem;
-        }
-
-        .footer-sub {
-          color: var(--slate);
-          font-size: 0.95rem;
-        }
-
-        .footer-links {
-          display: flex;
-          gap: 2.25rem;
-        }
-
-        .footer-links a {
-          color: var(--slate);
-          text-decoration: none;
-          font-size: 0.95rem;
-          transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-          color: var(--white);
-        }
-
-        .footer-bottom {
-          display: flex;
-          justify-content: space-between;
-          color: var(--slate);
-          font-size: 0.85rem;
-          border-top: 1px solid var(--obsidian);
-          padding-top: 2rem;
-          flex-wrap: wrap;
-          gap: 1rem;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* RESPONSIVE LAYOUT ADJUSTMENTS                                      */
-        /* ------------------------------------------------------------------ */
-        @media (max-width: 1024px) {
-          .hero-grid {
-            grid-template-columns: 1fr;
-            text-align: center;
-          }
-
-          .hero-text-block {
-            order: 2;
-          }
-
-          .hero-image-block {
-            order: 1;
-          }
-
-          .hero-title {
-            font-size: 3.8rem;
-          }
-
-          .hero-subtitle {
-            margin-left: auto;
-            margin-right: auto;
-          }
-
-          .hero-actions {
-            justify-content: center;
-          }
-
-          .hero-socials {
-            margin-left: 0;
-          }
-
-          .projects-grid, 
-          .edu-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .hero-title {
-            font-size: 3rem;
-          }
-
-          .section-title {
-            font-size: 2.5rem;
-          }
-
-          .modal-card {
-            padding: 2.5rem 2rem;
-          }
-
-          .exp-card, 
-          .project-card, 
-          .edu-card {
-            padding: 2rem;
-          }
-        }
-
-        .bounce {
-          animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateY(0);
-          }
-          40% {
-            transform: translateY(-8px);
-          }
-          60% {
-            transform: translateY(-4px);
-          }
+        @media (max-width: 768px) {
+          .nav-links { display: none; }
+          .hero-title { font-size: 42px; }
+          .section-container { padding: 72px 24px; }
+          .nav-bar, .nav-bar.scrolled { padding: 16px 20px; }
+          .ticker-hint { right: 12px; font-size: 10px; }
         }
       `}</style>
+
+      <div className="page-content">
+        <nav className={`nav-bar ${scrolled ? 'scrolled' : ''}`}>
+          <div className="nav-logo">Vaibhav Bector.</div>
+          <div className="nav-links">
+            <a href="#impact" className="nav-link">Impact</a>
+            <a href="#experience" className="nav-link">Experience</a>
+            <a href="#projects" className="nav-link">Projects</a>
+            <a href="#education" className="nav-link">Education</a>
+            <a href="#about" className="nav-link">About</a>
+          </div>
+          <a
+            href={`mailto:${personalInfo.email}`}
+            className="btn-ghost"
+            style={{ padding: '8px 16px', fontSize: '14px' }}
+          >
+            <Mail size={14} /> Contact
+          </a>
+        </nav>
+
+        <header className={`hero ${heroReady ? 'hero-ready' : ''}`}>
+          <div className="hero-content">
+            <div className="portrait-container hero-item hero-item-0">
+              <img
+                src={profilePic}
+                alt="Vaibhav Bector"
+                className="portrait-img"
+              />
+            </div>
+
+            <div className="hero-badge hero-item hero-item-1">
+              <MapPin size={14} /> {personalInfo.location} — Operations & Strategy
+            </div>
+
+            <h1 className="hero-title hero-item hero-item-2">
+              Orchestrating complex systems.
+            </h1>
+
+            <p className="hero-subtitle hero-item hero-item-3">
+              {personalInfo.tagline} Designed to eliminate operational bottlenecks
+              and architect predictable, high-growth delivery.
+            </p>
+
+            <div className="button-group hero-item hero-item-4">
+              <a href="#projects" className="btn-primary">
+                View Initiatives <ArrowRight size={18} />
+              </a>
+              <a
+                href={personalInfo.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost"
+              >
+                <LinkedinIcon /> LinkedIn
+              </a>
+              <a
+                href={personalInfo.github}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost"
+              >
+                <GithubIcon /> GitHub
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <Reveal>
+          <TechTicker items={techStack} />
+        </Reveal>
+
+        {/* --- NEW: KPI DASHBOARD SECTION --- */}
+        <section id="impact" className="section-container" style={{ paddingBottom: '32px' }}>
+          <Reveal>
+            <div className="section-header" style={{ marginBottom: '40px' }}>
+              <h2 className="section-title">Strategic Impact</h2>
+              <p className="section-desc">
+                Quantifiable track record of scaling operations and reducing inefficiencies.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="kpi-grid">
+            {kpis.map((kpi, idx) => (
+              <Reveal key={kpi.label} delay={idx * 120}>
+                <div className="kpi-card">
+                  <div className="kpi-icon-wrapper">{kpi.icon}</div>
+                  <div className="kpi-value">{kpi.value}</div>
+                  <div className="kpi-label">{kpi.label}</div>
+                  <div className="kpi-desc">{kpi.description}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section id="experience" className="section-container">
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Track Record</h2>
+              <p className="section-desc">
+                Executing lean operations across supply chain management and
+                architectural installations.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid-2">
+            {experiences.map((exp, idx) => (
+              <Reveal key={exp.company} delay={idx * 120}>
+                <div className="graphite-card">
+                  <h3 className="exp-role">{exp.role}</h3>
+                  <div className="exp-meta">
+                    <span>{exp.company}</span>
+                    <span>{exp.period}</span>
+                  </div>
+                  <ul className="exp-list">
+                    {exp.highlights.map((highlight) => (
+                      <li key={highlight}>{highlight}</li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section id="projects" className="section-container" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Key Initiatives</h2>
+            </div>
+          </Reveal>
+
+          <div className="grid-2">
+            {projects.map((proj, idx) => (
+              <Reveal key={proj.id} delay={idx * 120}>
+                <div
+                  className="graphite-card interactive"
+                  onClick={() => setSelectedProject(proj)}
+                >
+                  <div
+                    style={{
+                      color: 'var(--color-slate)',
+                      fontSize: '14px',
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    {proj.category}
+                  </div>
+                  <h3 className="exp-role">{proj.title}</h3>
+                  <p
+                    style={{
+                      color: 'var(--color-ash)',
+                      fontSize: '16px',
+                      lineHeight: 1.5,
+                      marginTop: '12px',
+                    }}
+                  >
+                    {proj.desc}
+                  </p>
+                  <div className="project-link">
+                    View details <ExternalLink size={14} />
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section id="education" className="section-container" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Education & Credentials</h2>
+              <p className="section-desc">
+                Academic foundation in global business and operational strategy.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid-2">
+            {education.map((edu, idx) => (
+              <Reveal key={edu.institution} delay={idx * 120}>
+                <div className="graphite-card">
+                  <h3 className="exp-role">{edu.degree}</h3>
+                  <div className="exp-meta">
+                    <span>{edu.institution}</span>
+                    <span>{edu.period}</span>
+                  </div>
+                  <ul className="exp-list">
+                    {edu.highlights.map((highlight, i) => (
+                      <li key={i}>{highlight}</li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section id="about" className="section-container" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Driving Principles</h2>
+              <p className="section-desc">
+                The philosophies that influence my approach to complex project
+                management.
+              </p>
+            </div>
+          </Reveal>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {passions.map((passion, idx) => {
+              const isOpen = expandedPassions.includes(passion.id);
+              return (
+                <Reveal key={passion.id} delay={idx * 90}>
+                  <div className="graphite-card">
+                    <div
+                      className="dropbox-header"
+                      onClick={() => togglePassion(passion.id)}
+                    >
+                      <div>
+                        <h3 className="dropbox-title">{passion.title}</h3>
+                        <div className="dropbox-tagline">{passion.tagline}</div>
+                      </div>
+                      <ChevronDown
+                        size={24}
+                        className={`chevron ${isOpen ? 'open' : ''}`}
+                      />
+                    </div>
+
+                    <div className={`dropbox-content ${isOpen ? 'open' : ''}`}>
+                      <div className="dropbox-content-inner">
+                        <div>{passion.fullContent}</div>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </section>
+
+        {selectedProject && (
+          <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="modal-close"
+                onClick={() => setSelectedProject(null)}
+                aria-label="Close"
+              >
+                <X size={24} />
+              </button>
+              <div
+                style={{
+                  color: 'var(--color-slate)',
+                  fontSize: '14px',
+                  marginBottom: '8px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                {selectedProject.category}
+              </div>
+              <h3
+                className="section-title"
+                style={{ fontSize: '32px', marginBottom: '24px' }}
+              >
+                {selectedProject.title}
+              </h3>
+              <p
+                style={{
+                  color: 'var(--color-ivory)',
+                  fontSize: '16px',
+                  lineHeight: 1.6,
+                }}
+              >
+                {selectedProject.details}
+              </p>
+            </div>
+          </div>
+        )}
+
+        <footer className="footer">
+          <p>
+            © {new Date().getFullYear()} Vaibhav Bector. Modeled on Alpine banking
+            aesthetics.
+          </p>
+        </footer>
+      </div>
     </div>
   );
 }
