@@ -138,7 +138,6 @@ const PageLoader = ({ isLoading }) => {
   const [hiding, setHiding] = useState(false);
   const [gone, setGone] = useState(false);
 
-  // Fake smooth progress while assets load
   useEffect(() => {
     if (!isLoading) return;
 
@@ -155,7 +154,6 @@ const PageLoader = ({ isLoading }) => {
     return () => clearInterval(id);
   }, [isLoading]);
 
-  // Finish to 100% then fade out
   useEffect(() => {
     if (isLoading) return;
 
@@ -207,27 +205,24 @@ export default function App() {
     github: 'https://github.com/B3ECT0R07',
   };
 
-  const passions = [
+  const education = [
     {
-      id: 'football',
-      title: 'Tactical Execution',
-      tagline: 'Strategy & Leadership — Hala Madrid',
-      fullContent:
-        'Football is a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: relentless growth, clutch performance under pressure, and unyielding ambition. I apply this exact framework to coordinating complex project timelines.',
+      degree: 'Bachelor of Business Administration',
+      institution: 'University of the Fraser Valley',
+      period: '2023',
+      highlights: [
+        'Core focus on Operations Management and Strategic Planning.',
+        'Developed foundational frameworks for scalable business models.'
+      ],
     },
     {
-      id: 'hydroponics',
-      title: 'Sustainable Systems',
-      tagline: 'Vertical farming & bio-tech',
-      fullContent:
-        'Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around automated nutrient recirculating systems and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.',
-    },
-    {
-      id: 'entrepreneurship',
-      title: 'Lean Operations',
-      tagline: 'Supply chain & problem solving',
-      fullContent:
-        'Building scalable systems is at the heart of everything I do. My track record in supply chain management and installation coordination stems from an entrepreneurial drive to eliminate bottlenecks and build predictable success.',
+      degree: 'Diploma in International Business',
+      institution: 'Universidad del Rosario',
+      period: '2023',
+      highlights: [
+        'Specialized in global supply chain logistics and cross-border trade.',
+        'Studied emerging market dynamics and international negotiation.'
+      ],
     },
   ];
 
@@ -273,7 +268,30 @@ export default function App() {
     },
   ];
 
-  // Loading gate: wait for video readiness + min display time
+  const passions = [
+    {
+      id: 'football',
+      title: 'Tactical Execution',
+      tagline: 'Strategy & Leadership — Hala Madrid',
+      fullContent:
+        'Football is a masterclass in strategy, split-second tactical adjustments, and high-pressure execution. As an avid supporter of Real Madrid, I draw daily inspiration from their championship mindset: relentless growth, clutch performance under pressure, and unyielding ambition. I apply this exact framework to coordinating complex project timelines.',
+    },
+    {
+      id: 'hydroponics',
+      title: 'Sustainable Systems',
+      tagline: 'Vertical farming & bio-tech',
+      fullContent:
+        'Deeply fascinated by nature ecosystems blending with tech architecture. My interest in hydroponics centers around automated nutrient recirculating systems and zero-soil growth. It represents the perfect intersection of engineering, operational control, and environmental stewardship.',
+    },
+    {
+      id: 'entrepreneurship',
+      title: 'Lean Operations',
+      tagline: 'Supply chain & problem solving',
+      fullContent:
+        'Building scalable systems is at the heart of everything I do. My track record in supply chain management and installation coordination stems from an entrepreneurial drive to eliminate bottlenecks and build predictable success.',
+    },
+  ];
+
   useEffect(() => {
     const minTime = new Promise((resolve) => setTimeout(resolve, 1200));
     const video = videoRef.current;
@@ -290,7 +308,6 @@ export default function App() {
       const done = () => resolve();
       video.addEventListener('canplaythrough', done, { once: true });
       video.addEventListener('loadeddata', done, { once: true });
-      // Safety fallback if video is slow / blocked
       setTimeout(done, 4000);
     });
 
@@ -973,6 +990,7 @@ export default function App() {
           <div className="nav-links">
             <a href="#experience" className="nav-link">Experience</a>
             <a href="#projects" className="nav-link">Projects</a>
+            <a href="#education" className="nav-link">Education</a>
             <a href="#about" className="nav-link">About</a>
           </div>
           <a
@@ -1101,6 +1119,36 @@ export default function App() {
                   <div className="project-link">
                     View details <ExternalLink size={14} />
                   </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section id="education" className="section-container" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <div className="section-header">
+              <h2 className="section-title">Education & Credentials</h2>
+              <p className="section-desc">
+                Academic foundation in global business and operational strategy.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid-2">
+            {education.map((edu, idx) => (
+              <Reveal key={edu.institution} delay={idx * 120}>
+                <div className="graphite-card">
+                  <h3 className="exp-role">{edu.degree}</h3>
+                  <div className="exp-meta">
+                    <span>{edu.institution}</span>
+                    <span>{edu.period}</span>
+                  </div>
+                  <ul className="exp-list">
+                    {edu.highlights.map((highlight, i) => (
+                      <li key={i}>{highlight}</li>
+                    ))}
+                  </ul>
                 </div>
               </Reveal>
             ))}
