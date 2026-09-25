@@ -205,6 +205,13 @@ export default function App() {
     github: 'https://github.com/B3ECT0R07',
   };
 
+  const techStack = [
+    "Lean Operations", "Critical Path Method (CPM)", "Kaizen", 
+    "Supply Chain Logistics", "ERP Systems", "MS Project", 
+    "AutoCAD", "Tableau", "PowerBI", "Inventory Analytics", 
+    "Fulfillment Scaling", "Vendor Management", "Agile/Scrum"
+  ];
+
   const education = [
     {
       degree: 'Bachelor of Business Administration',
@@ -679,6 +686,55 @@ export default function App() {
           justify-content: center;
         }
 
+        /* ========== TICKER SECTION ========== */
+        .ticker-section {
+          padding: 32px 0;
+          background: rgba(23, 23, 33, 0.45);
+          backdrop-filter: blur(8px);
+          border-top: 1px solid rgba(39, 39, 53, 0.6);
+          border-bottom: 1px solid rgba(39, 39, 53, 0.6);
+          overflow: hidden;
+          margin-bottom: 72px;
+          position: relative;
+        }
+        
+        .ticker-wrapper {
+          display: flex;
+          width: max-content;
+          animation: tickerScroll 40s linear infinite;
+        }
+        
+        .ticker-wrapper:hover {
+          animation-play-state: paused;
+        }
+        
+        .ticker-group {
+          display: flex;
+          gap: 16px;
+          padding-right: 16px;
+        }
+        
+        .ticker-pill {
+          background: rgba(30, 30, 42, 0.88);
+          border: 1px solid var(--color-obsidian);
+          padding: 10px 24px;
+          border-radius: 40px;
+          color: var(--color-ivory);
+          font-family: var(--font-display);
+          font-size: 14px;
+          white-space: nowrap;
+          transition: border-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .ticker-pill:hover {
+          border-color: var(--color-cobalt);
+          color: var(--color-white);
+        }
+        
+        @keyframes tickerScroll {
+          to { transform: translateX(-50%); }
+        }
+
         .nav-bar {
           position: fixed;
           top: 0;
@@ -741,7 +797,7 @@ export default function App() {
         .section-container {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 112px 24px;
+          padding: 56px 24px 112px 24px;
         }
 
         .section-header { margin-bottom: 56px; }
@@ -1048,6 +1104,29 @@ export default function App() {
             </div>
           </div>
         </header>
+
+        {/* ========== INFINITE SCROLL TICKER ========== */}
+        <Reveal>
+          <div className="ticker-section">
+            <div className="ticker-wrapper">
+              <div className="ticker-group">
+                {techStack.map((tech, idx) => (
+                  <div key={`set1-${idx}`} className="ticker-pill">
+                    {tech}
+                  </div>
+                ))}
+              </div>
+              {/* Duplicate array for seamless infinite scroll */}
+              <div className="ticker-group" aria-hidden="true">
+                {techStack.map((tech, idx) => (
+                  <div key={`set2-${idx}`} className="ticker-pill">
+                    {tech}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Reveal>
 
         <section id="experience" className="section-container">
           <Reveal>
