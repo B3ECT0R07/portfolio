@@ -47,7 +47,6 @@ function Reveal({ children, delay = 0, className = '' }) {
   );
 }
 
-// --- GLITCH CURSOR TRAIL ---
 const GlitchTrail = () => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
@@ -132,7 +131,6 @@ const GlitchTrail = () => {
   );
 };
 
-// --- PAGE LOADER ---
 const PageLoader = ({ isLoading }) => {
   const [progress, setProgress] = useState(0);
   const [hiding, setHiding] = useState(false);
@@ -185,7 +183,6 @@ const PageLoader = ({ isLoading }) => {
   );
 };
 
-// --- SWIPEABLE TECH TICKER ---
 const TechTicker = ({ items }) => {
   const trackRef = useRef(null);
   const offsetRef = useRef(0);
@@ -197,7 +194,6 @@ const TechTicker = ({ items }) => {
   const rafRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Measure one full set width (half of duplicated track)
   const measure = () => {
     const track = trackRef.current;
     if (!track) return;
@@ -210,15 +206,13 @@ const TechTicker = ({ items }) => {
     return () => window.removeEventListener('resize', measure);
   }, [items]);
 
-  // Auto-scroll loop + wrap for infinite feel
   useEffect(() => {
-    const SPEED = 0.45; // px per frame ~ slow cruise
+    const SPEED = 0.45;
 
     const tick = () => {
       if (!pausedRef.current && !draggingRef.current && halfWidthRef.current > 0) {
         offsetRef.current -= SPEED;
 
-        // Wrap seamlessly when one full set has scrolled past
         if (Math.abs(offsetRef.current) >= halfWidthRef.current) {
           offsetRef.current += halfWidthRef.current;
         }
@@ -237,7 +231,6 @@ const TechTicker = ({ items }) => {
   const wrapOffset = (value) => {
     const half = halfWidthRef.current || 1;
     let next = value;
-    // Keep offset within [-half, 0] range
     while (next <= -half) next += half;
     while (next > 0) next -= half;
     return next;
@@ -250,7 +243,6 @@ const TechTicker = ({ items }) => {
     startXRef.current = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
     startOffsetRef.current = offsetRef.current;
 
-    // Pointer capture for smooth drag outside the element
     if (e.currentTarget.setPointerCapture && e.pointerId != null) {
       e.currentTarget.setPointerCapture(e.pointerId);
     }
@@ -270,7 +262,6 @@ const TechTicker = ({ items }) => {
   const onPointerUp = () => {
     draggingRef.current = false;
     setIsDragging(false);
-    // Short pause after release, then resume auto-scroll
     setTimeout(() => {
       if (!draggingRef.current) pausedRef.current = false;
     }, 900);
@@ -298,7 +289,6 @@ const TechTicker = ({ items }) => {
     }
   };
 
-  // Duplicate items for seamless loop
   const loopItems = [...items, ...items];
 
   return (
@@ -483,16 +473,9 @@ export default function App() {
     });
   }, []);
 
+  // Nav scroll state only — video stays fixed (no parallax)
   useEffect(() => {
-    const handleScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 50);
-
-      if (videoRef.current) {
-        videoRef.current.style.transform = `scale(1.12) translate3d(0, ${y * 0.18}px, 0)`;
-      }
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
@@ -516,6 +499,7 @@ export default function App() {
       <PageLoader isLoading={isLoading} />
       <GlitchTrail />
 
+      {/* Fixed full-viewport background — never moves with scroll */}
       <div className="page-video-bg" aria-hidden="true">
         <video
           ref={videoRef}
@@ -565,7 +549,6 @@ export default function App() {
           isolation: isolate;
         }
 
-        /* ========== LOADER ========== */
         .page-loader {
           position: fixed;
           inset: 0;
@@ -646,21 +629,28 @@ export default function App() {
           font-variant-numeric: tabular-nums;
         }
 
+        /* Fixed background — pinned to viewport at all times */
         .page-video-bg {
           position: fixed;
-          inset: 0;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          height: 100dvh;
           z-index: 0;
           overflow: hidden;
           pointer-events: none;
         }
 
         .page-video {
+          position: absolute;
+          top: 0;
+          left: 0;
           width: 100%;
-          height: 120%;
+          height: 100%;
           object-fit: cover;
-          object-position: center;
-          transform: scale(1.12);
-          will-change: transform;
+          object-position: center center;
+          transform: none;
           pointer-events: none;
         }
 
@@ -716,6 +706,7 @@ export default function App() {
         .hero {
           position: relative;
           min-height: 100vh;
+          min-height: 100dvh;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -843,7 +834,6 @@ export default function App() {
           justify-content: center;
         }
 
-        /* ========== SWIPEABLE TICKER ========== */
         .ticker-section {
           padding: 36px 0 28px;
           background: rgba(23, 23, 33, 0.45);
@@ -904,7 +894,6 @@ export default function App() {
           white-space: nowrap;
           flex-shrink: 0;
           pointer-events: none;
-          transition: border-color 0.3s ease, color 0.3s ease;
         }
 
         .ticker-fade {
@@ -1297,7 +1286,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* Swipeable infinite tech ticker */}
         <Reveal>
           <TechTicker items={techStack} />
         </Reveal>
